@@ -1,0 +1,17 @@
+services:
+  database:
+    container_name: database
+    build: ./database
+    restart: always
+    environment:
+      MYSQL_DATABASE: 'basketball_stats'
+      MYSQL_ROOT_PASSWORD: '${SQL_ROOT_PASSWORD}'
+    healthcheck:
+      test: ['CMD', 'mysqladmin', 'ping', '-h', 'localhost']
+    volumes:
+      - mysql_data:/var/lib/mysql
+    ports:
+      - '3306:3306'
+
+volumes:
+  mysql_data:
