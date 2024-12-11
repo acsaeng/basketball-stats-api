@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "9h1Q/sjbbLk=",
+  "dgSpecHash": "hKv2vGc4SLA=",
   "success": true,
-  "projectFilePath": "C:\\Users\\acsaeng\\OneDrive\\01 Personal\\02 Projects\\basketball-stats-api\\restapi\\restapi.csproj",
+  "projectFilePath": "C:\\Users\\acsaeng\\OneDrive\\01 Personal\\02 Projects\\basketball-stats-api\\restapi\\basketball-stats-api\\basketball-stats-api.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\acsaeng\\.nuget\\packages\\microsoft.aspnetcore.openapi\\9.0.0\\microsoft.aspnetcore.openapi.9.0.0.nupkg.sha512",
     "C:\\Users\\acsaeng\\.nuget\\packages\\microsoft.openapi\\1.6.17\\microsoft.openapi.1.6.17.nupkg.sha512"

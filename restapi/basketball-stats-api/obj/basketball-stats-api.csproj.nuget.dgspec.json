@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\acsaeng\\OneDrive\\01 Personal\\02 Projects\\basketball-stats-api\\restapi\\restapi.csproj": {}
+    "C:\\Users\\acsaeng\\OneDrive\\01 Personal\\02 Projects\\basketball-stats-api\\restapi\\basketball-stats-api\\basketball-stats-api.csproj": {}
   },
   "projects": {
-    "C:\\Users\\acsaeng\\OneDrive\\01 Personal\\02 Projects\\basketball-stats-api\\restapi\\restapi.csproj": {
+    "C:\\Users\\acsaeng\\OneDrive\\01 Personal\\02 Projects\\basketball-stats-api\\restapi\\basketball-stats-api\\basketball-stats-api.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\acsaeng\\OneDrive\\01 Personal\\02 Projects\\basketball-stats-api\\restapi\\restapi.csproj",
-        "projectName": "restapi",
-        "projectPath": "C:\\Users\\acsaeng\\OneDrive\\01 Personal\\02 Projects\\basketball-stats-api\\restapi\\restapi.csproj",
+        "projectUniqueName": "C:\\Users\\acsaeng\\OneDrive\\01 Personal\\02 Projects\\basketball-stats-api\\restapi\\basketball-stats-api\\basketball-stats-api.csproj",
+        "projectName": "basketball-stats-api",
+        "projectPath": "C:\\Users\\acsaeng\\OneDrive\\01 Personal\\02 Projects\\basketball-stats-api\\restapi\\basketball-stats-api\\basketball-stats-api.csproj",
         "packagesPath": "C:\\Users\\acsaeng\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\acsaeng\\OneDrive\\01 Personal\\02 Projects\\basketball-stats-api\\restapi\\obj\\",
+        "outputPath": "C:\\Users\\acsaeng\\OneDrive\\01 Personal\\02 Projects\\basketball-stats-api\\restapi\\basketball-stats-api\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\acsaeng\\AppData\\Roaming\\NuGet\\NuGet.Config"
