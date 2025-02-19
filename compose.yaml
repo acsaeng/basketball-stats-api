@@ -31,5 +31,18 @@ services:
       retries: 30
       start_period: 5s
 
+  restapi:
+    container_name: restapi
+    build: ./restapi
+    environment:
+      - ASPNETCORE_HTTP_PORT=https://+:7192
+      - ASPNETCORE_URLS=http://+:5240
+    ports:
+      - 5240:5240
+      - 7192:7192
+    depends_on:
+      mssqldb:
+        condition: service_healthy
+
 volumes:
   mssql_data:
