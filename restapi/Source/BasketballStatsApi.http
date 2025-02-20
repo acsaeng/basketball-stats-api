@@ -1,6 +1,0 @@
-@BasketballStatsApi_HostAddress = http://localhost:5240
-
-GET {{BasketballStatsApi_HostAddress}}/weatherforecast/
-Accept: application/json
-
-###

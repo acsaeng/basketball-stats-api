@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 
-namespace BasketballStatsApi.Controllers;
+namespace restapi.Controllers;
 
 [ApiController]
 [Route("[controller]")]

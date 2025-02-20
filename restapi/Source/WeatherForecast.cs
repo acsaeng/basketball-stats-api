@@ -1,4 +1,4 @@
-namespace BasketballStatsApi;
+namespace restapi;
 
 public class WeatherForecast
 {
