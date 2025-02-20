@@ -35,11 +35,11 @@ services:
     container_name: restapi
     build: ./restapi
     environment:
-      - ASPNETCORE_HTTP_PORT=https://+:7152
-      - ASPNETCORE_URLS=http://+:5037
+      - ASPNETCORE_HTTP_PORT=https://+:7165
+      - ASPNETCORE_URLS=http://+:5067
     ports:
-      - 5037:5037
-      - 7152:7152
+      - 5067:5067
+      - 7165:7165
     depends_on:
       mssqldb:
         condition: service_healthy

@@ -3,10 +3,10 @@ FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /source
 
 COPY . .
-RUN dotnet restore "Source/restapi.csproj"
-RUN dotnet publish "Source/restapi.csproj" -c release -o /app --no-restore
+RUN dotnet restore "Source/BasketballStatsApi.csproj"
+RUN dotnet publish "Source/BasketballStatsApi.csproj" -c release -o /app --no-restore
 
 FROM mcr.microsoft.com/dotnet/aspnet:8.0
 WORKDIR /app
 COPY --from=build /app ./
-ENTRYPOINT ["dotnet", "restapi.dll"]
+ENTRYPOINT ["dotnet", "BasketballStatsApi.dll"]
