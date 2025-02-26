@@ -11,14 +11,15 @@ public class PlayerProfile : Profile
   {
     CreateMap<AddPlayerRequest, Player>()
       .ForMember(dest => dest.RosterStatus, opt => opt.MapFrom<object>(x => null))
+      .ForMember(dest => dest.InjuryStatus, opt => opt.MapFrom<object>(x => null))
       .ForMember(dest => dest.Team, opt => opt.MapFrom<object>(x => null))
       .ForMember(dest => dest.JerseyNumber, opt => opt.MapFrom<object>(x => null))
-      .ForMember(dest => dest.Points, opt => opt.MapFrom<object>(x => 0))
-      .ForMember(dest => dest.Assists, opt => opt.MapFrom<object>(x => 0))
-      .ForMember(dest => dest.Rebounds, opt => opt.MapFrom<object>(x => 0))
-      .ForMember(dest => dest.Steals, opt => opt.MapFrom<object>(x => 0))
-      .ForMember(dest => dest.Blocks, opt => opt.MapFrom<object>(x => 0))
-      .ForMember(dest => dest.Turnovers, opt => opt.MapFrom<object>(x => 0));
+      .ForMember(dest => dest.Points, opt => opt.MapFrom<object>(x => 0.00000m))
+      .ForMember(dest => dest.Assists, opt => opt.MapFrom<object>(x => 0.00000m))
+      .ForMember(dest => dest.Rebounds, opt => opt.MapFrom<object>(x => 0.00000m))
+      .ForMember(dest => dest.Steals, opt => opt.MapFrom<object>(x => 0.00000m))
+      .ForMember(dest => dest.Blocks, opt => opt.MapFrom<object>(x => 0.00000m))
+      .ForMember(dest => dest.Turnovers, opt => opt.MapFrom<object>(x => 0.00000m));
 
     CreateMap<Player, PlayerResponse>();
   }
