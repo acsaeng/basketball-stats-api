@@ -31,4 +31,16 @@ public class PlayerController(IPlayerService playerService, IMapper mapper) : Co
     var addPlayerResponse = mapper.Map<PlayerResponse>(player);
     return CreatedAtAction(nameof(GetPlayer), new { playerId = player!.PlayerId }, addPlayerResponse);
   }
+
+  [HttpDelete("{playerId}")]
+  public async Task<ActionResult> RetirePlayer(int playerId)
+  {
+    var player = await playerService.GetPlayer(playerId);
+
+    if (player is null)
+      return NotFound();
+
+    await playerService.RetirePlayer(playerId);
+    return NoContent();
+  }
 }
