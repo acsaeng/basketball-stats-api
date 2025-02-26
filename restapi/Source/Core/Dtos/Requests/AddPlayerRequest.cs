@@ -13,6 +13,4 @@ public class AddPlayerRequest
   public int Weight { get; set; }
 
   public string Position { get; set; }
-
-  public string InjuryStatus { get; set; }
 }
