@@ -26,10 +26,10 @@ public class Player
   public string Position { get; set; }
   
   [MaxLength(10)]
-  public string? RosterStatus { get; set; }
-
-  [MaxLength(10)]
   public string? InjuryStatus { get; set; }
+  
+  [MaxLength(10)]
+  public string? RosterStatus { get; set; }
 
   // TODO: associate with Team entity once created
   public string? Team { get; set; }

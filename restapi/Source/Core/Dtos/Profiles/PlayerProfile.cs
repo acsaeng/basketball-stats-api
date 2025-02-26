@@ -10,8 +10,8 @@ public class PlayerProfile : Profile
   public PlayerProfile()
   {
     CreateMap<AddPlayerRequest, Player>()
+      .ForMember(dest => dest.InjuryStatus, opt => opt.MapFrom<object>(x => "Healthy"))
       .ForMember(dest => dest.RosterStatus, opt => opt.MapFrom<object>(x => null))
-      .ForMember(dest => dest.InjuryStatus, opt => opt.MapFrom<object>(x => null))
       .ForMember(dest => dest.Team, opt => opt.MapFrom<object>(x => null))
       .ForMember(dest => dest.JerseyNumber, opt => opt.MapFrom<object>(x => null))
       .ForMember(dest => dest.Points, opt => opt.MapFrom<object>(x => 0.00000m))

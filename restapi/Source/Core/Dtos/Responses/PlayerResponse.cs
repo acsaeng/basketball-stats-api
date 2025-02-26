@@ -16,9 +16,9 @@ public class PlayerResponse
 
   public string Position { get; set; }
   
-  public string? RosterStatus { get; set; }
-
   public string? InjuryStatus { get; set; }
+  
+  public string? RosterStatus { get; set; }
 
   // TODO: associate with Team entity once created
   public string? Team { get; set; }
