@@ -20,6 +20,19 @@ public class PlayerService(DataContext context) : IPlayerService
     return player;
   }
 
+  public async Task MakePlayerFreeAgent(int playerId)
+  {
+    var player = await context.Players.FindAsync(playerId);
+
+    if (player is not null)
+    {
+      player.RosterStatus = "Free Agent";
+      player.Team = null;
+      player.JerseyNumber = null;
+      await context.SaveChangesAsync();
+    }
+  }
+
   public async Task RetirePlayer(int playerId)
   {
     var player = await context.Players.FindAsync(playerId);

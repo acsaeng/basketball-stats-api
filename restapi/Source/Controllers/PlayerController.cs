@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace BasketballStatsApi.Controllers;
 
 [ApiController]
-[Route("[controller]")]
+[Route("api/[controller]")]
 public class PlayerController(IPlayerService playerService, IMapper mapper) : ControllerBase
 {
   [HttpGet("{playerId}")]
@@ -32,7 +32,19 @@ public class PlayerController(IPlayerService playerService, IMapper mapper) : Co
     return CreatedAtAction(nameof(GetPlayer), new { playerId = player!.PlayerId }, addPlayerResponse);
   }
 
-  [HttpDelete("{playerId}")]
+  [HttpPut("roster/free-agent/{playerId}")]
+  public async Task<ActionResult> MakePlayerFreeAgent(int playerId)
+  {
+    var player = await playerService.GetPlayer(playerId);
+
+    if (player is null)
+      return NotFound();
+
+    await playerService.MakePlayerFreeAgent(playerId);
+    return NoContent();
+  }
+
+  [HttpPut("roster/retire/{playerId}")]
   public async Task<ActionResult> RetirePlayer(int playerId)
   {
     var player = await playerService.GetPlayer(playerId);
