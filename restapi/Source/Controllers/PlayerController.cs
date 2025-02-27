@@ -24,15 +24,28 @@ public class PlayerController(IPlayerService playerService, IMapper mapper) : Co
   }
 
   [HttpPost]
-  public async Task<ActionResult> AddPlayer([FromBody] AddPlayerRequest addPlayerRequest)
+  public async Task<ActionResult> AddPlayer([FromBody] PlayerRequest playerRequest)
   {
-    var newPlayer = mapper.Map<Player>(addPlayerRequest);
+    var newPlayer = mapper.Map<Player>(playerRequest);
     var player = await playerService.AddPlayer(newPlayer);
     var addPlayerResponse = mapper.Map<PlayerResponse>(player);
     return CreatedAtAction(nameof(GetPlayer), new { playerId = player!.PlayerId }, addPlayerResponse);
   }
 
-  [HttpPut("roster/free-agent/{playerId}")]
+  [HttpPatch("{playerId}")]
+  public async Task<ActionResult> UpdatePlayer(int playerId, [FromBody] PlayerRequest playerRequest)
+  {
+    var playerToUpdate = await playerService.GetPlayer(playerId);
+
+    if (playerToUpdate is null)
+      return NotFound();
+
+    var player = mapper.Map<Player>(playerRequest);
+    await playerService.UpdatePlayer(playerId, player);
+    return NoContent();
+  }
+
+  [HttpPatch("roster/free-agent/{playerId}")]
   public async Task<ActionResult> MakePlayerFreeAgent(int playerId)
   {
     var player = await playerService.GetPlayer(playerId);
@@ -44,7 +57,7 @@ public class PlayerController(IPlayerService playerService, IMapper mapper) : Co
     return NoContent();
   }
 
-  [HttpPut("roster/retire/{playerId}")]
+  [HttpPatch("roster/retire/{playerId}")]
   public async Task<ActionResult> RetirePlayer(int playerId)
   {
     var player = await playerService.GetPlayer(playerId);

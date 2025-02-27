@@ -20,6 +20,22 @@ public class PlayerService(DataContext context) : IPlayerService
     return player;
   }
 
+  public async Task UpdatePlayer(int id, Player updatedPlayer)
+  {
+    var player = await context.Players.FindAsync(id);
+
+    if (player is not null)
+    {
+      player.FirstName = updatedPlayer.FirstName;
+      player.LastName = updatedPlayer.LastName;
+      player.Dob = updatedPlayer.Dob;
+      player.Height = updatedPlayer.Height;
+      player.Weight = updatedPlayer.Weight;
+      player.Position = updatedPlayer.Position;
+      await context.SaveChangesAsync();
+    }
+  }
+
   public async Task MakePlayerFreeAgent(int playerId)
   {
     var player = await context.Players.FindAsync(playerId);
@@ -39,8 +55,8 @@ public class PlayerService(DataContext context) : IPlayerService
 
     if (player is not null)
     {
-      player.RosterStatus = "Retired";
       player.InjuryStatus = null;
+      player.RosterStatus = "Retired";
       player.Team = null;
       player.JerseyNumber = null;
       await context.SaveChangesAsync();
