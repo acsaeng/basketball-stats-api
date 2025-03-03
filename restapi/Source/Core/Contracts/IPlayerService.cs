@@ -12,7 +12,7 @@ public interface IPlayerService
   
   Task UpdatePlayerInfo(int playerId, UpdatePlayerInfoRequest updatePlayerInfoRequest);
   
-  Task UpdatePlayerInjury(int id, PlayerInjuryRequest playerInjuryRequest);
+  Task UpdatePlayerInjury(int playerId, UpdatePlayerInjuryRequest updatePlayerInjuryRequest);
 
-  Task UpdatePlayerTeam(int playerId, PlayerTeamRequest playerTeamRequest);
+  Task UpdatePlayerTeam(int playerId, UpdatePlayerTeamRequest updatePlayerTeamRequest);
 }

@@ -42,10 +42,10 @@ public class PlayerService(DataContext context, IMapper mapper) : IPlayerService
     }
   }
 
-  public async Task UpdatePlayerInjury(int playerId, PlayerInjuryRequest playerInjuryRequest)
+  public async Task UpdatePlayerInjury(int playerId, UpdatePlayerInjuryRequest updatePlayerInjuryRequest)
   {
     var player = await context.Players.FindAsync(playerId);
-    var updatedPlayer = mapper.Map<Player>(playerInjuryRequest);
+    var updatedPlayer = mapper.Map<Player>(updatePlayerInjuryRequest);
 
     if (player is not null)
     {
@@ -54,10 +54,10 @@ public class PlayerService(DataContext context, IMapper mapper) : IPlayerService
     }
   }
 
-  public async Task UpdatePlayerTeam(int playerId, PlayerTeamRequest playerTeamRequest)
+  public async Task UpdatePlayerTeam(int playerId, UpdatePlayerTeamRequest updatePlayerTeamRequest)
   {
     var player = await context.Players.FindAsync(playerId);
-    var updatedPlayer = mapper.Map<Player>(playerTeamRequest);
+    var updatedPlayer = mapper.Map<Player>(updatePlayerTeamRequest);
 
     if (player is not null)
     {

@@ -23,9 +23,9 @@ public class PlayerProfile : Profile
 
     CreateMap<UpdatePlayerInfoRequest, Player>();
     
-    CreateMap<PlayerInjuryRequest, Player>();
+    CreateMap<UpdatePlayerInjuryRequest, Player>();
     
-    CreateMap<PlayerTeamRequest, Player>();
+    CreateMap<UpdatePlayerTeamRequest, Player>();
 
     CreateMap<Player, PlayerResponse>();
   }

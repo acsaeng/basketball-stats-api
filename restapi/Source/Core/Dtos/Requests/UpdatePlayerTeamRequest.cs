@@ -1,6 +1,6 @@
 namespace BasketballStatsApi.Core.Dtos.Requests;
 
-public class PlayerTeamRequest
+public class UpdatePlayerTeamRequest
 {
   public string? RosterStatus { get; set; }
   
