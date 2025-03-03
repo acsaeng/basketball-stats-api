@@ -12,36 +12,32 @@ namespace BasketballStatsApi.Controllers;
 public class PlayerController(IPlayerService playerService, IMapper mapper) : ControllerBase
 {
   [HttpGet("{playerId}")]
-  public async Task<ActionResult<Player?>> GetPlayer(int playerId)
+  public async Task<ActionResult<PlayerResponse?>> GetPlayer(int playerId)
   {
-    var player = await playerService.GetPlayer(playerId);
+    var playerResponse = await playerService.GetPlayer(playerId);
 
-    if (player is null)
+    if (playerResponse is null)
       return NotFound();
-
-    var playerResponse = mapper.Map<PlayerResponse>(player);
+    
     return Ok(playerResponse);
   }
 
   [HttpPost]
-  public async Task<ActionResult> AddPlayer([FromBody] PlayerInfoRequest playerInfoRequest)
+  public async Task<ActionResult> AddPlayer([FromBody] AddPlayerRequest addPlayerRequest)
   {
-    var newPlayer = mapper.Map<Player>(playerInfoRequest);
-    var player = await playerService.AddPlayer(newPlayer);
-    var addPlayerResponse = mapper.Map<PlayerResponse>(player);
-    return CreatedAtAction(nameof(GetPlayer), new { playerId = player!.PlayerId }, addPlayerResponse);
+    var playerResponse = await playerService.AddPlayer(addPlayerRequest);
+    return CreatedAtAction(nameof(GetPlayer), new { playerId = playerResponse!.PlayerId }, playerResponse);
   }
 
-  [HttpPatch("/info/{playerId}")]
-  public async Task<ActionResult> UpdatePlayerInfo(int playerId, [FromBody] PlayerInfoRequest playerInfoRequest)
+  [HttpPatch("info/{playerId}")]
+  public async Task<ActionResult> UpdatePlayerInfo(int playerId, [FromBody] UpdatePlayerInfoRequest updatePlayerInfoRequest)
   {
     var playerToUpdate = await playerService.GetPlayer(playerId);
 
     if (playerToUpdate is null)
       return NotFound();
-
-    var player = mapper.Map<Player>(playerInfoRequest);
-    await playerService.UpdatePlayerInfo(playerId, player);
+    
+    await playerService.UpdatePlayerInfo(playerId, updatePlayerInfoRequest);
     return NoContent();
   }
 

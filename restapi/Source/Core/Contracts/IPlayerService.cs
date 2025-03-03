@@ -1,15 +1,16 @@
 using BasketballStatsApi.Core.Dtos.Requests;
+using BasketballStatsApi.Core.Dtos.Responses;
 using BasketballStatsApi.Core.Entities;
 
 namespace BasketballStatsApi.Core.Contracts;
 
 public interface IPlayerService
 {
-  Task<Player?> GetPlayer(int playerId);
+  Task<PlayerResponse?> GetPlayer(int playerId);
 
-  Task<Player> AddPlayer(Player player);
+  Task<PlayerResponse> AddPlayer(AddPlayerRequest addPlayerRequest);
   
-  Task UpdatePlayerInfo(int id, Player player);
+  Task UpdatePlayerInfo(int playerId, UpdatePlayerInfoRequest updatePlayerInfoRequest);
   
   Task UpdatePlayerInjury(int id, PlayerInjuryRequest playerInjuryRequest);
 

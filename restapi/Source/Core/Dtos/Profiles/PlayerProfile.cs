@@ -2,7 +2,6 @@ using AutoMapper;
 using BasketballStatsApi.Core.Dtos.Requests;
 using BasketballStatsApi.Core.Dtos.Responses;
 using BasketballStatsApi.Core.Entities;
-using BasketballStatsApi.Core.Models;
 
 namespace BasketballStatsApi.Core.Dtos.Profiles;
 
@@ -10,7 +9,7 @@ public class PlayerProfile : Profile
 {
   public PlayerProfile()
   {
-    CreateMap<PlayerInfoRequest, Player>()
+    CreateMap<AddPlayerRequest, Player>()
       .ForMember(dest => dest.InjuryStatus, opt => opt.MapFrom<object>(x => "Healthy"))
       .ForMember(dest => dest.RosterStatus, opt => opt.MapFrom<object>(x => null))
       .ForMember(dest => dest.Team, opt => opt.MapFrom<object>(x => null))
@@ -22,9 +21,11 @@ public class PlayerProfile : Profile
       .ForMember(dest => dest.Blocks, opt => opt.MapFrom<object>(x => 0.00000m))
       .ForMember(dest => dest.Turnovers, opt => opt.MapFrom<object>(x => 0.00000m));
 
-    CreateMap<PlayerInjuryRequest, PlayerModel>();
+    CreateMap<UpdatePlayerInfoRequest, Player>();
     
-    CreateMap<PlayerTeamRequest, PlayerModel>();
+    CreateMap<PlayerInjuryRequest, Player>();
+    
+    CreateMap<PlayerTeamRequest, Player>();
 
     CreateMap<Player, PlayerResponse>();
   }

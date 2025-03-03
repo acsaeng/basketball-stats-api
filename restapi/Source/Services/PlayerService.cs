@@ -1,30 +1,34 @@
 using AutoMapper;
 using BasketballStatsApi.Core.Contracts;
 using BasketballStatsApi.Core.Dtos.Requests;
+using BasketballStatsApi.Core.Dtos.Responses;
 using BasketballStatsApi.Core.Entities;
-using BasketballStatsApi.Core.Models;
 using BasketballStatsApi.Infrastructure.Data;
 
 namespace BasketballStatsApi.Services;
 
 public class PlayerService(DataContext context, IMapper mapper) : IPlayerService
 {
-  public async Task<Player?> GetPlayer(int playerId)
+  public async Task<PlayerResponse?> GetPlayer(int playerId)
   {
     var player = await context.Players.FindAsync(playerId);
-    return player;
+    var playerResponse = mapper.Map<PlayerResponse>(player);
+    return playerResponse;
   }
 
-  public async Task<Player> AddPlayer(Player player)
+  public async Task<PlayerResponse> AddPlayer(AddPlayerRequest addPlayerRequest)
   {
-    context.Players.Add(player);
+    var newPlayer = mapper.Map<Player>(addPlayerRequest);
+    context.Players.Add(newPlayer);
     await context.SaveChangesAsync();
-    return player;
+    var playerResponse = mapper.Map<PlayerResponse>(newPlayer);
+    return playerResponse;
   }
 
-  public async Task UpdatePlayerInfo(int id, Player updatedPlayer)
+  public async Task UpdatePlayerInfo(int id, UpdatePlayerInfoRequest updatePlayerInfoRequest)
   {
     var player = await context.Players.FindAsync(id);
+    var updatedPlayer = mapper.Map<Player>(updatePlayerInfoRequest);
 
     if (player is not null)
     {
@@ -41,7 +45,7 @@ public class PlayerService(DataContext context, IMapper mapper) : IPlayerService
   public async Task UpdatePlayerInjury(int playerId, PlayerInjuryRequest playerInjuryRequest)
   {
     var player = await context.Players.FindAsync(playerId);
-    var updatedPlayer = mapper.Map<PlayerModel>(playerInjuryRequest);
+    var updatedPlayer = mapper.Map<Player>(playerInjuryRequest);
 
     if (player is not null)
     {
@@ -53,7 +57,7 @@ public class PlayerService(DataContext context, IMapper mapper) : IPlayerService
   public async Task UpdatePlayerTeam(int playerId, PlayerTeamRequest playerTeamRequest)
   {
     var player = await context.Players.FindAsync(playerId);
-    var updatedPlayer = mapper.Map<PlayerModel>(playerTeamRequest);
+    var updatedPlayer = mapper.Map<Player>(playerTeamRequest);
 
     if (player is not null)
     {
