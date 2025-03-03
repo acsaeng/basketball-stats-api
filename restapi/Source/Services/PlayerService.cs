@@ -1,11 +1,13 @@
+using AutoMapper;
 using BasketballStatsApi.Core.Contracts;
+using BasketballStatsApi.Core.Dtos.Requests;
 using BasketballStatsApi.Core.Entities;
+using BasketballStatsApi.Core.Models;
 using BasketballStatsApi.Infrastructure.Data;
-using Microsoft.EntityFrameworkCore;
 
 namespace BasketballStatsApi.Services;
 
-public class PlayerService(DataContext context) : IPlayerService
+public class PlayerService(DataContext context, IMapper mapper) : IPlayerService
 {
   public async Task<Player?> GetPlayer(int playerId)
   {
@@ -36,29 +38,16 @@ public class PlayerService(DataContext context) : IPlayerService
     }
   }
 
-  public async Task MakePlayerFreeAgent(int playerId)
+  public async Task UpdatePlayerTeam(int playerId, PlayerTeamRequest playerTeamRequest)
   {
     var player = await context.Players.FindAsync(playerId);
+    var updatedPlayer = mapper.Map<PlayerModel>(playerTeamRequest);
 
     if (player is not null)
     {
-      player.RosterStatus = "Free Agent";
-      player.Team = null;
-      player.JerseyNumber = null;
-      await context.SaveChangesAsync();
-    }
-  }
-
-  public async Task RetirePlayer(int playerId)
-  {
-    var player = await context.Players.FindAsync(playerId);
-
-    if (player is not null)
-    {
-      player.InjuryStatus = null;
-      player.RosterStatus = "Retired";
-      player.Team = null;
-      player.JerseyNumber = null;
+      player.RosterStatus = updatedPlayer.RosterStatus;
+      player.Team = updatedPlayer.Team;
+      player.JerseyNumber = updatedPlayer.JerseyNumber;
       await context.SaveChangesAsync();
     }
   }

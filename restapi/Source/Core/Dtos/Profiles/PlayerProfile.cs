@@ -2,6 +2,7 @@ using AutoMapper;
 using BasketballStatsApi.Core.Dtos.Requests;
 using BasketballStatsApi.Core.Dtos.Responses;
 using BasketballStatsApi.Core.Entities;
+using BasketballStatsApi.Core.Models;
 
 namespace BasketballStatsApi.Core.Dtos.Profiles;
 
@@ -20,6 +21,8 @@ public class PlayerProfile : Profile
       .ForMember(dest => dest.Steals, opt => opt.MapFrom<object>(x => 0.00000m))
       .ForMember(dest => dest.Blocks, opt => opt.MapFrom<object>(x => 0.00000m))
       .ForMember(dest => dest.Turnovers, opt => opt.MapFrom<object>(x => 0.00000m));
+
+    CreateMap<PlayerTeamRequest, PlayerModel>();
 
     CreateMap<Player, PlayerResponse>();
   }

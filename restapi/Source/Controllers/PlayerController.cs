@@ -32,7 +32,7 @@ public class PlayerController(IPlayerService playerService, IMapper mapper) : Co
     return CreatedAtAction(nameof(GetPlayer), new { playerId = player!.PlayerId }, addPlayerResponse);
   }
 
-  [HttpPatch("{playerId}")]
+  [HttpPatch("/info/{playerId}")]
   public async Task<ActionResult> UpdatePlayerInfo(int playerId, [FromBody] PlayerInfoRequest playerInfoRequest)
   {
     var playerToUpdate = await playerService.GetPlayer(playerId);
@@ -45,27 +45,15 @@ public class PlayerController(IPlayerService playerService, IMapper mapper) : Co
     return NoContent();
   }
 
-  [HttpPatch("roster/free-agent/{playerId}")]
-  public async Task<ActionResult> MakePlayerFreeAgent(int playerId)
+  [HttpPatch("team/{playerId}")]
+  public async Task<ActionResult> UpdatePlayerTeam(int playerId, PlayerTeamRequest playerTeamRequest)
   {
     var player = await playerService.GetPlayer(playerId);
 
     if (player is null)
       return NotFound();
 
-    await playerService.MakePlayerFreeAgent(playerId);
-    return NoContent();
-  }
-
-  [HttpPatch("roster/retire/{playerId}")]
-  public async Task<ActionResult> RetirePlayer(int playerId)
-  {
-    var player = await playerService.GetPlayer(playerId);
-
-    if (player is null)
-      return NotFound();
-
-    await playerService.RetirePlayer(playerId);
+    await playerService.UpdatePlayerTeam(playerId, playerTeamRequest);
     return NoContent();
   }
 }

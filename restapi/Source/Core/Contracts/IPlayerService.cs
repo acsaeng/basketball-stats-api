@@ -1,3 +1,4 @@
+using BasketballStatsApi.Core.Dtos.Requests;
 using BasketballStatsApi.Core.Entities;
 
 namespace BasketballStatsApi.Core.Contracts;
@@ -10,7 +11,5 @@ public interface IPlayerService
   
   Task UpdatePlayerInfo(int id, Player player);
 
-  Task MakePlayerFreeAgent(int playerId);
-
-  Task RetirePlayer(int playerId);
+  Task UpdatePlayerTeam(int playerId, PlayerTeamRequest playerTeamRequest);
 }
