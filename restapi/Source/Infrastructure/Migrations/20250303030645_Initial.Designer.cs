@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BasketballStatsApi.Infrastructure.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20250225031419_Initial")]
+    [Migration("20250303030645_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -53,7 +53,6 @@ namespace BasketballStatsApi.Infrastructure.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("InjuryStatus")
-                        .IsRequired()
                         .HasMaxLength(10)
                         .HasColumnType("nvarchar(10)");
 
@@ -71,7 +70,8 @@ namespace BasketballStatsApi.Infrastructure.Migrations
 
                     b.Property<string>("Position")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(10)
+                        .HasColumnType("nvarchar(10)");
 
                     b.Property<decimal>("Rebounds")
                         .HasPrecision(7, 5)
