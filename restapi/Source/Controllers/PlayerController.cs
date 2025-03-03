@@ -24,24 +24,24 @@ public class PlayerController(IPlayerService playerService, IMapper mapper) : Co
   }
 
   [HttpPost]
-  public async Task<ActionResult> AddPlayer([FromBody] PlayerRequest playerRequest)
+  public async Task<ActionResult> AddPlayer([FromBody] PlayerInfoRequest playerInfoRequest)
   {
-    var newPlayer = mapper.Map<Player>(playerRequest);
+    var newPlayer = mapper.Map<Player>(playerInfoRequest);
     var player = await playerService.AddPlayer(newPlayer);
     var addPlayerResponse = mapper.Map<PlayerResponse>(player);
     return CreatedAtAction(nameof(GetPlayer), new { playerId = player!.PlayerId }, addPlayerResponse);
   }
 
   [HttpPatch("{playerId}")]
-  public async Task<ActionResult> UpdatePlayer(int playerId, [FromBody] PlayerRequest playerRequest)
+  public async Task<ActionResult> UpdatePlayerInfo(int playerId, [FromBody] PlayerInfoRequest playerInfoRequest)
   {
     var playerToUpdate = await playerService.GetPlayer(playerId);
 
     if (playerToUpdate is null)
       return NotFound();
 
-    var player = mapper.Map<Player>(playerRequest);
-    await playerService.UpdatePlayer(playerId, player);
+    var player = mapper.Map<Player>(playerInfoRequest);
+    await playerService.UpdatePlayerInfo(playerId, player);
     return NoContent();
   }
 

@@ -8,7 +8,7 @@ public interface IPlayerService
 
   Task<Player> AddPlayer(Player player);
   
-  Task UpdatePlayer(int id, Player player);
+  Task UpdatePlayerInfo(int id, Player player);
 
   Task MakePlayerFreeAgent(int playerId);
 

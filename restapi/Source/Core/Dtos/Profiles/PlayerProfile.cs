@@ -9,7 +9,7 @@ public class PlayerProfile : Profile
 {
   public PlayerProfile()
   {
-    CreateMap<PlayerRequest, Player>()
+    CreateMap<PlayerInfoRequest, Player>()
       .ForMember(dest => dest.InjuryStatus, opt => opt.MapFrom<object>(x => "Healthy"))
       .ForMember(dest => dest.RosterStatus, opt => opt.MapFrom<object>(x => null))
       .ForMember(dest => dest.Team, opt => opt.MapFrom<object>(x => null))

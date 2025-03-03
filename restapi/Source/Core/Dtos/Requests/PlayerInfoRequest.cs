@@ -1,6 +1,6 @@
 namespace BasketballStatsApi.Core.Dtos.Requests;
 
-public class PlayerRequest
+public class PlayerInfoRequest
 {
   public string FirstName { get; set; }
 

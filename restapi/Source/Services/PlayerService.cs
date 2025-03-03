@@ -20,7 +20,7 @@ public class PlayerService(DataContext context) : IPlayerService
     return player;
   }
 
-  public async Task UpdatePlayer(int id, Player updatedPlayer)
+  public async Task UpdatePlayerInfo(int id, Player updatedPlayer)
   {
     var player = await context.Players.FindAsync(id);
 
