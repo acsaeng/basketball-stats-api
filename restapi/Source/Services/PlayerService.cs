@@ -38,6 +38,18 @@ public class PlayerService(DataContext context, IMapper mapper) : IPlayerService
     }
   }
 
+  public async Task UpdatePlayerInjury(int playerId, PlayerInjuryRequest playerInjuryRequest)
+  {
+    var player = await context.Players.FindAsync(playerId);
+    var updatedPlayer = mapper.Map<PlayerModel>(playerInjuryRequest);
+
+    if (player is not null)
+    {
+      player.InjuryStatus = updatedPlayer.InjuryStatus;
+      await context.SaveChangesAsync();
+    }
+  }
+
   public async Task UpdatePlayerTeam(int playerId, PlayerTeamRequest playerTeamRequest)
   {
     var player = await context.Players.FindAsync(playerId);

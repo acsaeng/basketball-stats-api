@@ -22,6 +22,8 @@ public class PlayerProfile : Profile
       .ForMember(dest => dest.Blocks, opt => opt.MapFrom<object>(x => 0.00000m))
       .ForMember(dest => dest.Turnovers, opt => opt.MapFrom<object>(x => 0.00000m));
 
+    CreateMap<PlayerInjuryRequest, PlayerModel>();
+    
     CreateMap<PlayerTeamRequest, PlayerModel>();
 
     CreateMap<Player, PlayerResponse>();

@@ -45,6 +45,18 @@ public class PlayerController(IPlayerService playerService, IMapper mapper) : Co
     return NoContent();
   }
 
+  [HttpPatch("injury/{playerId}")]
+  public async Task<ActionResult> UpdatePlayerInjury(int playerId, PlayerInjuryRequest playerInjuryRequest)
+  {
+    var player = await playerService.GetPlayer(playerId);
+
+    if (player is null)
+      return NotFound();
+
+    await playerService.UpdatePlayerInjury(playerId, playerInjuryRequest);
+    return NoContent();
+  }
+  
   [HttpPatch("team/{playerId}")]
   public async Task<ActionResult> UpdatePlayerTeam(int playerId, PlayerTeamRequest playerTeamRequest)
   {

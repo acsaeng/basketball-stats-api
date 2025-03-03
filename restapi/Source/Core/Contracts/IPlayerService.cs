@@ -10,6 +10,8 @@ public interface IPlayerService
   Task<Player> AddPlayer(Player player);
   
   Task UpdatePlayerInfo(int id, Player player);
+  
+  Task UpdatePlayerInjury(int id, PlayerInjuryRequest playerInjuryRequest);
 
   Task UpdatePlayerTeam(int playerId, PlayerTeamRequest playerTeamRequest);
 }
