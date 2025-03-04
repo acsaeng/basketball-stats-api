@@ -33,7 +33,7 @@ services:
 
   restapi:
     container_name: restapi
-    build: ./restapi
+    build: ./
     environment:
       - ASPNETCORE_HTTP_PORT=https://+:7165
       - ASPNETCORE_URLS=http://+:5067
