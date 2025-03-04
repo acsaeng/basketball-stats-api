@@ -18,7 +18,7 @@ public class PlayerController(IPlayerService playerService, IMapper mapper) : Co
 
     if (playerResponse is null)
       return NotFound();
-    
+
     return Ok(playerResponse);
   }
 
@@ -32,36 +32,33 @@ public class PlayerController(IPlayerService playerService, IMapper mapper) : Co
   [HttpPatch("info/{playerId}")]
   public async Task<ActionResult> UpdatePlayerInfo(int playerId, [FromBody] UpdatePlayerInfoRequest updatePlayerInfoRequest)
   {
-    var playerToUpdate = await playerService.GetPlayer(playerId);
+    var player = await playerService.UpdatePlayerInfo(playerId, updatePlayerInfoRequest);
 
-    if (playerToUpdate is null)
+    if (player is null)
       return NotFound();
-    
-    await playerService.UpdatePlayerInfo(playerId, updatePlayerInfoRequest);
-    return NoContent();
+
+    return Ok(player);
   }
 
   [HttpPatch("injury/{playerId}")]
-  public async Task<ActionResult> UpdatePlayerInjury(int playerId, UpdatePlayerInjuryRequest updatePlayerInjuryRequest)
+  public async Task<ActionResult> UpdatePlayerInjury(int playerId, [FromBody] UpdatePlayerInjuryRequest updatePlayerInjuryRequest)
   {
-    var player = await playerService.GetPlayer(playerId);
+    var player = await playerService.UpdatePlayerInjury(playerId, updatePlayerInjuryRequest);
 
     if (player is null)
       return NotFound();
 
-    await playerService.UpdatePlayerInjury(playerId, updatePlayerInjuryRequest);
-    return NoContent();
+    return Ok(player);
   }
-  
+
   [HttpPatch("team/{playerId}")]
-  public async Task<ActionResult> UpdatePlayerTeam(int playerId, UpdatePlayerTeamRequest updatePlayerTeamRequest)
+  public async Task<ActionResult> UpdatePlayerTeam(int playerId, [FromBody] UpdatePlayerTeamRequest updatePlayerTeamRequest)
   {
-    var player = await playerService.GetPlayer(playerId);
+    var player = await playerService.UpdatePlayerTeam(playerId, updatePlayerTeamRequest);
 
     if (player is null)
       return NotFound();
 
-    await playerService.UpdatePlayerTeam(playerId, updatePlayerTeamRequest);
-    return NoContent();
+    return Ok(player);
   }
 }

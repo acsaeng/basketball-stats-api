@@ -24,10 +24,10 @@ public class Player
 
   [MaxLength(10)]
   public string Position { get; set; }
-  
+
   [MaxLength(10)]
   public string? InjuryStatus { get; set; }
-  
+
   [MaxLength(10)]
   public string? RosterStatus { get; set; }
 

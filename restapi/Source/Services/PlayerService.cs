@@ -12,59 +12,70 @@ public class PlayerService(DataContext context, IMapper mapper) : IPlayerService
   public async Task<PlayerResponse?> GetPlayer(int playerId)
   {
     var player = await context.Players.FindAsync(playerId);
-    var playerResponse = mapper.Map<PlayerResponse>(player);
-    return playerResponse;
+    var response = mapper.Map<PlayerResponse>(player);
+    return response;
   }
 
   public async Task<PlayerResponse> AddPlayer(AddPlayerRequest addPlayerRequest)
   {
-    var newPlayer = mapper.Map<Player>(addPlayerRequest);
-    context.Players.Add(newPlayer);
+    var request = mapper.Map<Player>(addPlayerRequest);
+    context.Players.Add(request);
     await context.SaveChangesAsync();
-    var playerResponse = mapper.Map<PlayerResponse>(newPlayer);
-    return playerResponse;
+
+    var response = mapper.Map<PlayerResponse>(request);
+    return response;
   }
 
-  public async Task UpdatePlayerInfo(int id, UpdatePlayerInfoRequest updatePlayerInfoRequest)
+  public async Task<PlayerResponse?> UpdatePlayerInfo(int id, UpdatePlayerInfoRequest updatePlayerInfoRequest)
   {
     var player = await context.Players.FindAsync(id);
-    var updatedPlayer = mapper.Map<Player>(updatePlayerInfoRequest);
+    var request = mapper.Map<Player>(updatePlayerInfoRequest);
 
-    if (player is not null)
-    {
-      player.FirstName = updatedPlayer.FirstName;
-      player.LastName = updatedPlayer.LastName;
-      player.Dob = updatedPlayer.Dob;
-      player.Height = updatedPlayer.Height;
-      player.Weight = updatedPlayer.Weight;
-      player.Position = updatedPlayer.Position;
-      await context.SaveChangesAsync();
-    }
+    if (player is null)
+      return null;
+
+    player.FirstName = request.FirstName;
+    player.LastName = request.LastName;
+    player.Dob = request.Dob;
+    player.Height = request.Height;
+    player.Weight = request.Weight;
+    player.Position = request.Position;
+    await context.SaveChangesAsync();
+
+    var response = mapper.Map<PlayerResponse>(player);
+    return response;
   }
 
-  public async Task UpdatePlayerInjury(int playerId, UpdatePlayerInjuryRequest updatePlayerInjuryRequest)
+  public async Task<PlayerResponse?> UpdatePlayerInjury(int playerId, UpdatePlayerInjuryRequest updatePlayerInjuryRequest)
   {
     var player = await context.Players.FindAsync(playerId);
-    var updatedPlayer = mapper.Map<Player>(updatePlayerInjuryRequest);
+    var request = mapper.Map<Player>(updatePlayerInjuryRequest);
 
-    if (player is not null)
-    {
-      player.InjuryStatus = updatedPlayer.InjuryStatus;
-      await context.SaveChangesAsync();
-    }
+    if (player is null)
+      return null;
+
+    player.InjuryStatus = request.InjuryStatus;
+    await context.SaveChangesAsync();
+
+    var response = mapper.Map<PlayerResponse>(player);
+    return response;
   }
 
-  public async Task UpdatePlayerTeam(int playerId, UpdatePlayerTeamRequest updatePlayerTeamRequest)
+  public async Task<PlayerResponse?> UpdatePlayerTeam(int playerId, UpdatePlayerTeamRequest updatePlayerTeamRequest)
   {
     var player = await context.Players.FindAsync(playerId);
-    var updatedPlayer = mapper.Map<Player>(updatePlayerTeamRequest);
+    var request = mapper.Map<Player>(updatePlayerTeamRequest);
 
-    if (player is not null)
-    {
-      player.RosterStatus = updatedPlayer.RosterStatus;
-      player.Team = updatedPlayer.Team;
-      player.JerseyNumber = updatedPlayer.JerseyNumber;
-      await context.SaveChangesAsync();
-    }
+    if (player is null)
+      throw new ArgumentException("Test");
+    // return null;
+
+    player.RosterStatus = request.RosterStatus;
+    player.Team = request.Team;
+    player.JerseyNumber = request.JerseyNumber;
+    await context.SaveChangesAsync();
+
+    var response = mapper.Map<PlayerResponse>(player);
+    return response;
   }
 }

@@ -9,10 +9,10 @@ public interface IPlayerService
   Task<PlayerResponse?> GetPlayer(int playerId);
 
   Task<PlayerResponse> AddPlayer(AddPlayerRequest addPlayerRequest);
-  
-  Task UpdatePlayerInfo(int playerId, UpdatePlayerInfoRequest updatePlayerInfoRequest);
-  
-  Task UpdatePlayerInjury(int playerId, UpdatePlayerInjuryRequest updatePlayerInjuryRequest);
 
-  Task UpdatePlayerTeam(int playerId, UpdatePlayerTeamRequest updatePlayerTeamRequest);
+  Task<PlayerResponse?> UpdatePlayerInfo(int playerId, UpdatePlayerInfoRequest updatePlayerInfoRequest);
+
+  Task<PlayerResponse?> UpdatePlayerInjury(int playerId, UpdatePlayerInjuryRequest updatePlayerInjuryRequest);
+
+  Task<PlayerResponse?> UpdatePlayerTeam(int playerId, UpdatePlayerTeamRequest updatePlayerTeamRequest);
 }
