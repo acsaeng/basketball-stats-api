@@ -2,7 +2,6 @@ using AutoMapper;
 using BasketballStatsApi.Core.Contracts;
 using BasketballStatsApi.Core.Dtos.Requests;
 using BasketballStatsApi.Core.Dtos.Responses;
-using BasketballStatsApi.Core.Entities;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BasketballStatsApi.Controllers;
