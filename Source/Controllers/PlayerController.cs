@@ -8,10 +8,10 @@ namespace BasketballStatsApi.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-public class PlayerController(IPlayerService playerService, IMapper mapper) : ControllerBase
+public class PlayerController(IPlayerService playerService) : ControllerBase
 {
   [HttpGet("{playerId}")]
-  public async Task<ActionResult<PlayerResponse?>> GetPlayer(int playerId)
+  public async Task<ActionResult<PlayerResponse>> GetPlayer(int playerId)
   {
     var playerResponse = await playerService.GetPlayer(playerId);
 

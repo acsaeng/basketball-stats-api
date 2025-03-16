@@ -31,8 +31,7 @@ public class Player
   [MaxLength(10)]
   public string? RosterStatus { get; set; }
 
-  // TODO: associate with Team entity once created
-  public string? Team { get; set; }
+  public Team? Team { get; set; }
 
   public int? JerseyNumber { get; set; }
 

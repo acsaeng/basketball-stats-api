@@ -61,6 +61,9 @@ namespace BasketballStatsApi.Infrastructure.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
+                    b.Property<int?>("Player")
+                        .HasColumnType("int");
+
                     b.Property<decimal>("Points")
                         .HasPrecision(7, 5)
                         .HasColumnType("decimal(7,5)");
@@ -82,9 +85,6 @@ namespace BasketballStatsApi.Infrastructure.Migrations
                         .HasPrecision(7, 5)
                         .HasColumnType("decimal(7,5)");
 
-                    b.Property<string>("Team")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<decimal>("Turnovers")
                         .HasPrecision(7, 5)
                         .HasColumnType("decimal(7,5)");
@@ -94,7 +94,67 @@ namespace BasketballStatsApi.Infrastructure.Migrations
 
                     b.HasKey("PlayerId");
 
+                    b.HasIndex("Player");
+
                     b.ToTable("Players");
+                });
+
+            modelBuilder.Entity("BasketballStatsApi.Core.Entities.Team", b =>
+                {
+                    b.Property<int>("TeamId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("TeamId"));
+
+                    b.Property<string>("Abbreviation")
+                        .IsRequired()
+                        .HasMaxLength(3)
+                        .HasColumnType("nvarchar(3)");
+
+                    b.Property<string>("LocaleName")
+                        .IsRequired()
+                        .HasMaxLength(25)
+                        .HasColumnType("nvarchar(25)");
+
+                    b.Property<string>("Location")
+                        .IsRequired()
+                        .HasMaxLength(25)
+                        .HasColumnType("nvarchar(25)");
+
+                    b.Property<int>("Losses")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(25)
+                        .HasColumnType("nvarchar(25)");
+
+                    b.Property<string>("Stadium")
+                        .IsRequired()
+                        .HasMaxLength(25)
+                        .HasColumnType("nvarchar(25)");
+
+                    b.Property<int>("Wins")
+                        .HasColumnType("int");
+
+                    b.HasKey("TeamId");
+
+                    b.ToTable("Team");
+                });
+
+            modelBuilder.Entity("BasketballStatsApi.Core.Entities.Player", b =>
+                {
+                    b.HasOne("BasketballStatsApi.Core.Entities.Team", "Team")
+                        .WithMany("Players")
+                        .HasForeignKey("Player");
+
+                    b.Navigation("Team");
+                });
+
+            modelBuilder.Entity("BasketballStatsApi.Core.Entities.Team", b =>
+                {
+                    b.Navigation("Players");
                 });
 #pragma warning restore 612, 618
         }

@@ -10,6 +10,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.AddScoped<IPlayerService, PlayerService>();
+builder.Services.AddScoped<ITeamService, TeamService>();
 
 builder.Services.AddDbContext<DataContext>(options =>
 {
