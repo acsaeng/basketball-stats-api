@@ -1,11 +1,1 @@
-bin/
-obj/
-/packages/
-riderModule.iml
-/_ReSharper.Caches/
-
-.idea
 .env
-
-# temporary until db schema is finalized
-Source/Infrastructure/Migrations

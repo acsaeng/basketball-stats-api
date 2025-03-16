@@ -14,17 +14,17 @@ services:
     healthcheck:
       test:
         [
-          "CMD",
-          "/opt/mssql-tools18/bin/sqlcmd",
-          "-C",
-          "-S",
-          "localhost",
-          "-U",
-          "sa",
-          "-P",
-          "${MSSQL_PASSWORD}",
-          "-Q",
-          "SELECT 1",
+          'CMD',
+          '/opt/mssql-tools18/bin/sqlcmd',
+          '-C',
+          '-S',
+          'localhost',
+          '-U',
+          'sa',
+          '-P',
+          '${MSSQL_PASSWORD}',
+          '-Q',
+          'SELECT 1',
         ]
       interval: 1s
       timeout: 30s
@@ -33,7 +33,7 @@ services:
 
   restapi:
     container_name: restapi
-    build: ./
+    build: ./restapi
     environment:
       - ASPNETCORE_HTTP_PORT=https://+:7165
       - ASPNETCORE_URLS=http://+:5067
