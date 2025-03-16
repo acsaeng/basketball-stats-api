@@ -22,17 +22,18 @@ public class Player
 
   public int Weight { get; set; }
 
-  [MaxLength(10)]
+  [AllowedValues("PG", "SG", "SF", "PF", "C")]
   public string Position { get; set; }
 
-  [MaxLength(10)]
+  [AllowedValues("Healthy", "Day-to-day", "Out")]
   public string? InjuryStatus { get; set; }
 
-  [MaxLength(10)]
-  public string? RosterStatus { get; set; }
+  [AllowedValues("Active", "Free agent", "Retired")]
+  public string RosterStatus { get; set; }
 
   public Team? Team { get; set; }
 
+  [Range(0, 99)]
   public int? JerseyNumber { get; set; }
 
   [Precision(7, 5)]

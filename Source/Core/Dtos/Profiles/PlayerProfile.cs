@@ -11,7 +11,7 @@ public class PlayerProfile : Profile
   {
     CreateMap<AddPlayerRequest, Player>()
       .ForMember(dest => dest.InjuryStatus, opt => opt.MapFrom<object>(x => "Healthy"))
-      .ForMember(dest => dest.RosterStatus, opt => opt.MapFrom<object>(x => null))
+      .ForMember(dest => dest.RosterStatus, opt => opt.MapFrom<object>(x => "Free agent"))
       .ForMember(dest => dest.Team, opt => opt.MapFrom<object>(x => null))
       .ForMember(dest => dest.JerseyNumber, opt => opt.MapFrom<object>(x => null))
       .ForMember(dest => dest.Points, opt => opt.MapFrom<object>(x => 0.00000m))
@@ -22,9 +22,9 @@ public class PlayerProfile : Profile
       .ForMember(dest => dest.Turnovers, opt => opt.MapFrom<object>(x => 0.00000m));
 
     CreateMap<UpdatePlayerInfoRequest, Player>();
-    
+
     CreateMap<UpdatePlayerInjuryRequest, Player>();
-    
+
     CreateMap<UpdatePlayerTeamRequest, Player>();
 
     CreateMap<Player, PlayerResponse>();

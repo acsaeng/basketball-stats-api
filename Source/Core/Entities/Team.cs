@@ -9,22 +9,22 @@ public class Team
   [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
   public int TeamId { get; set; }
 
-  [MaxLength(10)]
+  [AllowedValues("Active", "Inactive")]
   public string Status { get; set; }
 
-  [MaxLength(25)]
+  [MaxLength(50)]
   public string Locale { get; set; }
 
-  [MaxLength(25)]
+  [MaxLength(50)]
   public string Name { get; set; }
 
   [MaxLength(3)]
   public string Abbreviation { get; set; }
 
-  [MaxLength(25)]
+  [MaxLength(50)]
   public string Location { get; set; }
 
-  [MaxLength(25)]
+  [MaxLength(50)]
   public string Stadium { get; set; }
 
   public ICollection<Player> Players { get; set; }
