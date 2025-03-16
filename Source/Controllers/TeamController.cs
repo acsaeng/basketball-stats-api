@@ -1,15 +1,17 @@
 using BasketballStatsApi.Core.Contracts;
+using BasketballStatsApi.Core.Dtos.Requests;
 using BasketballStatsApi.Core.Dtos.Responses;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BasketballStatsApi.Controllers;
 
 // Endpoints to add:
-// - Create team
 // - Update team info
 // - Add player to team
-// - Deactivate team team
+// - Deactivate team
 
+[ApiController]
+[Route("api/[controller]")]
 public class TeamController(ITeamService teamService) : ControllerBase
 {
   [HttpGet("{teamId}")]
@@ -21,5 +23,12 @@ public class TeamController(ITeamService teamService) : ControllerBase
       return NotFound();
 
     return Ok(teamResponse);
+  }
+  
+  [HttpPost]
+  public async Task<ActionResult> AddTeam([FromBody] AddTeamRequest addTeamRequest)
+  {
+    var teamResponse = await teamService.AddTeam(addTeamRequest);
+    return CreatedAtAction(nameof(GetTeam), new { teamId = teamResponse!.TeamId }, teamResponse);
   }
 }

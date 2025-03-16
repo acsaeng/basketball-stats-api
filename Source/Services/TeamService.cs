@@ -1,6 +1,8 @@
 using AutoMapper;
 using BasketballStatsApi.Core.Contracts;
+using BasketballStatsApi.Core.Dtos.Requests;
 using BasketballStatsApi.Core.Dtos.Responses;
+using BasketballStatsApi.Core.Entities;
 using BasketballStatsApi.Infrastructure.Data;
 
 namespace BasketballStatsApi.Services;
@@ -11,6 +13,16 @@ public class TeamService(DataContext context, IMapper mapper) : ITeamService
   {
     var team = await context.Teams.FindAsync(teamId);
     var response = mapper.Map<TeamResponse>(team);
+    return response;
+  }
+
+  public async Task<TeamResponse> AddTeam(AddTeamRequest addTeamRequest)
+  {
+    var request = mapper.Map<Team>(addTeamRequest);
+    context.Teams.Add(request);
+    await context.SaveChangesAsync();
+
+    var response = mapper.Map<TeamResponse>(request);
     return response;
   }
 }

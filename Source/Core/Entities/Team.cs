@@ -13,7 +13,7 @@ public class Team
   public string Status { get; set; }
 
   [MaxLength(25)]
-  public string LocaleName { get; set; }
+  public string Locale { get; set; }
 
   [MaxLength(25)]
   public string Name { get; set; }

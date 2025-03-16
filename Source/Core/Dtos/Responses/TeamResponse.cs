@@ -4,7 +4,9 @@ namespace BasketballStatsApi.Core.Dtos.Responses;
 
 public class TeamResponse
 {
-  public string LocaleName { get; set; }
+  public int TeamId { get; set; }
+  
+  public string Locale { get; set; }
 
   public string Name { get; set; }
 
