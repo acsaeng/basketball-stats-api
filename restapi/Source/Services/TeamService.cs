@@ -34,11 +34,31 @@ public class TeamService(DataContext context, IMapper mapper) : ITeamService
     if (team is null)
       return null;
 
-    team.Locale = request.Locale;
-    team.Name = request.Name;
-    team.Abbreviation = request.Abbreviation;
-    team.Location = request.Location;
-    team.Stadium = request.Stadium;
+    if (team.Status == "Active")
+    {
+      team.Locale = request.Locale;
+      team.Name = request.Name;
+      team.Abbreviation = request.Abbreviation;
+      team.Location = request.Location;
+      team.Stadium = request.Stadium;
+      await context.SaveChangesAsync();
+    }
+
+    var response = mapper.Map<TeamResponse>(team);
+    return response;
+  }
+
+  public async Task<TeamResponse?> DeactivateTeam(int teamId)
+  {
+    var team = await context.Teams.FindAsync(teamId);
+
+    if (team is null)
+      return null;
+
+    team.Status = "Defunct";
+    // TODO: remove all players from team
+    team.Wins = 0;
+    team.Losses = 0;
     await context.SaveChangesAsync();
 
     var response = mapper.Map<TeamResponse>(team);

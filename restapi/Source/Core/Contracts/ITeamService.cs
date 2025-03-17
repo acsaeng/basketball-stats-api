@@ -10,4 +10,6 @@ public interface ITeamService
   Task<TeamResponse> AddTeam(AddTeamRequest addTeamRequest);
 
   Task<TeamResponse?> UpdateTeam(int teamId, UpdateTeamRequest updateTeamRequest);
+
+  Task<TeamResponse?> DeactivateTeam(int teamId);
 }

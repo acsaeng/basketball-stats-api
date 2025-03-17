@@ -5,7 +5,9 @@ namespace BasketballStatsApi.Core.Dtos.Responses;
 public class TeamResponse
 {
   public int TeamId { get; set; }
-  
+
+  public string Status { get; set; }
+
   public string Locale { get; set; }
 
   public string Name { get; set; }
@@ -16,9 +18,9 @@ public class TeamResponse
 
   public string Stadium { get; set; }
 
-  public ICollection<Player> Players { get; set; }
-
   public int Wins { get; set; }
 
   public int Losses { get; set; }
+
+  public ICollection<Player> Players { get; set; }
 }

@@ -5,11 +5,6 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace BasketballStatsApi.Controllers;
 
-// Endpoints to add:
-// - Update team info
-// - Add player to team
-// - Deactivate team
-
 [ApiController]
 [Route("api/[controller]")]
 public class TeamController(ITeamService teamService) : ControllerBase
@@ -32,10 +27,24 @@ public class TeamController(ITeamService teamService) : ControllerBase
     return CreatedAtAction(nameof(GetTeam), new { teamId = teamResponse!.TeamId }, teamResponse);
   }
 
-  [HttpPatch("{teamId}")]
+  [HttpPatch("info/{teamId}")]
   public async Task<ActionResult> UpdateTeam(int teamId, [FromBody] UpdateTeamRequest updateTeamRequest)
   {
     var team = await teamService.UpdateTeam(teamId, updateTeamRequest);
+
+    if (team is null)
+      return NotFound();
+
+    if (team.Status == "Defunct")
+      return BadRequest("Cannot update a defunct team");
+
+    return Ok(team);
+  }
+
+  [HttpPatch("deactivate/{teamId}")]
+  public async Task<ActionResult> DeactivateTeam(int teamId)
+  {
+    var team = await teamService.DeactivateTeam(teamId);
 
     if (team is null)
       return NotFound();

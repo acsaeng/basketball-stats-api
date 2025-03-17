@@ -9,7 +9,7 @@ public class Team
   [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
   public int TeamId { get; set; }
 
-  [AllowedValues("Active", "Inactive")]
+  [AllowedValues("Active", "Defunct")]
   public string Status { get; set; }
 
   [MaxLength(50)]
@@ -27,9 +27,9 @@ public class Team
   [MaxLength(50)]
   public string Stadium { get; set; }
 
-  public ICollection<Player> Players { get; set; }
-
   public int Wins { get; set; }
 
   public int Losses { get; set; }
+
+  public ICollection<Player> Players { get; set; }
 }
