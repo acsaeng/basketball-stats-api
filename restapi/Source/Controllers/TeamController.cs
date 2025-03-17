@@ -24,11 +24,22 @@ public class TeamController(ITeamService teamService) : ControllerBase
 
     return Ok(teamResponse);
   }
-  
+
   [HttpPost]
   public async Task<ActionResult> AddTeam([FromBody] AddTeamRequest addTeamRequest)
   {
     var teamResponse = await teamService.AddTeam(addTeamRequest);
     return CreatedAtAction(nameof(GetTeam), new { teamId = teamResponse!.TeamId }, teamResponse);
+  }
+
+  [HttpPatch("{teamId}")]
+  public async Task<ActionResult> UpdateTeam(int teamId, [FromBody] UpdateTeamRequest updateTeamRequest)
+  {
+    var team = await teamService.UpdateTeam(teamId, updateTeamRequest);
+
+    if (team is null)
+      return NotFound();
+
+    return Ok(team);
   }
 }

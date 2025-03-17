@@ -14,7 +14,9 @@ public class TeamProfile : Profile
       .ForMember(dest => dest.Players, opt => opt.MapFrom<object>(x => new List<int>()))
       .ForMember(dest => dest.Wins, opt => opt.MapFrom<object>(x => 0))
       .ForMember(dest => dest.Losses, opt => opt.MapFrom<object>(x => 0));
-    
+
+    CreateMap<UpdateTeamRequest, Team>();
+
     CreateMap<Team, TeamResponse>();
   }
 }

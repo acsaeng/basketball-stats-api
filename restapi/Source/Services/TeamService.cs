@@ -25,4 +25,23 @@ public class TeamService(DataContext context, IMapper mapper) : ITeamService
     var response = mapper.Map<TeamResponse>(request);
     return response;
   }
+
+  public async Task<TeamResponse?> UpdateTeam(int teamId, UpdateTeamRequest updateTeamRequest)
+  {
+    var team = await context.Teams.FindAsync(teamId);
+    var request = mapper.Map<Team>(updateTeamRequest);
+
+    if (team is null)
+      return null;
+
+    team.Locale = request.Locale;
+    team.Name = request.Name;
+    team.Abbreviation = request.Abbreviation;
+    team.Location = request.Location;
+    team.Stadium = request.Stadium;
+    await context.SaveChangesAsync();
+
+    var response = mapper.Map<TeamResponse>(team);
+    return response;
+  }
 }

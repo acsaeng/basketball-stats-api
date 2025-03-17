@@ -26,9 +26,9 @@ public class PlayerService(DataContext context, IMapper mapper) : IPlayerService
     return response;
   }
 
-  public async Task<PlayerResponse?> UpdatePlayerInfo(int id, UpdatePlayerInfoRequest updatePlayerInfoRequest)
+  public async Task<PlayerResponse?> UpdatePlayerInfo(int playerId, UpdatePlayerInfoRequest updatePlayerInfoRequest)
   {
-    var player = await context.Players.FindAsync(id);
+    var player = await context.Players.FindAsync(playerId);
     var request = mapper.Map<Player>(updatePlayerInfoRequest);
 
     if (player is null)
@@ -67,8 +67,7 @@ public class PlayerService(DataContext context, IMapper mapper) : IPlayerService
     var request = mapper.Map<Player>(updatePlayerTeamRequest);
 
     if (player is null)
-      throw new ArgumentException("Test");
-    // return null;
+      return null;
 
     player.RosterStatus = request.RosterStatus;
     player.Team = request.Team;
