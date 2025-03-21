@@ -4,6 +4,7 @@ using BasketballStatsApi.Core.Dtos.Requests;
 using BasketballStatsApi.Core.Dtos.Responses;
 using BasketballStatsApi.Core.Entities;
 using BasketballStatsApi.Infrastructure.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace BasketballStatsApi.Services;
 
@@ -12,24 +13,35 @@ public class PlayerService(DataContext context, IMapper mapper) : IPlayerService
   public async Task<PlayerResponse?> GetPlayer(int playerId)
   {
     var player = await context.Players.FindAsync(playerId);
-    var response = mapper.Map<PlayerResponse>(player);
+
+    if (player == null)
+      return null;
+    
+    var teamAbbreviation = player.TeamId != null ? 
+      await context.Teams
+        .Where(team => team.TeamId == player.TeamId)
+        .Select(team => team.Abbreviation)
+        .SingleOrDefaultAsync()
+      : null;
+
+    var response = mapper.Map<Player, PlayerResponse>(player, opt => opt.Items["Team"] = teamAbbreviation);
     return response;
   }
 
-  public async Task<PlayerResponse> AddPlayer(AddPlayerRequest addPlayerRequest)
+  public async Task<PlayerResponse> CreatePlayer(CreatePlayerRequest createPlayerRequest)
   {
-    var request = mapper.Map<Player>(addPlayerRequest);
+    var request = mapper.Map<CreatePlayerRequest, Player>(createPlayerRequest);
     context.Players.Add(request);
     await context.SaveChangesAsync();
 
-    var response = mapper.Map<PlayerResponse>(request);
+    var response = mapper.Map<Player, PlayerResponse>(request, opt => opt.Items["Team"] = null);
     return response;
   }
 
   public async Task<PlayerResponse?> UpdatePlayerInfo(int playerId, UpdatePlayerInfoRequest updatePlayerInfoRequest)
   {
     var player = await context.Players.FindAsync(playerId);
-    var request = mapper.Map<Player>(updatePlayerInfoRequest);
+    var request = mapper.Map<UpdatePlayerInfoRequest, Player>(updatePlayerInfoRequest);
 
     if (player is null)
       return null;
@@ -41,15 +53,22 @@ public class PlayerService(DataContext context, IMapper mapper) : IPlayerService
     player.Weight = request.Weight;
     player.Position = request.Position;
     await context.SaveChangesAsync();
+    
+    var teamAbbreviation = player.TeamId != null ? 
+      await context.Teams
+        .Where(team => team.TeamId == player.TeamId)
+        .Select(team => team.Abbreviation)
+        .SingleOrDefaultAsync()
+      : null;
 
-    var response = mapper.Map<PlayerResponse>(player);
+    var response = mapper.Map<Player, PlayerResponse>(player, opt => opt.Items["Team"] = teamAbbreviation);
     return response;
   }
 
   public async Task<PlayerResponse?> UpdatePlayerInjury(int playerId, UpdatePlayerInjuryRequest updatePlayerInjuryRequest)
   {
     var player = await context.Players.FindAsync(playerId);
-    var request = mapper.Map<Player>(updatePlayerInjuryRequest);
+    var request = mapper.Map<UpdatePlayerInjuryRequest, Player>(updatePlayerInjuryRequest);
 
     if (player is null)
       return null;
@@ -57,23 +76,31 @@ public class PlayerService(DataContext context, IMapper mapper) : IPlayerService
     player.InjuryStatus = request.InjuryStatus;
     await context.SaveChangesAsync();
 
-    var response = mapper.Map<PlayerResponse>(player);
+    var teamAbbreviation = player.TeamId != null ? 
+      await context.Teams
+        .Where(team => team.TeamId == player.TeamId)
+        .Select(team => team.Abbreviation)
+        .SingleOrDefaultAsync()
+      : null;
+
+    var response = mapper.Map<Player, PlayerResponse>(player, opt => opt.Items["Team"] = teamAbbreviation);
     return response;
   }
 
-  public async Task<PlayerResponse?> UpdatePlayerTeam(int playerId, UpdatePlayerTeamRequest updatePlayerTeamRequest)
+  public async Task<PlayerResponse?> UpdatePlayerRosterStatus(int playerId, UpdatePlayerRosterStatusRequest updatePlayerRosterStatusRequest)
   {
     var player = await context.Players.FindAsync(playerId);
-    var request = mapper.Map<Player>(updatePlayerTeamRequest);
+    var request = mapper.Map<UpdatePlayerRosterStatusRequest, Player>(updatePlayerRosterStatusRequest);
 
     if (player is null)
       return null;
-
+    
     player.RosterStatus = request.RosterStatus;
-    player.JerseyNumber = request.JerseyNumber;
+    player.TeamId = null;
+    player.JerseyNumber = null;
     await context.SaveChangesAsync();
 
-    var response = mapper.Map<PlayerResponse>(player);
+    var response = mapper.Map<Player, PlayerResponse>(player, opt => opt.Items["Team"] = null);
     return response;
   }
 }

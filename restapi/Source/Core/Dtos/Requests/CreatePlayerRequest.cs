@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace BasketballStatsApi.Core.Dtos.Requests;
 
-public class AddPlayerRequest
+public class CreatePlayerRequest
 {
   [Required]
   [MaxLength(50)]

@@ -10,27 +10,29 @@ public class PlayerProfile : Profile
 {
   public PlayerProfile()
   {
-    CreateMap<AddPlayerRequest, Player>()
-      .ForMember(dest => dest.InjuryStatus, opt => opt.MapFrom<object>(x => "Healthy"))
-      .ForMember(dest => dest.RosterStatus, opt => opt.MapFrom<object>(x => "Free agent"))
-      .ForMember(dest => dest.JerseyNumber, opt => opt.MapFrom<object>(x => null))
-      .ForMember(dest => dest.Points, opt => opt.MapFrom<object>(x => 0.00000m))
-      .ForMember(dest => dest.Assists, opt => opt.MapFrom<object>(x => 0.00000m))
-      .ForMember(dest => dest.Rebounds, opt => opt.MapFrom<object>(x => 0.00000m))
-      .ForMember(dest => dest.Steals, opt => opt.MapFrom<object>(x => 0.00000m))
-      .ForMember(dest => dest.Blocks, opt => opt.MapFrom<object>(x => 0.00000m))
-      .ForMember(dest => dest.Turnovers, opt => opt.MapFrom<object>(x => 0.00000m));
+    CreateMap<CreatePlayerRequest, Player>()
+      .ForMember(dest => dest.InjuryStatus, opt => opt.MapFrom<object>(_ => "Healthy"))
+      .ForMember(dest => dest.RosterStatus, opt => opt.MapFrom<object>(_ => "Free agent"))
+      .ForMember(dest => dest.TeamId, opt => opt.MapFrom<object>(_ => null))
+      .ForMember(dest => dest.JerseyNumber, opt => opt.MapFrom<object>(_ => null))
+      .ForMember(dest => dest.Points, opt => opt.MapFrom<object>(_ => 0.00000m))
+      .ForMember(dest => dest.Assists, opt => opt.MapFrom<object>(_ => 0.00000m))
+      .ForMember(dest => dest.Rebounds, opt => opt.MapFrom<object>(_ => 0.00000m))
+      .ForMember(dest => dest.Steals, opt => opt.MapFrom<object>(_ => 0.00000m))
+      .ForMember(dest => dest.Blocks, opt => opt.MapFrom<object>(_ => 0.00000m))
+      .ForMember(dest => dest.Turnovers, opt => opt.MapFrom<object>(_ => 0.00000m));
 
     CreateMap<UpdatePlayerInfoRequest, Player>();
 
     CreateMap<UpdatePlayerInjuryRequest, Player>();
 
-    CreateMap<UpdatePlayerTeamRequest, Player>();
+    CreateMap<UpdatePlayerRosterStatusRequest, Player>();
 
     CreateMap<AddPlayerToTeamRequest, Player>();
 
     CreateMap<Player, TeamPlayer>();
 
-    CreateMap<Player, PlayerResponse>();
+    CreateMap<Player, PlayerResponse>()
+      .ForMember(dest => dest.Team,opt => opt.MapFrom((_, _, _, context) => context.Items["Team"]));
   }
 }

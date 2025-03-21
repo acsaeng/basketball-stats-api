@@ -22,13 +22,13 @@ public class PlayerController(IPlayerService playerService) : ControllerBase
   }
 
   [HttpPost]
-  public async Task<ActionResult> AddPlayer([FromBody] AddPlayerRequest addPlayerRequest)
+  public async Task<ActionResult> CreatePlayer([FromBody] CreatePlayerRequest createPlayerRequest)
   {
-    var playerResponse = await playerService.AddPlayer(addPlayerRequest);
+    var playerResponse = await playerService.CreatePlayer(createPlayerRequest);
     return CreatedAtAction(nameof(GetPlayer), new { playerId = playerResponse!.PlayerId }, playerResponse);
   }
 
-  [HttpPatch("info/{playerId}")]
+  [HttpPost("info/{playerId}")]
   public async Task<ActionResult> UpdatePlayerInfo(int playerId, [FromBody] UpdatePlayerInfoRequest updatePlayerInfoRequest)
   {
     var player = await playerService.UpdatePlayerInfo(playerId, updatePlayerInfoRequest);
@@ -39,7 +39,7 @@ public class PlayerController(IPlayerService playerService) : ControllerBase
     return Ok(player);
   }
 
-  [HttpPatch("injury/{playerId}")]
+  [HttpPost("injury/{playerId}")]
   public async Task<ActionResult> UpdatePlayerInjury(int playerId, [FromBody] UpdatePlayerInjuryRequest updatePlayerInjuryRequest)
   {
     var player = await playerService.UpdatePlayerInjury(playerId, updatePlayerInjuryRequest);
@@ -50,10 +50,10 @@ public class PlayerController(IPlayerService playerService) : ControllerBase
     return Ok(player);
   }
 
-  [HttpPatch("team/{playerId}")]
-  public async Task<ActionResult> UpdatePlayerTeam(int playerId, [FromBody] UpdatePlayerTeamRequest updatePlayerTeamRequest)
+  [HttpPost("roster-status/{playerId}")]
+  public async Task<ActionResult> UpdatePlayerRosterStatus(int playerId, [FromBody] UpdatePlayerRosterStatusRequest updatePlayerRosterStatusRequest)
   {
-    var player = await playerService.UpdatePlayerTeam(playerId, updatePlayerTeamRequest);
+    var player = await playerService.UpdatePlayerRosterStatus(playerId, updatePlayerRosterStatusRequest);
 
     if (player is null)
       return NotFound();

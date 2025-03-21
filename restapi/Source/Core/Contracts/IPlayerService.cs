@@ -8,11 +8,11 @@ public interface IPlayerService
 {
   Task<PlayerResponse?> GetPlayer(int playerId);
 
-  Task<PlayerResponse> AddPlayer(AddPlayerRequest addPlayerRequest);
+  Task<PlayerResponse> CreatePlayer(CreatePlayerRequest createPlayerRequest);
 
   Task<PlayerResponse?> UpdatePlayerInfo(int playerId, UpdatePlayerInfoRequest updatePlayerInfoRequest);
 
   Task<PlayerResponse?> UpdatePlayerInjury(int playerId, UpdatePlayerInjuryRequest updatePlayerInjuryRequest);
 
-  Task<PlayerResponse?> UpdatePlayerTeam(int playerId, UpdatePlayerTeamRequest updatePlayerTeamRequest);
+  Task<PlayerResponse?> UpdatePlayerRosterStatus(int playerId, UpdatePlayerRosterStatusRequest updatePlayerRosterStatusRequest);
 }
