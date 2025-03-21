@@ -30,6 +30,4 @@ public class Team
   public int Wins { get; set; }
 
   public int Losses { get; set; }
-
-  public ICollection<Player> Players { get; set; }
 }

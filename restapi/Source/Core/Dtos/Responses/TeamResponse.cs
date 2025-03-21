@@ -1,3 +1,4 @@
+using BasketballStatsApi.Core.Dtos.Helpers;
 using BasketballStatsApi.Core.Entities;
 
 namespace BasketballStatsApi.Core.Dtos.Responses;
@@ -22,5 +23,5 @@ public class TeamResponse
 
   public int Losses { get; set; }
 
-  public ICollection<Player> Players { get; set; }
+  public ICollection<TeamPlayer> Players { get; set; }
 }

@@ -10,13 +10,13 @@ public class TeamProfile : Profile
   public TeamProfile()
   {
     CreateMap<AddTeamRequest, Team>()
-      .ForMember(dest => dest.Status, opt => opt.MapFrom<object>(x => "Active"))
-      .ForMember(dest => dest.Players, opt => opt.MapFrom<object>(x => new List<int>()))
-      .ForMember(dest => dest.Wins, opt => opt.MapFrom<object>(x => 0))
-      .ForMember(dest => dest.Losses, opt => opt.MapFrom<object>(x => 0));
+      .ForMember(dest => dest.Status, opt => opt.MapFrom(x => "Active"))
+      .ForMember(dest => dest.Wins, opt => opt.MapFrom(x => 0))
+      .ForMember(dest => dest.Losses, opt => opt.MapFrom(x => 0));
 
     CreateMap<UpdateTeamRequest, Team>();
 
-    CreateMap<Team, TeamResponse>();
+    CreateMap<Team, TeamResponse>()
+      .ForMember(dest => dest.Players,opt => opt.MapFrom((src, dest, destMember, context) => context.Items["Players"]));
   }
 }

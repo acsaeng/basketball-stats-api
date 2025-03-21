@@ -27,21 +27,43 @@ public class TeamController(ITeamService teamService) : ControllerBase
     return CreatedAtAction(nameof(GetTeam), new { teamId = teamResponse!.TeamId }, teamResponse);
   }
 
-  [HttpPatch("info/{teamId}")]
+  [HttpPost("update/{teamId}")]
   public async Task<ActionResult> UpdateTeam(int teamId, [FromBody] UpdateTeamRequest updateTeamRequest)
   {
-    var team = await teamService.UpdateTeam(teamId, updateTeamRequest);
+    try
+    {
+      var team = await teamService.UpdateTeam(teamId, updateTeamRequest);
 
-    if (team is null)
-      return NotFound();
-
-    if (team.Status == "Defunct")
-      return BadRequest("Cannot update a defunct team");
-
-    return Ok(team);
+      if (team is null)
+        return NotFound();
+      
+      return Ok(team);
+    }
+    catch (InvalidOperationException)
+    {
+      return BadRequest();
+    }
   }
 
-  [HttpPatch("deactivate/{teamId}")]
+  [HttpPost("add-player/{teamId}")]
+  public async Task<ActionResult> AddPlayerToTeam(int teamId, [FromBody] AddPlayerToTeamRequest addPlayerToTeamRequest)
+  {
+    try
+    {
+      var team = await teamService.AddPlayerToTeam(teamId, addPlayerToTeamRequest);
+
+      if (team is null)
+        return NotFound();
+
+      return Ok(team);
+    }
+    catch (InvalidOperationException)
+    {
+      return BadRequest();
+    }
+  }
+
+  [HttpPost("deactivate/{teamId}")]
   public async Task<ActionResult> DeactivateTeam(int teamId)
   {
     var team = await teamService.DeactivateTeam(teamId);

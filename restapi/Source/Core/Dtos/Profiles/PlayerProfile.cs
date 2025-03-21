@@ -1,4 +1,5 @@
 using AutoMapper;
+using BasketballStatsApi.Core.Dtos.Helpers;
 using BasketballStatsApi.Core.Dtos.Requests;
 using BasketballStatsApi.Core.Dtos.Responses;
 using BasketballStatsApi.Core.Entities;
@@ -12,7 +13,6 @@ public class PlayerProfile : Profile
     CreateMap<AddPlayerRequest, Player>()
       .ForMember(dest => dest.InjuryStatus, opt => opt.MapFrom<object>(x => "Healthy"))
       .ForMember(dest => dest.RosterStatus, opt => opt.MapFrom<object>(x => "Free agent"))
-      .ForMember(dest => dest.Team, opt => opt.MapFrom<object>(x => null))
       .ForMember(dest => dest.JerseyNumber, opt => opt.MapFrom<object>(x => null))
       .ForMember(dest => dest.Points, opt => opt.MapFrom<object>(x => 0.00000m))
       .ForMember(dest => dest.Assists, opt => opt.MapFrom<object>(x => 0.00000m))
@@ -26,6 +26,10 @@ public class PlayerProfile : Profile
     CreateMap<UpdatePlayerInjuryRequest, Player>();
 
     CreateMap<UpdatePlayerTeamRequest, Player>();
+
+    CreateMap<AddPlayerToTeamRequest, Player>();
+
+    CreateMap<Player, TeamPlayer>();
 
     CreateMap<Player, PlayerResponse>();
   }

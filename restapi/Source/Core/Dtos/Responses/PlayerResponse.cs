@@ -15,12 +15,11 @@ public class PlayerResponse
   public int Weight { get; set; }
 
   public string Position { get; set; }
-  
+
   public string? InjuryStatus { get; set; }
-  
+
   public string? RosterStatus { get; set; }
 
-  // TODO: associate with Team entity once created
   public string? Team { get; set; }
 
   public int? JerseyNumber { get; set; }

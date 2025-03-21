@@ -11,5 +11,7 @@ public interface ITeamService
 
   Task<TeamResponse?> UpdateTeam(int teamId, UpdateTeamRequest updateTeamRequest);
 
+  Task<TeamResponse?> AddPlayerToTeam(int teamId, AddPlayerToTeamRequest addPlayersToTeamRequest);
+
   Task<TeamResponse?> DeactivateTeam(int teamId);
 }

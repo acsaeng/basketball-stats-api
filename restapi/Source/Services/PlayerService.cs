@@ -70,7 +70,6 @@ public class PlayerService(DataContext context, IMapper mapper) : IPlayerService
       return null;
 
     player.RosterStatus = request.RosterStatus;
-    player.Team = request.Team;
     player.JerseyNumber = request.JerseyNumber;
     await context.SaveChangesAsync();
 
