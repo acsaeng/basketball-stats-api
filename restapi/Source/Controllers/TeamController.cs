@@ -21,9 +21,9 @@ public class TeamController(ITeamService teamService) : ControllerBase
   }
 
   [HttpPost]
-  public async Task<ActionResult> AddTeam([FromBody] AddTeamRequest addTeamRequest)
+  public async Task<ActionResult> CreateTeam([FromBody] CreateTeamRequest createTeamRequest)
   {
-    var teamResponse = await teamService.AddTeam(addTeamRequest);
+    var teamResponse = await teamService.CreateTeam(createTeamRequest);
     return CreatedAtAction(nameof(GetTeam), new { teamId = teamResponse!.TeamId }, teamResponse);
   }
 
@@ -32,12 +32,12 @@ public class TeamController(ITeamService teamService) : ControllerBase
   {
     try
     {
-      var team = await teamService.UpdateTeam(teamId, updateTeamRequest);
+      var teamResponse = await teamService.UpdateTeam(teamId, updateTeamRequest);
 
-      if (team is null)
+      if (teamResponse is null)
         return NotFound();
       
-      return Ok(team);
+      return Ok(teamResponse);
     }
     catch (InvalidOperationException)
     {
@@ -45,17 +45,17 @@ public class TeamController(ITeamService teamService) : ControllerBase
     }
   }
 
-  [HttpPost("add-player/{teamId}")]
-  public async Task<ActionResult> AddPlayerToTeam(int teamId, [FromBody] AddPlayerToTeamRequest addPlayerToTeamRequest)
+  [HttpPost("move-player/{teamId}")]
+  public async Task<ActionResult> MovePlayerToTeam(int teamId, [FromBody] MovePlayerToTeam movePlayerToTeam)
   {
     try
     {
-      var team = await teamService.AddPlayerToTeam(teamId, addPlayerToTeamRequest);
+      var teamResponse = await teamService.MovePlayerToTeam(teamId, movePlayerToTeam);
 
-      if (team is null)
+      if (teamResponse is null)
         return NotFound();
 
-      return Ok(team);
+      return Ok(teamResponse);
     }
     catch (InvalidOperationException)
     {
@@ -66,11 +66,11 @@ public class TeamController(ITeamService teamService) : ControllerBase
   [HttpPost("deactivate/{teamId}")]
   public async Task<ActionResult> DeactivateTeam(int teamId)
   {
-    var team = await teamService.DeactivateTeam(teamId);
+    var teamResponse = await teamService.DeactivateTeam(teamId);
 
-    if (team is null)
+    if (teamResponse is null)
       return NotFound();
 
-    return Ok(team);
+    return Ok(teamResponse);
   }
 }

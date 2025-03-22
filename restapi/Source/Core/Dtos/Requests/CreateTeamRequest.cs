@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace BasketballStatsApi.Core.Dtos.Requests;
 
-public class AddTeamRequest
+public class CreateTeamRequest
 {
   [Required]
   [MaxLength(50)]
@@ -23,4 +23,8 @@ public class AddTeamRequest
   [Required]
   [MaxLength(50)]
   public string Stadium { get; set; }
+
+  [Required]
+  [MaxLength(100)]
+  public string HeadCoach { get; set; }
 }

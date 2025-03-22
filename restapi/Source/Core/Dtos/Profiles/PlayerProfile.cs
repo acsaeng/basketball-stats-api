@@ -1,5 +1,4 @@
 using AutoMapper;
-using BasketballStatsApi.Core.Dtos.Helpers;
 using BasketballStatsApi.Core.Dtos.Requests;
 using BasketballStatsApi.Core.Dtos.Responses;
 using BasketballStatsApi.Core.Entities;
@@ -28,10 +27,8 @@ public class PlayerProfile : Profile
 
     CreateMap<UpdatePlayerRosterStatusRequest, Player>();
 
-    CreateMap<AddPlayerToTeamRequest, Player>();
-
-    CreateMap<Player, TeamPlayer>();
-
+    CreateMap<MovePlayerToTeam, Player>();
+    
     CreateMap<Player, PlayerResponse>()
       .ForMember(dest => dest.Team,opt => opt.MapFrom((_, _, _, context) => context.Items["Team"]));
   }

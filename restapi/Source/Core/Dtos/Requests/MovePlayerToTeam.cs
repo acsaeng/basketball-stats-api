@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace BasketballStatsApi.Core.Dtos.Requests;
 
-public class AddPlayerToTeamRequest
+public class MovePlayerToTeam
 {
   [Required]
   public int PlayerId { get; set; }

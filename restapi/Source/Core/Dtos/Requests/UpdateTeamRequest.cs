@@ -23,4 +23,8 @@ public class UpdateTeamRequest
   [Required]
   [MaxLength(50)]
   public string Stadium { get; set; }
+
+  [Required]
+  [MaxLength(100)]
+  public string HeadCoach { get; set; }
 }

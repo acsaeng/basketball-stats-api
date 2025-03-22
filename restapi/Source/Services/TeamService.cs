@@ -1,8 +1,5 @@
-using System.Collections;
-using System.Globalization;
 using AutoMapper;
 using BasketballStatsApi.Core.Contracts;
-using BasketballStatsApi.Core.Dtos.Helpers;
 using BasketballStatsApi.Core.Dtos.Requests;
 using BasketballStatsApi.Core.Dtos.Responses;
 using BasketballStatsApi.Core.Entities;
@@ -20,23 +17,17 @@ public class TeamService(DataContext context, IMapper mapper) : ITeamService
     if (team is null)
       return null;
 
-    var playersOnTeam = await context.Players
-      .Where(e => e.TeamId == team.TeamId)
-      .AsNoTracking()
-      .ToListAsync();
-    var players = mapper.Map<List<Player>, List<TeamPlayer>>(playersOnTeam);
-
-    var response = mapper.Map<Team, TeamResponse>(team, opt => opt.Items["Players"] = players);
+    var response = mapper.Map<Team, TeamResponse>(team);
     return response;
   }
 
-  public async Task<TeamResponse> AddTeam(AddTeamRequest addTeamRequest)
+  public async Task<TeamResponse> CreateTeam(CreateTeamRequest createTeamRequest)
   {
-    var request = mapper.Map<AddTeamRequest, Team>(addTeamRequest);
+    var request = mapper.Map<CreateTeamRequest, Team>(createTeamRequest);
     context.Teams.Add(request);
     await context.SaveChangesAsync();
 
-    var response = mapper.Map<Team, TeamResponse>(request, opt => opt.Items["Players"] = new List<TeamPlayer>());
+    var response = mapper.Map<Team, TeamResponse>(request);
     return response;
   }
 
@@ -48,7 +39,7 @@ public class TeamService(DataContext context, IMapper mapper) : ITeamService
     if (team is null)
       return null;
 
-    // Cannot add players to an inactive team
+    // Cannot update inactive team
     if (team.Status == "Defunct")
       throw new InvalidOperationException();
 
@@ -57,28 +48,24 @@ public class TeamService(DataContext context, IMapper mapper) : ITeamService
     team.Abbreviation = request.Abbreviation;
     team.Location = request.Location;
     team.Stadium = request.Stadium;
+    team.HeadCoach = request.HeadCoach;
     await context.SaveChangesAsync();
 
-    var players = await context.Players
-      .Where(e => e.TeamId == team.TeamId)
-      .AsNoTracking()
-      .ToListAsync();
-
-    var response = mapper.Map<Team, TeamResponse>(team, opt => opt.Items["Players"] = players);
+    var response = mapper.Map<Team, TeamResponse>(team);
     return response;
   }
 
-  public async Task<TeamResponse?> AddPlayerToTeam(int teamId, AddPlayerToTeamRequest addPlayersToTeamRequest)
+  public async Task<TeamResponse?> MovePlayerToTeam(int teamId, MovePlayerToTeam movePlayersToTeam)
   {
-    var request = mapper.Map<AddPlayerToTeamRequest, Player>(addPlayersToTeamRequest);
+    var request = mapper.Map<MovePlayerToTeam, Player>(movePlayersToTeam);
     var team = await context.Teams.FindAsync(teamId);
     var player = await context.Players.FindAsync(request.PlayerId);
 
     if (team is null || player is null)
       return null;
 
-    // Cannot add player that is already on a team or if team is inactive
-    if (player.TeamId is not null || team.Status == "Defunct")
+    // Cannot add player to inactive team
+    if (team.Status == "Defunct")
       throw new InvalidOperationException();
 
     player.RosterStatus = "Active";
@@ -86,12 +73,8 @@ public class TeamService(DataContext context, IMapper mapper) : ITeamService
     player.JerseyNumber = request.JerseyNumber;
     await context.SaveChangesAsync();
 
-    var players = await context.Players
-      .Where(e => e.TeamId == team.TeamId)
-      .AsNoTracking()
-      .ToListAsync();
-
-    var response = mapper.Map<Team, TeamResponse>(team, opt => opt.Items["Players"] = players);
+    // Modify this to return a list of players
+    var response = mapper.Map<Team, TeamResponse>(team);
     return response;
   }
 
@@ -103,6 +86,7 @@ public class TeamService(DataContext context, IMapper mapper) : ITeamService
       return null;
 
     team.Status = "Defunct";
+    team.HeadCoach = null;
     team.Wins = 0;
     team.Losses = 0;
 
@@ -119,7 +103,7 @@ public class TeamService(DataContext context, IMapper mapper) : ITeamService
 
     await context.SaveChangesAsync();
 
-    var response = mapper.Map<Team, TeamResponse>(team, opt => opt.Items["Players"] = new List<TeamPlayer>());
+    var response = mapper.Map<Team, TeamResponse>(team);
     return response;
   }
 }

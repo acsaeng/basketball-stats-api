@@ -1,6 +1,3 @@
-using BasketballStatsApi.Core.Dtos.Helpers;
-using BasketballStatsApi.Core.Entities;
-
 namespace BasketballStatsApi.Core.Dtos.Responses;
 
 public class TeamResponse
@@ -18,10 +15,10 @@ public class TeamResponse
   public string Location { get; set; }
 
   public string Stadium { get; set; }
+  
+  public string? HeadCoach { get; set; }
 
   public int Wins { get; set; }
 
   public int Losses { get; set; }
-
-  public ICollection<TeamPlayer> Players { get; set; }
 }

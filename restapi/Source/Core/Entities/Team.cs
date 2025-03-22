@@ -27,6 +27,9 @@ public class Team
   [MaxLength(50)]
   public string Stadium { get; set; }
 
+  [MaxLength(100)]
+  public string? HeadCoach { get; set; }
+
   public int Wins { get; set; }
 
   public int Losses { get; set; }

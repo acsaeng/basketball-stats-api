@@ -7,11 +7,11 @@ public interface ITeamService
 {
   Task<TeamResponse?> GetTeam(int teamId);
 
-  Task<TeamResponse> AddTeam(AddTeamRequest addTeamRequest);
+  Task<TeamResponse> CreateTeam(CreateTeamRequest createTeamRequest);
 
   Task<TeamResponse?> UpdateTeam(int teamId, UpdateTeamRequest updateTeamRequest);
 
-  Task<TeamResponse?> AddPlayerToTeam(int teamId, AddPlayerToTeamRequest addPlayersToTeamRequest);
+  Task<TeamResponse?> MovePlayerToTeam(int teamId, MovePlayerToTeam movePlayersToTeam);
 
   Task<TeamResponse?> DeactivateTeam(int teamId);
 }
