@@ -20,6 +20,21 @@ public class TeamService(DataContext context, IMapper mapper) : ITeamService
     var response = mapper.Map<Team, TeamResponse>(team);
     return response;
   }
+  
+  public async Task<ICollection<PlayerResponse>?> GetTeamRoster(int teamId)
+  {
+    var team = await context.Teams.FindAsync(teamId);
+
+    if (team is null)
+      return null;
+    
+    var players = await context.Players
+      .Where(player => player.TeamId == team.TeamId)
+      .ToListAsync();
+
+    var response = mapper.Map<ICollection<Player>, ICollection<PlayerResponse>>(players, opt => opt.Items["Team"] = team.Abbreviation);
+    return response;
+  }
 
   public async Task<TeamResponse> CreateTeam(CreateTeamRequest createTeamRequest)
   {
@@ -55,9 +70,9 @@ public class TeamService(DataContext context, IMapper mapper) : ITeamService
     return response;
   }
 
-  public async Task<TeamResponse?> MovePlayerToTeam(int teamId, MovePlayerToTeam movePlayersToTeam)
+  public async Task<ICollection<PlayerResponse>?> AddPlayerToTeam(int teamId, AddPlayerToTeamRequest addPlayersToTeamRequest)
   {
-    var request = mapper.Map<MovePlayerToTeam, Player>(movePlayersToTeam);
+    var request = mapper.Map<AddPlayerToTeamRequest, Player>(addPlayersToTeamRequest);
     var team = await context.Teams.FindAsync(teamId);
     var player = await context.Players.FindAsync(request.PlayerId);
 
@@ -73,8 +88,11 @@ public class TeamService(DataContext context, IMapper mapper) : ITeamService
     player.JerseyNumber = request.JerseyNumber;
     await context.SaveChangesAsync();
 
-    // Modify this to return a list of players
-    var response = mapper.Map<Team, TeamResponse>(team);
+    var players = await context.Players
+      .Where(playerDb => playerDb.TeamId == team.TeamId)
+      .ToListAsync();
+
+    var response = mapper.Map<ICollection<Player>, ICollection<PlayerResponse>>(players, opt => opt.Items["Team"] = team.Abbreviation);
     return response;
   }
 
@@ -92,7 +110,7 @@ public class TeamService(DataContext context, IMapper mapper) : ITeamService
 
     // Remove all players from team
     var players = await context.Players
-      .Where(e => e.TeamId == team.TeamId)
+      .Where(player => player.TeamId == team.TeamId)
       .ToListAsync();
     players.ForEach(player =>
     {
