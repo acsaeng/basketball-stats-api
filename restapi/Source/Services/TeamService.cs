@@ -70,9 +70,9 @@ public class TeamService(DataContext context, IMapper mapper) : ITeamService
     return response;
   }
 
-  public async Task<ICollection<PlayerResponse>?> AddPlayerToTeam(int teamId, AddPlayerToTeamRequest addPlayersToTeamRequest)
+  public async Task<ICollection<PlayerResponse>?> AddPlayerToRoster(int teamId, AddPlayerToRosterRequest addPlayersToRosterRequest)
   {
-    var request = mapper.Map<AddPlayerToTeamRequest, Player>(addPlayersToTeamRequest);
+    var request = mapper.Map<AddPlayerToRosterRequest, Player>(addPlayersToRosterRequest);
     var team = await context.Teams.FindAsync(teamId);
     var player = await context.Players.FindAsync(request.PlayerId);
 

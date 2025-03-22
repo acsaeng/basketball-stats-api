@@ -57,11 +57,11 @@ public class TeamController(ITeamService teamService) : ControllerBase
   }
 
   [HttpPost("add-player/{teamId}")]
-  public async Task<ActionResult<ICollection<PlayerResponse>?>> AddPlayerToTeam(int teamId, [FromBody] AddPlayerToTeamRequest addPlayerToTeamRequest)
+  public async Task<ActionResult<ICollection<PlayerResponse>?>> AddPlayerToRoster(int teamId, [FromBody] AddPlayerToRosterRequest addPlayerToRosterRequest)
   {
     try
     {
-      var playersResponse = await teamService.AddPlayerToTeam(teamId, addPlayerToTeamRequest);
+      var playersResponse = await teamService.AddPlayerToRoster(teamId, addPlayerToRosterRequest);
 
       if (playersResponse is null)
         return NotFound();

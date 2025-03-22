@@ -11,7 +11,7 @@ namespace BasketballStatsApi.Controllers;
 public class PlayerController(IPlayerService playerService) : ControllerBase
 {
   [HttpGet("{playerId}")]
-  public async Task<ActionResult<PlayerResponse>> GetPlayer(int playerId)
+  public async Task<ActionResult<PlayerResponse?>> GetPlayer(int playerId)
   {
     var playerResponse = await playerService.GetPlayer(playerId);
 
@@ -22,7 +22,7 @@ public class PlayerController(IPlayerService playerService) : ControllerBase
   }
 
   [HttpPost]
-  public async Task<ActionResult> CreatePlayer([FromBody] CreatePlayerRequest createPlayerRequest)
+  public async Task<ActionResult<PlayerResponse>> CreatePlayer([FromBody] CreatePlayerRequest createPlayerRequest)
   {
     var playerResponse = await playerService.CreatePlayer(createPlayerRequest);
     return CreatedAtAction(nameof(GetPlayer), new { playerId = playerResponse!.PlayerId }, playerResponse);
@@ -40,7 +40,7 @@ public class PlayerController(IPlayerService playerService) : ControllerBase
   }
 
   [HttpPost("injury/{playerId}")]
-  public async Task<ActionResult> UpdatePlayerInjury(int playerId, [FromBody] UpdatePlayerInjuryRequest updatePlayerInjuryRequest)
+  public async Task<ActionResult<PlayerResponse?>> UpdatePlayerInjury(int playerId, [FromBody] UpdatePlayerInjuryRequest updatePlayerInjuryRequest)
   {
     var player = await playerService.UpdatePlayerInjury(playerId, updatePlayerInjuryRequest);
 
@@ -51,7 +51,7 @@ public class PlayerController(IPlayerService playerService) : ControllerBase
   }
 
   [HttpPost("roster-status/{playerId}")]
-  public async Task<ActionResult> UpdatePlayerRosterStatus(int playerId, [FromBody] UpdatePlayerRosterStatusRequest updatePlayerRosterStatusRequest)
+  public async Task<ActionResult<PlayerResponse?>> UpdatePlayerRosterStatus(int playerId, [FromBody] UpdatePlayerRosterStatusRequest updatePlayerRosterStatusRequest)
   {
     var player = await playerService.UpdatePlayerRosterStatus(playerId, updatePlayerRosterStatusRequest);
 
