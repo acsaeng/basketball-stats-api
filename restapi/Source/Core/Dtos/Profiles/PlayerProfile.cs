@@ -27,6 +27,8 @@ public class PlayerProfile : Profile
 
     CreateMap<AddPlayerToRosterRequest, Player>();
 
+    CreateMap<Player, PlayerBasicResponse>();
+
     CreateMap<Player, PlayerResponse>()
       .ForMember(dest => dest.Team, opt => opt.MapFrom(src => src.Team!.Abbreviation));
   }

@@ -12,7 +12,10 @@ public class TeamService(DataContext context, IMapper mapper) : ITeamService
 {
   public async Task<TeamResponse?> GetTeam(int teamId)
   {
-    var team = await context.Teams.FindAsync(teamId);
+    var team = await context.Teams
+      .Where(t => t.TeamId == teamId)
+      .Include(t => t.Roster)
+      .SingleOrDefaultAsync();
 
     if (team is null)
       return null;
@@ -20,19 +23,20 @@ public class TeamService(DataContext context, IMapper mapper) : ITeamService
     var response = mapper.Map<Team, TeamResponse>(team);
     return response;
   }
-  
+
   public async Task<ICollection<PlayerResponse>?> GetTeamRoster(int teamId)
   {
     var team = await context.Teams.FindAsync(teamId);
 
     if (team is null)
       return null;
-    
+
     var players = await context.Players
-      .Where(player => player.TeamId == team.TeamId)
+      .Where(p => p.TeamId == team.TeamId)
+      .Include(p => p.Team)
       .ToListAsync();
 
-    var response = mapper.Map<ICollection<Player>, ICollection<PlayerResponse>>(players, opt => opt.Items["Team"] = team.Abbreviation);
+    var response = mapper.Map<ICollection<Player>, ICollection<PlayerResponse>>(players);
     return response;
   }
 
@@ -48,7 +52,10 @@ public class TeamService(DataContext context, IMapper mapper) : ITeamService
 
   public async Task<TeamResponse?> UpdateTeam(int teamId, UpdateTeamRequest updateTeamRequest)
   {
-    var team = await context.Teams.FindAsync(teamId);
+    var team = await context.Teams
+      .Where(t => t.TeamId == teamId)
+      .Include(t => t.Roster)
+      .SingleOrDefaultAsync();
     var request = mapper.Map<UpdateTeamRequest, Team>(updateTeamRequest);
 
     if (team is null)
@@ -70,10 +77,13 @@ public class TeamService(DataContext context, IMapper mapper) : ITeamService
     return response;
   }
 
-  public async Task<ICollection<PlayerResponse>?> AddPlayerToRoster(int teamId, AddPlayerToRosterRequest addPlayersToRosterRequest)
+  public async Task<TeamResponse?> AddPlayerToRoster(int teamId, AddPlayerToRosterRequest addPlayersToRosterRequest)
   {
     var request = mapper.Map<AddPlayerToRosterRequest, Player>(addPlayersToRosterRequest);
-    var team = await context.Teams.FindAsync(teamId);
+    var team = await context.Teams
+      .Where(t => t.TeamId == teamId)
+      .Include(t => t.Roster)
+      .SingleOrDefaultAsync();
     var player = await context.Players.FindAsync(request.PlayerId);
 
     if (team is null || player is null)
@@ -88,17 +98,16 @@ public class TeamService(DataContext context, IMapper mapper) : ITeamService
     player.JerseyNumber = request.JerseyNumber;
     await context.SaveChangesAsync();
 
-    var players = await context.Players
-      .Where(playerDb => playerDb.TeamId == team.TeamId)
-      .ToListAsync();
-
-    var response = mapper.Map<ICollection<Player>, ICollection<PlayerResponse>>(players, opt => opt.Items["Team"] = team.Abbreviation);
+    var response = mapper.Map<Team, TeamResponse>(team);
     return response;
   }
 
   public async Task<TeamResponse?> DeactivateTeam(int teamId)
   {
-    var team = await context.Teams.FindAsync(teamId);
+    var team = await context.Teams
+      .Where(t => t.TeamId == teamId)
+      .Include(t => t.Roster)
+      .SingleOrDefaultAsync();
 
     if (team is null)
       return null;

@@ -10,9 +10,9 @@ public class TeamProfile : Profile
   public TeamProfile()
   {
     CreateMap<CreateTeamRequest, Team>()
-      .ForMember(dest => dest.Status, opt => opt.MapFrom(x => "Active"))
-      .ForMember(dest => dest.Wins, opt => opt.MapFrom(x => 0))
-      .ForMember(dest => dest.Losses, opt => opt.MapFrom(x => 0));
+      .ForMember(dest => dest.Status, opt => opt.MapFrom(_ => "Active"))
+      .ForMember(dest => dest.Wins, opt => opt.MapFrom(_ => 0))
+      .ForMember(dest => dest.Losses, opt => opt.MapFrom(_ => 0));
 
     CreateMap<UpdateTeamRequest, Team>();
 

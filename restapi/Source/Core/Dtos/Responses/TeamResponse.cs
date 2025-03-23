@@ -15,8 +15,10 @@ public class TeamResponse
   public string Location { get; set; }
 
   public string Stadium { get; set; }
-  
+
   public string? HeadCoach { get; set; }
+
+  public ICollection<PlayerBasicResponse> Roster { get; set; }
 
   public int Wins { get; set; }
 
