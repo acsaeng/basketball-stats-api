@@ -30,6 +30,9 @@ public class Team
   [MaxLength(100)]
   public string? HeadCoach { get; set; }
 
+  // Collection navigation
+  public ICollection<Player> Roster { get; } = new List<Player>();
+
   public int Wins { get; set; }
 
   public int Losses { get; set; }

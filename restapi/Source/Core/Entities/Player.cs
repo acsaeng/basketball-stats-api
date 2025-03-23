@@ -31,7 +31,11 @@ public class Player
   [AllowedValues("Active", "Free agent", "Retired")]
   public string RosterStatus { get; set; }
 
+  // Foreign key
   public int? TeamId { get; set; }
+  
+  // Reference navigation
+  public Team? Team { get; set; }
 
   [Range(0, 99)]
   public int? JerseyNumber { get; set; }

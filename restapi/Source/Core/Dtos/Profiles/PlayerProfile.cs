@@ -10,16 +10,14 @@ public class PlayerProfile : Profile
   public PlayerProfile()
   {
     CreateMap<CreatePlayerRequest, Player>()
-      .ForMember(dest => dest.InjuryStatus, opt => opt.MapFrom<object>(_ => "Healthy"))
-      .ForMember(dest => dest.RosterStatus, opt => opt.MapFrom<object>(_ => "Free agent"))
-      .ForMember(dest => dest.TeamId, opt => opt.MapFrom<object>(_ => null))
-      .ForMember(dest => dest.JerseyNumber, opt => opt.MapFrom<object>(_ => null))
-      .ForMember(dest => dest.Points, opt => opt.MapFrom<object>(_ => 0.00000m))
-      .ForMember(dest => dest.Assists, opt => opt.MapFrom<object>(_ => 0.00000m))
-      .ForMember(dest => dest.Rebounds, opt => opt.MapFrom<object>(_ => 0.00000m))
-      .ForMember(dest => dest.Steals, opt => opt.MapFrom<object>(_ => 0.00000m))
-      .ForMember(dest => dest.Blocks, opt => opt.MapFrom<object>(_ => 0.00000m))
-      .ForMember(dest => dest.Turnovers, opt => opt.MapFrom<object>(_ => 0.00000m));
+      .ForMember(dest => dest.InjuryStatus, opt => opt.MapFrom(_ => "Healthy"))
+      .ForMember(dest => dest.RosterStatus, opt => opt.MapFrom(_ => "Free agent"))
+      .ForMember(dest => dest.Points, opt => opt.MapFrom(_ => 0.00000m))
+      .ForMember(dest => dest.Assists, opt => opt.MapFrom(_ => 0.00000m))
+      .ForMember(dest => dest.Rebounds, opt => opt.MapFrom(_ => 0.00000m))
+      .ForMember(dest => dest.Steals, opt => opt.MapFrom(_ => 0.00000m))
+      .ForMember(dest => dest.Blocks, opt => opt.MapFrom(_ => 0.00000m))
+      .ForMember(dest => dest.Turnovers, opt => opt.MapFrom(_ => 0.00000m));
 
     CreateMap<UpdatePlayerInfoRequest, Player>();
 
@@ -30,6 +28,6 @@ public class PlayerProfile : Profile
     CreateMap<AddPlayerToRosterRequest, Player>();
 
     CreateMap<Player, PlayerResponse>()
-      .ForMember(dest => dest.Team,opt => opt.MapFrom((_, _, _, context) => context.Items["Team"]));
+      .ForMember(dest => dest.Team, opt => opt.MapFrom(src => src.Team!.Abbreviation));
   }
 }
