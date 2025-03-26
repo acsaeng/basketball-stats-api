@@ -8,4 +8,16 @@ public class DataContext(DbContextOptions<DataContext> options) : DbContext(opti
   public DbSet<Player> Players { get; set; }
 
   public DbSet<Team> Teams { get; set; }
+
+  public DbSet<Game> Games { get; set; }
+
+  protected override void OnModelCreating(ModelBuilder modelBuilder)
+  {
+    modelBuilder.Entity<Team>()
+      .HasMany(t => t.Games)
+      .WithOne(g => g.AwayTeam)
+      .HasForeignKey(g => g.AwayTeamId)
+      .OnDelete(DeleteBehavior.NoAction)
+      .IsRequired();
+  }
 }

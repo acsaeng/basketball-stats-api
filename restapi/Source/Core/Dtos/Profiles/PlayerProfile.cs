@@ -12,6 +12,7 @@ public class PlayerProfile : Profile
     CreateMap<CreatePlayerRequest, Player>()
       .ForMember(dest => dest.InjuryStatus, opt => opt.MapFrom(_ => "Healthy"))
       .ForMember(dest => dest.RosterStatus, opt => opt.MapFrom(_ => "Free agent"))
+      .ForMember(dest => dest.GamesPlayed, opt => opt.MapFrom(_ => 0))
       .ForMember(dest => dest.Points, opt => opt.MapFrom(_ => 0.00000m))
       .ForMember(dest => dest.Assists, opt => opt.MapFrom(_ => 0.00000m))
       .ForMember(dest => dest.Rebounds, opt => opt.MapFrom(_ => 0.00000m))

@@ -24,6 +24,8 @@ public class PlayerResponse
 
   public int? JerseyNumber { get; set; }
 
+  public int GamesPlayed { get; set; }
+
   public decimal Points { get; set; }
 
   public decimal Assists { get; set; }
