@@ -16,9 +16,11 @@ public class CreatePlayerRequest
   public DateOnly Dob { get; set; }
 
   [Required]
+  [Range(0, int.MaxValue)]
   public int Height { get; set; }
 
   [Required]
+  [Range(0, int.MaxValue)]
   public int Weight { get; set; }
 
   [Required]
