@@ -5,7 +5,9 @@ namespace BasketballStatsApi.Core.Contracts;
 
 public interface IGameService
 {
-  Task<GameResponse?> GetGame(int gameId);
+  Task<GameResponse?> GetGameById(int gameId);
+  
+  Task<ICollection<GameResponse>> GetGamesByDate(GetGamesByDateRequest getGamesByDateRequest);
 
   Task<GameResponse?> CreateGame(CreateGameRequest createGameRequest);
 

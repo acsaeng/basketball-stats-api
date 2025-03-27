@@ -10,7 +10,7 @@ namespace BasketballStatsApi.Services;
 
 public class GameService(DataContext context, IMapper mapper) : IGameService
 {
-  public async Task<GameResponse?> GetGame(int gameId)
+  public async Task<GameResponse?> GetGameById(int gameId)
   {
     var game = await context.Games
       .Where(g => g.GameId == gameId)
@@ -23,6 +23,21 @@ public class GameService(DataContext context, IMapper mapper) : IGameService
       return null;
 
     var response = mapper.Map<Game, GameResponse>(game);
+    return response;
+  }
+  
+  public async Task<ICollection<GameResponse>> GetGamesByDate(GetGamesByDateRequest getGamesByDateRequest)
+  {
+    var request = mapper.Map<GetGamesByDateRequest, Game>(getGamesByDateRequest);
+    
+    var games = await context.Games
+      .Where(g => g.DateTime.Date == request.DateTime.Date)
+      .Include(g => g.HomeTeam)
+      .Include(g => g.AwayTeam)
+      .Include(g => g.PlayerStats)
+      .ToListAsync();
+
+    var response = mapper.Map<ICollection<Game>, ICollection<GameResponse>>(games);
     return response;
   }
 

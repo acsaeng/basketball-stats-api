@@ -10,14 +10,21 @@ namespace BasketballStatsApi.Controllers;
 public class GameController(IGameService gameService) : ControllerBase
 {
   [HttpGet("{gameId}")]
-  public async Task<ActionResult<GameResponse?>> GetGame(int gameId)
+  public async Task<ActionResult<GameResponse?>> GetGameById(int gameId)
   {
-    var gameResponse = await gameService.GetGame(gameId);
+    var gameResponse = await gameService.GetGameById(gameId);
 
     if (gameResponse is null)
       return NotFound();
 
     return Ok(gameResponse);
+  }
+  
+  [HttpGet]
+  public async Task<ActionResult<ICollection<GameResponse>>> GetGamesByDate([FromBody] GetGamesByDateRequest getGamesByDateRequest)
+  {
+    var gameResponses = await gameService.GetGamesByDate(getGamesByDateRequest);
+    return Ok(gameResponses);
   }
 
   [HttpPost]
@@ -30,7 +37,7 @@ public class GameController(IGameService gameService) : ControllerBase
       if (gameResponse is null)
         return NotFound();
 
-      return CreatedAtAction(nameof(GetGame), new { gameId = gameResponse!.GameId }, gameResponse);
+      return CreatedAtAction(nameof(GetGameById), new { gameId = gameResponse!.GameId }, gameResponse);
     }
     catch (InvalidOperationException)
     {
