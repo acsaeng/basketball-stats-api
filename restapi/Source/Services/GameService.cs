@@ -69,4 +69,22 @@ public class GameService(DataContext context, IMapper mapper) : IGameService
     var response = mapper.Map<Game, GameResponse>(game);
     return response;
   }
+  
+  public async Task<GameResponse?> UpdateGameStatus(int gameId, UpdateGameStatusRequest updateGameStatusRequest)
+  {
+    var game = await context.Games.FindAsync(gameId);
+    var request = mapper.Map<UpdateGameStatusRequest, Game>(updateGameStatusRequest);
+
+    if (game is null)
+      return null;
+
+    if (game.Status == "Final" || game.Status == "Cancelled")
+      throw new InvalidOperationException();
+    
+    game.Status = request.Status;
+    await context.SaveChangesAsync();
+
+    var response = mapper.Map<Game, GameResponse>(game);
+    return response;
+  }
 }

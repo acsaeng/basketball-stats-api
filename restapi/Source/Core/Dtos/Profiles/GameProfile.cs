@@ -13,6 +13,8 @@ public class GameProfile : Profile
       .ForMember(dest => dest.Status, opt => opt.MapFrom(_ => "Upcoming"));
 
     CreateMap<UpdateGameInfoRequest, Game>();
+    
+    CreateMap<UpdateGameStatusRequest, Game>();
 
     CreateMap<Game, GameResponse>()
       .ForMember(dest => dest.HomeTeam, opt => opt.MapFrom(src => src.HomeTeam.Abbreviation))

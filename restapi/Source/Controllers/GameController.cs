@@ -38,12 +38,30 @@ public class GameController(IGameService gameService) : ControllerBase
     }
   }
 
-  [HttpPost("update/{gameId}")]
+  [HttpPost("update-info/{gameId}")]
   public async Task<ActionResult<GameResponse?>> UpdateGameInfo(int gameId, [FromBody] UpdateGameInfoRequest updateGameInfoRequest)
   {
     try
     {
       var gameResponse = await gameService.UpdateGameInfo(gameId, updateGameInfoRequest);
+
+      if (gameResponse is null)
+        return NotFound();
+
+      return Ok(gameResponse);
+    }
+    catch (InvalidOperationException)
+    {
+      return BadRequest();
+    }
+  }
+  
+  [HttpPost("update-status/{gameId}")]
+  public async Task<ActionResult<GameResponse?>> UpdateGameStatus(int gameId, [FromBody] UpdateGameStatusRequest updateGameStatusRequest)
+  {
+    try
+    {
+      var gameResponse = await gameService.UpdateGameStatus(gameId, updateGameStatusRequest);
 
       if (gameResponse is null)
         return NotFound();

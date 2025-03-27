@@ -10,7 +10,7 @@ public class Game
   [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
   public int GameId { get; set; }
 
-  [AllowedValues("Upcoming", "In progress", "Final", "Postponed")]
+  [AllowedValues("Upcoming", "In progress", "Final", "Postponed", "Cancelled")]
   public String Status { get; set; }
 
   public DateTime DateTime { get; set; }
