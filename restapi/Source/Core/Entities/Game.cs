@@ -10,10 +10,10 @@ public class Game
   [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
   public int GameId { get; set; }
 
-  public DateTime DateTime { get; set; }
-
   [AllowedValues("Upcoming", "In progress", "Final", "Postponed")]
   public String Status { get; set; }
+
+  public DateTime DateTime { get; set; }
 
   // Foreign key
   public int HomeTeamId { get; set; }

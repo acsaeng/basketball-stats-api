@@ -8,4 +8,6 @@ public interface IGameService
   Task<GameResponse?> GetGame(int gameId);
 
   Task<GameResponse?> CreateGame(CreateGameRequest createGameRequest);
+
+  Task<GameResponse?> UpdateGameInfo(int gameId, UpdateGameInfoRequest updateGameInfoRequest);
 }

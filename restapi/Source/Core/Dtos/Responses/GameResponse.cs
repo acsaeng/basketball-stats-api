@@ -6,9 +6,9 @@ public class GameResponse
 {
   public int GameId { get; set; }
 
-  public DateTime DateTime { get; set; }
-
   public String Status { get; set; }
+
+  public DateTime DateTime { get; set; }
 
   public string HomeTeam { get; set; }
 

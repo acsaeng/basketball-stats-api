@@ -21,7 +21,7 @@ public class GameController(IGameService gameService) : ControllerBase
   }
 
   [HttpPost]
-  public async Task<ActionResult<GameResponse>> CreateGame([FromBody] CreateGameRequest createGameRequest)
+  public async Task<ActionResult<GameResponse?>> CreateGame([FromBody] CreateGameRequest createGameRequest)
   {
     try
     {
@@ -31,6 +31,24 @@ public class GameController(IGameService gameService) : ControllerBase
         return NotFound();
 
       return CreatedAtAction(nameof(GetGame), new { gameId = gameResponse!.GameId }, gameResponse);
+    }
+    catch (InvalidOperationException)
+    {
+      return BadRequest();
+    }
+  }
+
+  [HttpPost("update/{gameId}")]
+  public async Task<ActionResult<GameResponse?>> UpdateGameInfo(int gameId, [FromBody] UpdateGameInfoRequest updateGameInfoRequest)
+  {
+    try
+    {
+      var gameResponse = await gameService.UpdateGameInfo(gameId, updateGameInfoRequest);
+
+      if (gameResponse is null)
+        return NotFound();
+
+      return Ok(gameResponse);
     }
     catch (InvalidOperationException)
     {

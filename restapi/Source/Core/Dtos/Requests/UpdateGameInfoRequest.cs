@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace BasketballStatsApi.Core.Dtos.Requests;
 
-public class CreateGameRequest
+public class UpdateGameInfoRequest
 {
   [Required]
   public DateTime DateTime { get; set; }
