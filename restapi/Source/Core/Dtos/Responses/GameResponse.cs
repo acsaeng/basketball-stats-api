@@ -13,10 +13,10 @@ public class GameResponse
   public string HomeTeam { get; set; }
 
   public string AwayTeam { get; set; }
-
+  
   public int? PointsHome { get; set; }
 
   public int? PointsAway { get; set; }
 
-  public ICollection<Player> PlayerStats { get; } = new List<Player>();
+  public ICollection<Player> Players { get; } = new List<Player>();
 }

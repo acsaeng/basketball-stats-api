@@ -1,6 +1,5 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using Microsoft.EntityFrameworkCore;
 
 namespace BasketballStatsApi.Core.Entities;
 
@@ -32,7 +31,7 @@ public class Game
 
   [Range(0, int.MaxValue)]
   public int? PointsAway { get; set; }
-
+  
   // Collection navigation
-  public ICollection<Player> PlayerStats { get; } = new List<Player>();
+  public ICollection<PlayerGameStats> PlayerStats { get; } = new List<PlayerGameStats>();
 }

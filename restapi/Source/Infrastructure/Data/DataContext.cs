@@ -16,7 +16,6 @@ public class DataContext(DbContextOptions<DataContext> options) : DbContext(opti
     modelBuilder.Entity<Team>()
       .HasMany(t => t.Games)
       .WithOne(g => g.AwayTeam)
-      .HasForeignKey(g => g.AwayTeamId)
       .OnDelete(DeleteBehavior.NoAction)
       .IsRequired();
   }

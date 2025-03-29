@@ -62,7 +62,7 @@ public class GameController(IGameService gameService) : ControllerBase
       return BadRequest();
     }
   }
-  
+
   [HttpPost("update-status/{gameId}")]
   public async Task<ActionResult<GameResponse?>> UpdateGameStatus(int gameId, [FromBody] UpdateGameStatusRequest updateGameStatusRequest)
   {
@@ -78,6 +78,24 @@ public class GameController(IGameService gameService) : ControllerBase
     catch (InvalidOperationException)
     {
       return BadRequest();
+    }
+  }
+
+  [HttpPost("finalize/{gameId}")]
+  public async Task<ActionResult<GameResponse?>> FinalizeGame(int gameId, [FromBody] FinalizeGameRequest finalizeGameRequest)
+  {
+    try
+    {
+      var gameResponse = await gameService.FinalizeGame(gameId, finalizeGameRequest);
+
+      if (gameResponse is null)
+        return NotFound();
+
+      return Ok(gameResponse);
+    }
+    catch (InvalidOperationException e)
+    {
+      return BadRequest(e.Message);
     }
   }
 }

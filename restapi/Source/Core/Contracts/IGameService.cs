@@ -14,4 +14,6 @@ public interface IGameService
   Task<GameResponse?> UpdateGameInfo(int gameId, UpdateGameInfoRequest updateGameInfoRequest);
   
   Task<GameResponse?> UpdateGameStatus(int gameId, UpdateGameStatusRequest updateGameStatusRequest);
+  
+  Task<GameResponse?> FinalizeGame(int gameId, FinalizeGameRequest finalizeGameRequest);
 }
