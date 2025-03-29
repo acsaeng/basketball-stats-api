@@ -19,7 +19,7 @@ public class GameController(IGameService gameService) : ControllerBase
 
     return Ok(gameResponse);
   }
-  
+
   [HttpGet]
   public async Task<ActionResult<ICollection<GameResponse>>> GetGamesByDate([FromBody] GetGamesByDateRequest getGamesByDateRequest)
   {
@@ -93,9 +93,9 @@ public class GameController(IGameService gameService) : ControllerBase
 
       return Ok(gameResponse);
     }
-    catch (InvalidOperationException e)
+    catch (Exception e) when (e is InvalidOperationException or NullReferenceException)
     {
-      return BadRequest(e.Message);
+      return BadRequest();
     }
   }
 }

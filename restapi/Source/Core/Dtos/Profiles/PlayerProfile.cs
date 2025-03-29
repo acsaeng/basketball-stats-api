@@ -29,17 +29,22 @@ public class PlayerProfile : Profile
 
     CreateMap<AddPlayerToRosterRequest, Player>();
 
-    CreateMap<FinalizeGamePlayerStats, PlayerGameStats>()
-      .ForMember(dest => dest.Player, opt => opt.MapFrom((_, _, _, context) => context.Items["Player"]))
-      .ForMember(dest => dest.Game, opt => opt.MapFrom((_, _, _, context) => context.Items["Game"]));
+    CreateMap<FinalizeGameRequestPlayerStats, PlayerGame>()
+      .ForMember(dest => dest.GameId, opt => opt.MapFrom((_, _, _, context) => context.Items["GameId"]));
 
     CreateMap<Player, PlayerModel>();
-    
+
     CreateMap<PlayerModel, Player>();
 
     CreateMap<Player, PlayerBasicResponse>();
 
     CreateMap<Player, PlayerResponse>()
       .ForMember(dest => dest.Team, opt => opt.MapFrom(src => src.Team!.Abbreviation));
+
+    CreateMap<PlayerGame, GameResponsePlayerStats>()
+      .ForMember(dest => dest.FirstName, opt => opt.MapFrom(src => src.Player.FirstName))
+      .ForMember(dest => dest.LastName, opt => opt.MapFrom(src => src.Player.LastName))
+      .ForMember(dest => dest.Position, opt => opt.MapFrom(src => src.Player.Position))
+      .ForMember(dest => dest.JerseyNumber, opt => opt.MapFrom(src => src.Player.JerseyNumber));
   }
 }

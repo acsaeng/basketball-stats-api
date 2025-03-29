@@ -11,16 +11,18 @@ public class GameProfile : Profile
   {
     CreateMap<GetGamesByDateRequest, Game>()
       .ForMember(dest => dest.DateTime, opt => opt.MapFrom(src => src.Date.ToDateTime(new TimeOnly())));
-    
+
     CreateMap<CreateGameRequest, Game>()
       .ForMember(dest => dest.Status, opt => opt.MapFrom(_ => "Upcoming"));
 
     CreateMap<UpdateGameInfoRequest, Game>();
-    
+
     CreateMap<UpdateGameStatusRequest, Game>();
 
     CreateMap<Game, GameResponse>()
       .ForMember(dest => dest.HomeTeam, opt => opt.MapFrom(src => src.HomeTeam.Abbreviation))
-      .ForMember(dest => dest.AwayTeam, opt => opt.MapFrom(src => src.AwayTeam.Abbreviation));
+      .ForMember(dest => dest.AwayTeam, opt => opt.MapFrom(src => src.AwayTeam.Abbreviation))
+      .ForMember(dest => dest.HomeTeamPlayerStats, opt => opt.MapFrom(src => src.PlayerStats.Where(ps => ps.Player.TeamId == src.HomeTeam.TeamId)))
+      .ForMember(dest => dest.AwayTeamPlayerStats, opt => opt.MapFrom(src => src.PlayerStats.Where(ps => ps.Player.TeamId == src.AwayTeam.TeamId)));
   }
 }

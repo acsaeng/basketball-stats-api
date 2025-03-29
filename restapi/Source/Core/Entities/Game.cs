@@ -26,12 +26,14 @@ public class Game
   // Reference navigation
   public Team AwayTeam { get; set; }
 
-  [Range(0, int.MaxValue)]
-  public int? PointsHome { get; set; }
+  public bool? DidHomeTeamWin { get; set; }
 
   [Range(0, int.MaxValue)]
-  public int? PointsAway { get; set; }
-  
+  public int? HomeTeamPoints { get; set; }
+
+  [Range(0, int.MaxValue)]
+  public int? AwayTeamPoints { get; set; }
+
   // Collection navigation
-  public ICollection<PlayerGameStats> PlayerStats { get; } = new List<PlayerGameStats>();
+  public ICollection<PlayerGame> PlayerStats { get; } = new List<PlayerGame>();
 }

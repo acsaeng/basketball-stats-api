@@ -67,7 +67,7 @@ public class Player
   [Range(0, int.MaxValue)]
   [Precision(7, 5)]
   public decimal Turnovers { get; set; }
-  
+
   // Collection navigation
-  public ICollection<PlayerGameStats> GameStats { get; } = new List<PlayerGameStats>();
+  public ICollection<PlayerGame> GameStats { get; } = new List<PlayerGame>();
 }

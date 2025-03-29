@@ -6,24 +6,24 @@ public class FinalizeGameRequest
 {
   [Required]
   [Range(0, int.MaxValue)]
-  public int PointsHome { get; set; }
-  
+  public int HomeTeamPoints { get; set; }
+
   [Required]
   [Range(0, int.MaxValue)]
-  public int PointsAway { get; set; }
-  
+  public int AwayTeamPoints { get; set; }
+
   [Required]
-  public ICollection<FinalizeGamePlayerStats> HomeTeamPlayerStats { get; set; } = new List<FinalizeGamePlayerStats>();
-  
+  public ICollection<FinalizeGameRequestPlayerStats> HomeTeamPlayerStats { get; set; } = new List<FinalizeGameRequestPlayerStats>();
+
   [Required]
-  public ICollection<FinalizeGamePlayerStats> AwayTeamPlayerStats { get; set; } = new List<FinalizeGamePlayerStats>();
+  public ICollection<FinalizeGameRequestPlayerStats> AwayTeamPlayerStats { get; set; } = new List<FinalizeGameRequestPlayerStats>();
 }
 
-public class FinalizeGamePlayerStats
+public class FinalizeGameRequestPlayerStats
 {
   [Required]
   public int PlayerId { get; set; }
-  
+
   [Required]
   [Range(0, int.MaxValue)]
   public int Points { get; set; }

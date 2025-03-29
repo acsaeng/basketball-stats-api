@@ -116,38 +116,40 @@ public class GameService(DataContext context, IMapper mapper) : IGameService
 
     if (game is null)
       return null;
-    
+
     if (game.Status is not "In progress")
       throw new InvalidOperationException();
-    
-    var pointsHome = 0;
-    var pointsAway = 0;
-    
-    foreach (var stats in request.HomeTeamPlayerStats.Concat(request.AwayTeamPlayerStats))
+
+    var homeTeamPoints = 0;
+    var awayTeamPoints = 0;
+
+    foreach (var playerStats in request.HomeTeamPlayerStats.Concat(request.AwayTeamPlayerStats))
     {
       var player = await context.Players
-        .Where(p => p.PlayerId == stats.PlayerId)
+        .Where(p => p.PlayerId == playerStats.PlayerId)
         .Include(p => p.Team)
         .Include(p => p.GameStats)
         .SingleOrDefaultAsync();
 
       if (player is null)
+        throw new NullReferenceException();
+
+      if (player.TeamId != game.HomeTeamId && player.TeamId != game.AwayTeamId)
         throw new InvalidOperationException();
-      
+
       // Update player games stats
-      var playerGameStats = mapper.Map<FinalizeGamePlayerStats, PlayerGameStats>(
-        stats,
+      var playerGameStats = mapper.Map<FinalizeGameRequestPlayerStats, PlayerGame>(
+        playerStats,
         opt =>
         {
-          opt.Items["Player"] = player;
-          opt.Items["Game"] = game;
+          opt.Items["GameId"] = game.GameId;
         });
       player.GameStats.Add(playerGameStats);
-      
+
       // Update individual player stats
       var playerModel = mapper.Map<Player, PlayerModel>(player);
       playerModel.AddGamesStats(playerGameStats);
-      
+
       player.GamesPlayed = playerModel.GamesPlayed;
       player.Points = playerModel.Points;
       player.Assists = playerModel.Assists;
@@ -155,43 +157,45 @@ public class GameService(DataContext context, IMapper mapper) : IGameService
       player.Steals = playerModel.Steals;
       player.Blocks = playerModel.Blocks;
       player.Turnovers = playerModel.Turnovers;
-      
-      if (player.Team == game.HomeTeam)
-        pointsHome += playerGameStats.Points;
+
+      if (player.TeamId == game.HomeTeamId)
+        homeTeamPoints += playerGameStats.Points;
       else
-        pointsAway += playerGameStats.Points;
+        awayTeamPoints += playerGameStats.Points;
     }
-    
-    if (request.PointsHome != pointsHome || request.PointsAway != pointsAway)
-      throw new InvalidOperationException();
-    
+
     // Update team stats
+    if (request.HomeTeamPoints != homeTeamPoints || request.AwayTeamPoints != awayTeamPoints || homeTeamPoints == awayTeamPoints)
+      throw new InvalidOperationException();
+
     var homeTeam = await context.Teams
-      .Where(t => t == game.HomeTeam)
+      .Where(t => t.TeamId == game.HomeTeamId)
       .Include(t => t.Roster)
       .Include(t => t.Games)
       .SingleOrDefaultAsync();
     var awayTeam = await context.Teams
-      .Where(t => t == game.AwayTeam)
+      .Where(t => t.TeamId == game.AwayTeamId)
       .Include(t => t.Roster)
       .Include(t => t.Games)
       .SingleOrDefaultAsync();
 
-    if (game.PointsHome > game.PointsAway)
+    if (game.HomeTeamPoints > game.AwayTeamPoints)
     {
       homeTeam.Wins += 1;
       awayTeam.Losses += 1;
+      game.DidHomeTeamWin = true;
     }
     else
     {
       homeTeam.Losses += 1;
       awayTeam.Wins += 1;
+      game.DidHomeTeamWin = false;
     }
-    
+
     // Update game stats
     game.Status = "Final";
-    game.PointsHome = request.PointsHome;
-    game.PointsAway = request.PointsAway;
+    game.HomeTeamPoints = request.HomeTeamPoints;
+    game.AwayTeamPoints = request.AwayTeamPoints;
     await context.SaveChangesAsync();
 
     var response = mapper.Map<Game, GameResponse>(game);
