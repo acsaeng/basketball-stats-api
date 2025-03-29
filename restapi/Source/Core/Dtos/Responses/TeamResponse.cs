@@ -18,9 +18,30 @@ public class TeamResponse
 
   public string? HeadCoach { get; set; }
 
-  public ICollection<PlayerBasicResponse> Roster { get; set; }
+  public ICollection<TeamResponsePlayerInfo> Roster { get; set; }
 
   public int Wins { get; set; }
 
   public int Losses { get; set; }
+}
+
+public class TeamResponsePlayerInfo
+{
+  public int PlayerId { get; set; }
+
+  public string FirstName { get; set; }
+
+  public string LastName { get; set; }
+
+  public DateOnly Dob { get; set; }
+
+  public int Height { get; set; }
+
+  public int Weight { get; set; }
+
+  public string Position { get; set; }
+
+  public string? InjuryStatus { get; set; }
+
+  public int? JerseyNumber { get; set; }
 }

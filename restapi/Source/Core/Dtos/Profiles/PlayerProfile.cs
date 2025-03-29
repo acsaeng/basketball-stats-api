@@ -36,10 +36,10 @@ public class PlayerProfile : Profile
 
     CreateMap<PlayerModel, Player>();
 
-    CreateMap<Player, PlayerBasicResponse>();
-
     CreateMap<Player, PlayerResponse>()
       .ForMember(dest => dest.Team, opt => opt.MapFrom(src => src.Team!.Abbreviation));
+
+    CreateMap<Player, TeamResponsePlayerInfo>();
 
     CreateMap<PlayerGame, GameResponsePlayerStats>()
       .ForMember(dest => dest.FirstName, opt => opt.MapFrom(src => src.Player.FirstName))
