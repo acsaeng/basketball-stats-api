@@ -8,11 +8,13 @@ public interface IPlayerService
 {
   Task<PlayerResponse?> GetPlayer(int playerId);
 
-  Task<PlayerResponse> CreatePlayer(CreatePlayerRequest createPlayerRequest);
+  Task<ICollection<PlayerResponse>> GetLeagueLeaders(string statType);
 
-  Task<PlayerResponse?> UpdatePlayerInfo(int playerId, UpdatePlayerInfoRequest updatePlayerInfoRequest);
+  Task<PlayerResponse> CreatePlayer(CreatePlayerRequest request);
 
-  Task<PlayerResponse?> UpdatePlayerInjury(int playerId, UpdatePlayerInjuryRequest updatePlayerInjuryRequest);
+  Task<PlayerResponse?> UpdatePlayerInfo(int playerId, UpdatePlayerInfoRequest request);
 
-  Task<PlayerResponse?> UpdatePlayerRosterStatus(int playerId, UpdatePlayerRosterStatusRequest updatePlayerRosterStatusRequest);
+  Task<PlayerResponse?> UpdatePlayerInjury(int playerId, UpdatePlayerInjuryRequest request);
+
+  Task<PlayerResponse?> UpdatePlayerRosterStatus(int playerId, UpdatePlayerRosterStatusRequest request);
 }
