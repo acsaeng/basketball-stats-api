@@ -26,11 +26,11 @@ public class GameService(DataContext context, IMapper mapper) : IGameService
     var response = mapper.Map<Game, GameResponse>(game);
     return response;
   }
-  
+
   public async Task<ICollection<GameResponse>> GetGamesByDate(GetGamesByDateRequest request)
   {
     var gameDate = mapper.Map<GetGamesByDateRequest, Game>(request);
-    
+
     var games = await context.Games
       .Where(g => g.DateTime.Date == gameDate.DateTime.Date)
       .Include(g => g.HomeTeam)
@@ -73,14 +73,14 @@ public class GameService(DataContext context, IMapper mapper) : IGameService
 
     if (updatedGame.DateTime.Date < DateTime.Today)
       throw new ArgumentOutOfRangeException();
-    
+
     if (game.Status != "Upcoming" ||
         homeTeam is null ||
         awayTeam is null ||
         homeTeam.Status == "Defunct" ||
         awayTeam.Status == "Defunct")
       throw new InvalidOperationException();
-    
+
     game.DateTime = updatedGame.DateTime;
     game.HomeTeamId = updatedGame.HomeTeamId;
     game.AwayTeamId = updatedGame.AwayTeamId;
@@ -89,7 +89,7 @@ public class GameService(DataContext context, IMapper mapper) : IGameService
     var response = mapper.Map<Game, GameResponse>(game);
     return response;
   }
-  
+
   public async Task<GameResponse?> UpdateGameStatus(int gameId, UpdateGameStatusRequest request)
   {
     var game = await context.Games.FindAsync(gameId);
@@ -100,7 +100,7 @@ public class GameService(DataContext context, IMapper mapper) : IGameService
 
     if (game.Status is "Final" or "Cancelled")
       throw new InvalidOperationException();
-    
+
     game.Status = updatedGame.Status;
     await context.SaveChangesAsync();
 
@@ -179,7 +179,7 @@ public class GameService(DataContext context, IMapper mapper) : IGameService
       .Include(t => t.Roster)
       .Include(t => t.Games)
       .SingleOrDefaultAsync();
-    
+
     if (homeTeam is null || awayTeam is null)
       throw new NullReferenceException();
 
@@ -195,6 +195,9 @@ public class GameService(DataContext context, IMapper mapper) : IGameService
       awayTeam.Wins += 1;
       game.DidHomeTeamWin = false;
     }
+
+    homeTeam.WinPercentage = homeTeam.Wins / (homeTeam.Wins + homeTeam.Losses);
+    awayTeam.WinPercentage = awayTeam.Wins / (awayTeam.Wins + awayTeam.Losses);
 
     // Update game stats
     game.Status = "Final";

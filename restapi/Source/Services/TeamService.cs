@@ -24,7 +24,7 @@ public class TeamService(DataContext context, IMapper mapper) : ITeamService
     return response;
   }
 
-  public async Task<ICollection<PlayerResponse>?> GetTeamRoster(int teamId)
+  public async Task<ICollection<PlayerResponse>?> GetTeamRosterStats(int teamId)
   {
     var team = await context.Teams.FindAsync(teamId);
 
@@ -38,6 +38,14 @@ public class TeamService(DataContext context, IMapper mapper) : ITeamService
 
     var response = mapper.Map<ICollection<Player>, ICollection<PlayerResponse>>(players);
     return response;
+  }
+
+  public async Task<ICollection<TeamResponse>> GetTeamStandings()
+  {
+    var teams = await context.Teams
+      .OrderByDescending(t => t.WinPercentage)
+      .ToListAsync();
+    return mapper.Map<ICollection<Team>, ICollection<TeamResponse>>(teams);
   }
 
   public async Task<TeamResponse> CreateTeam(CreateTeamRequest request)
@@ -56,7 +64,7 @@ public class TeamService(DataContext context, IMapper mapper) : ITeamService
       .Where(t => t.TeamId == teamId)
       .Include(t => t.Roster)
       .SingleOrDefaultAsync();
-    
+
     if (team is null)
       return null;
 
@@ -115,12 +123,12 @@ public class TeamService(DataContext context, IMapper mapper) : ITeamService
     team.HeadCoach = null;
     team.Wins = 0;
     team.Losses = 0;
-    
+
     // Cancel all team games
     var games = await context.Games
       .Where(g => g.Status == "Upcoming" && (g.HomeTeamId == team.TeamId || g.AwayTeamId == team.TeamId))
       .ToListAsync();
-    
+
     foreach (var game in games)
       game.Status = "Cancelled";
 

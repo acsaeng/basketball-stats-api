@@ -42,6 +42,7 @@ public class Player
   [Range(0, 99)]
   public int? JerseyNumber { get; set; }
 
+  [Range(0, int.MaxValue)]
   public int GamesPlayed { get; set; }
 
   [Range(0, int.MaxValue)]

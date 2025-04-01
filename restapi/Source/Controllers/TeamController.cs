@@ -12,43 +12,50 @@ public class TeamController(ITeamService teamService) : ControllerBase
   [HttpGet("{teamId}")]
   public async Task<ActionResult<TeamResponse?>> GetTeam(int teamId)
   {
-    var teamResponse = await teamService.GetTeam(teamId);
+    var response = await teamService.GetTeam(teamId);
 
-    if (teamResponse is null)
+    if (response is null)
       return NotFound();
 
-    return Ok(teamResponse);
+    return Ok(response);
   }
-  
+
   [HttpGet("players/{teamId}")]
-  public async Task<ActionResult<ICollection<PlayerResponse>?>> GetTeamRoster(int teamId)
+  public async Task<ActionResult<ICollection<PlayerResponse>?>> GetTeamRosterStats(int teamId)
   {
-    var playersResponse = await teamService.GetTeamRoster(teamId);
-    
-    if (playersResponse is null)
+    var response = await teamService.GetTeamRosterStats(teamId);
+
+    if (response is null)
       return NotFound();
 
-    return Ok(playersResponse);
+    return Ok(response);
   }
-  
-  [HttpPost]
-  public async Task<ActionResult<TeamResponse>> CreateTeam([FromBody] CreateTeamRequest createTeamRequest)
+
+  [HttpGet("standings")]
+  public async Task<ActionResult<ICollection<TeamResponse>>> GetTeamStandings()
   {
-    var teamResponse = await teamService.CreateTeam(createTeamRequest);
-    return CreatedAtAction(nameof(GetTeam), new { teamId = teamResponse!.TeamId }, teamResponse);
+    var response = await teamService.GetTeamStandings();
+    return Ok(response);
+  }
+
+  [HttpPost]
+  public async Task<ActionResult<TeamResponse>> CreateTeam([FromBody] CreateTeamRequest request)
+  {
+    var response = await teamService.CreateTeam(request);
+    return CreatedAtAction(nameof(GetTeam), new { teamId = response!.TeamId }, response);
   }
 
   [HttpPost("update/{teamId}")]
-  public async Task<ActionResult<TeamResponse?>> UpdateTeam(int teamId, [FromBody] UpdateTeamRequest updateTeamRequest)
+  public async Task<ActionResult<TeamResponse?>> UpdateTeam(int teamId, [FromBody] UpdateTeamRequest request)
   {
     try
     {
-      var teamResponse = await teamService.UpdateTeam(teamId, updateTeamRequest);
+      var response = await teamService.UpdateTeam(teamId, request);
 
-      if (teamResponse is null)
+      if (response is null)
         return NotFound();
-      
-      return Ok(teamResponse);
+
+      return Ok(response);
     }
     catch (InvalidOperationException)
     {
@@ -57,16 +64,16 @@ public class TeamController(ITeamService teamService) : ControllerBase
   }
 
   [HttpPost("add-player/{teamId}")]
-  public async Task<ActionResult<ICollection<PlayerResponse>?>> AddPlayerToRoster(int teamId, [FromBody] AddPlayerToRosterRequest addPlayerToRosterRequest)
+  public async Task<ActionResult<ICollection<PlayerResponse>?>> AddPlayerToRoster(int teamId, [FromBody] AddPlayerToRosterRequest request)
   {
     try
     {
-      var playersResponse = await teamService.AddPlayerToRoster(teamId, addPlayerToRosterRequest);
+      var response = await teamService.AddPlayerToRoster(teamId, request);
 
-      if (playersResponse is null)
+      if (response is null)
         return NotFound();
 
-      return Ok(playersResponse);
+      return Ok(response);
     }
     catch (InvalidOperationException)
     {
@@ -77,11 +84,11 @@ public class TeamController(ITeamService teamService) : ControllerBase
   [HttpPost("deactivate/{teamId}")]
   public async Task<ActionResult<TeamResponse?>> DeactivateTeam(int teamId)
   {
-    var teamResponse = await teamService.DeactivateTeam(teamId);
+    var response = await teamService.DeactivateTeam(teamId);
 
-    if (teamResponse is null)
+    if (response is null)
       return NotFound();
 
-    return Ok(teamResponse);
+    return Ok(response);
   }
 }

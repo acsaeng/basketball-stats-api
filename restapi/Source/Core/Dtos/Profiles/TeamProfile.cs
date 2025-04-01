@@ -16,6 +16,7 @@ public class TeamProfile : Profile
 
     CreateMap<UpdateTeamRequest, Team>();
 
-    CreateMap<Team, TeamResponse>();
+    CreateMap<Team, TeamResponse>()
+      .ForMember(dest => dest.GamesPlayed, opt => opt.MapFrom(src => src.Wins + src.Losses));
   }
 }

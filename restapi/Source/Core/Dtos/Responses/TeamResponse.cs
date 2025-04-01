@@ -20,9 +20,13 @@ public class TeamResponse
 
   public ICollection<TeamResponsePlayerInfo> Roster { get; set; }
 
+  public int GamesPlayed { get; set; }
+
   public int Wins { get; set; }
 
   public int Losses { get; set; }
+
+  public decimal WinPercentage { get; set; }
 }
 
 public class TeamResponsePlayerInfo
