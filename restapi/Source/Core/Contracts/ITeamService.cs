@@ -10,11 +10,11 @@ public interface ITeamService
 
   Task<ICollection<PlayerResponse>?> GetTeamRoster(int teamId);
 
-  Task<TeamResponse> CreateTeam(CreateTeamRequest createTeamRequest);
+  Task<TeamResponse> CreateTeam(CreateTeamRequest request);
 
-  Task<TeamResponse?> UpdateTeam(int teamId, UpdateTeamRequest updateTeamRequest);
+  Task<TeamResponse?> UpdateTeam(int teamId, UpdateTeamRequest request);
 
-  Task<TeamResponse?> AddPlayerToRoster(int teamId, AddPlayerToRosterRequest addPlayersToRosterRequest);
+  Task<TeamResponse?> AddPlayerToRoster(int teamId, AddPlayerToRosterRequest request);
 
   Task<TeamResponse?> DeactivateTeam(int teamId);
 }

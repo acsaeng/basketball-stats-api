@@ -57,7 +57,7 @@ public class GameController(IGameService gameService) : ControllerBase
 
       return Ok(gameResponse);
     }
-    catch (InvalidOperationException)
+    catch (Exception e) when (e is ArgumentOutOfRangeException or InvalidOperationException)
     {
       return BadRequest();
     }

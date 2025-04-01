@@ -27,12 +27,12 @@ public class GameService(DataContext context, IMapper mapper) : IGameService
     return response;
   }
   
-  public async Task<ICollection<GameResponse>> GetGamesByDate(GetGamesByDateRequest getGamesByDateRequest)
+  public async Task<ICollection<GameResponse>> GetGamesByDate(GetGamesByDateRequest request)
   {
-    var request = mapper.Map<GetGamesByDateRequest, Game>(getGamesByDateRequest);
+    var gameDate = mapper.Map<GetGamesByDateRequest, Game>(request);
     
     var games = await context.Games
-      .Where(g => g.DateTime.Date == request.DateTime.Date)
+      .Where(g => g.DateTime.Date == gameDate.DateTime.Date)
       .Include(g => g.HomeTeam)
       .Include(g => g.AwayTeam)
       .Include(g => g.PlayerStats)
@@ -42,9 +42,9 @@ public class GameService(DataContext context, IMapper mapper) : IGameService
     return response;
   }
 
-  public async Task<GameResponse?> CreateGame(CreateGameRequest createGameRequest)
+  public async Task<GameResponse?> CreateGame(CreateGameRequest request)
   {
-    var request = mapper.Map<CreateGameRequest, Game>(createGameRequest);
+    var game = mapper.Map<CreateGameRequest, Game>(request);
     var homeTeam = await context.Teams.FindAsync(request.HomeTeamId);
     var awayTeam = await context.Teams.FindAsync(request.AwayTeamId);
 
@@ -54,43 +54,46 @@ public class GameService(DataContext context, IMapper mapper) : IGameService
     if (request.DateTime.Date < DateTime.Today || homeTeam.Status == "Defunct" || awayTeam.Status == "Defunct")
       throw new InvalidOperationException();
 
-    context.Games.Add(request);
+    context.Games.Add(game);
     await context.SaveChangesAsync();
 
-    var response = mapper.Map<Game, GameResponse>(request);
+    var response = mapper.Map<Game, GameResponse>(game);
     return response;
   }
 
-  public async Task<GameResponse?> UpdateGameInfo(int gameId, UpdateGameInfoRequest updateGameInfoRequest)
+  public async Task<GameResponse?> UpdateGameInfo(int gameId, UpdateGameInfoRequest request)
   {
     var game = await context.Games.FindAsync(gameId);
-    var request = mapper.Map<UpdateGameInfoRequest, Game>(updateGameInfoRequest);
-    var homeTeam = await context.Teams.FindAsync(request.HomeTeamId);
-    var awayTeam = await context.Teams.FindAsync(request.AwayTeamId);
+    var updatedGame = mapper.Map<UpdateGameInfoRequest, Game>(request);
+    var homeTeam = await context.Teams.FindAsync(updatedGame.HomeTeamId);
+    var awayTeam = await context.Teams.FindAsync(updatedGame.AwayTeamId);
 
-    if (game is null || homeTeam is null || awayTeam is null)
+    if (game is null)
       return null;
 
-    // TODO: Throw ArgumentOutOfRangeException for first condition
-    if (request.DateTime.Date < DateTime.Today ||
-        game.Status != "Upcoming" ||
+    if (updatedGame.DateTime.Date < DateTime.Today)
+      throw new ArgumentOutOfRangeException();
+    
+    if (game.Status != "Upcoming" ||
+        homeTeam is null ||
+        awayTeam is null ||
         homeTeam.Status == "Defunct" ||
         awayTeam.Status == "Defunct")
       throw new InvalidOperationException();
     
-    game.DateTime = request.DateTime;
-    game.HomeTeamId = request.HomeTeamId;
-    game.AwayTeamId = request.AwayTeamId;
+    game.DateTime = updatedGame.DateTime;
+    game.HomeTeamId = updatedGame.HomeTeamId;
+    game.AwayTeamId = updatedGame.AwayTeamId;
     await context.SaveChangesAsync();
 
     var response = mapper.Map<Game, GameResponse>(game);
     return response;
   }
   
-  public async Task<GameResponse?> UpdateGameStatus(int gameId, UpdateGameStatusRequest updateGameStatusRequest)
+  public async Task<GameResponse?> UpdateGameStatus(int gameId, UpdateGameStatusRequest request)
   {
     var game = await context.Games.FindAsync(gameId);
-    var request = mapper.Map<UpdateGameStatusRequest, Game>(updateGameStatusRequest);
+    var updatedGame = mapper.Map<UpdateGameStatusRequest, Game>(request);
 
     if (game is null)
       return null;
@@ -98,7 +101,7 @@ public class GameService(DataContext context, IMapper mapper) : IGameService
     if (game.Status is "Final" or "Cancelled")
       throw new InvalidOperationException();
     
-    game.Status = request.Status;
+    game.Status = updatedGame.Status;
     await context.SaveChangesAsync();
 
     var response = mapper.Map<Game, GameResponse>(game);
@@ -140,10 +143,8 @@ public class GameService(DataContext context, IMapper mapper) : IGameService
       // Update player games stats
       var playerGameStats = mapper.Map<FinalizeGameRequestPlayerStats, PlayerGame>(
         playerStats,
-        opt =>
-        {
-          opt.Items["GameId"] = game.GameId;
-        });
+        opt => opt.Items["GameId"] = game.GameId
+        );
       player.GameStats.Add(playerGameStats);
 
       // Update individual player stats
@@ -178,6 +179,9 @@ public class GameService(DataContext context, IMapper mapper) : IGameService
       .Include(t => t.Roster)
       .Include(t => t.Games)
       .SingleOrDefaultAsync();
+    
+    if (homeTeam is null || awayTeam is null)
+      throw new NullReferenceException();
 
     if (game.HomeTeamPoints > game.AwayTeamPoints)
     {

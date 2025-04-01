@@ -7,13 +7,13 @@ public interface IGameService
 {
   Task<GameResponse?> GetGameById(int gameId);
   
-  Task<ICollection<GameResponse>> GetGamesByDate(GetGamesByDateRequest getGamesByDateRequest);
+  Task<ICollection<GameResponse>> GetGamesByDate(GetGamesByDateRequest request);
 
-  Task<GameResponse?> CreateGame(CreateGameRequest createGameRequest);
+  Task<GameResponse?> CreateGame(CreateGameRequest request);
 
-  Task<GameResponse?> UpdateGameInfo(int gameId, UpdateGameInfoRequest updateGameInfoRequest);
+  Task<GameResponse?> UpdateGameInfo(int gameId, UpdateGameInfoRequest request);
   
-  Task<GameResponse?> UpdateGameStatus(int gameId, UpdateGameStatusRequest updateGameStatusRequest);
+  Task<GameResponse?> UpdateGameStatus(int gameId, UpdateGameStatusRequest request);
   
-  Task<GameResponse?> FinalizeGame(int gameId, FinalizeGameRequest finalizeGameRequest);
+  Task<GameResponse?> FinalizeGame(int gameId, FinalizeGameRequest request);
 }

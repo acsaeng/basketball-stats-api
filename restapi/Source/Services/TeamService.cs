@@ -40,24 +40,23 @@ public class TeamService(DataContext context, IMapper mapper) : ITeamService
     return response;
   }
 
-  public async Task<TeamResponse> CreateTeam(CreateTeamRequest createTeamRequest)
+  public async Task<TeamResponse> CreateTeam(CreateTeamRequest request)
   {
-    var request = mapper.Map<CreateTeamRequest, Team>(createTeamRequest);
-    context.Teams.Add(request);
+    var team = mapper.Map<CreateTeamRequest, Team>(request);
+    context.Teams.Add(team);
     await context.SaveChangesAsync();
 
-    var response = mapper.Map<Team, TeamResponse>(request);
+    var response = mapper.Map<Team, TeamResponse>(team);
     return response;
   }
 
-  public async Task<TeamResponse?> UpdateTeam(int teamId, UpdateTeamRequest updateTeamRequest)
+  public async Task<TeamResponse?> UpdateTeam(int teamId, UpdateTeamRequest request)
   {
     var team = await context.Teams
       .Where(t => t.TeamId == teamId)
       .Include(t => t.Roster)
       .SingleOrDefaultAsync();
-    var request = mapper.Map<UpdateTeamRequest, Team>(updateTeamRequest);
-
+    
     if (team is null)
       return null;
 
@@ -77,25 +76,25 @@ public class TeamService(DataContext context, IMapper mapper) : ITeamService
     return response;
   }
 
-  public async Task<TeamResponse?> AddPlayerToRoster(int teamId, AddPlayerToRosterRequest addPlayersToRosterRequest)
+  public async Task<TeamResponse?> AddPlayerToRoster(int teamId, AddPlayerToRosterRequest request)
   {
-    var request = mapper.Map<AddPlayerToRosterRequest, Player>(addPlayersToRosterRequest);
+    var updatedPlayer = mapper.Map<AddPlayerToRosterRequest, Player>(request);
     var team = await context.Teams
       .Where(t => t.TeamId == teamId)
       .Include(t => t.Roster)
       .SingleOrDefaultAsync();
-    var player = await context.Players.FindAsync(request.PlayerId);
+    var player = await context.Players.FindAsync(updatedPlayer.PlayerId);
 
     if (team is null || player is null)
       return null;
 
     // Cannot add player to inactive team
-    if (team.Status == "Defunct")
+    if (team.Status == "Defunct" || team.Roster.Count == 12)
       throw new InvalidOperationException();
 
     player.RosterStatus = "Active";
     player.TeamId = team.TeamId;
-    player.JerseyNumber = request.JerseyNumber;
+    player.JerseyNumber = updatedPlayer.JerseyNumber;
     await context.SaveChangesAsync();
 
     var response = mapper.Map<Team, TeamResponse>(team);
@@ -116,17 +115,26 @@ public class TeamService(DataContext context, IMapper mapper) : ITeamService
     team.HeadCoach = null;
     team.Wins = 0;
     team.Losses = 0;
+    
+    // Cancel all team games
+    var games = await context.Games
+      .Where(g => g.Status == "Upcoming" && (g.HomeTeamId == team.TeamId || g.AwayTeamId == team.TeamId))
+      .ToListAsync();
+    
+    foreach (var game in games)
+      game.Status = "Cancelled";
 
     // Remove all players from team
     var players = await context.Players
       .Where(player => player.TeamId == team.TeamId)
       .ToListAsync();
-    players.ForEach(player =>
+
+    foreach (var player in players)
     {
       player.RosterStatus = "Free agent";
       player.TeamId = null;
       player.JerseyNumber = null;
-    });
+    }
 
     await context.SaveChangesAsync();
 
