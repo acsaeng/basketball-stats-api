@@ -37,9 +37,21 @@ public class PlayerProfile : Profile
     CreateMap<PlayerModel, Player>();
 
     CreateMap<Player, PlayerResponse>()
-      .ForMember(dest => dest.Team, opt => opt.MapFrom(src => src.Team!.Abbreviation));
+      .ForMember(dest => dest.Team, opt => opt.MapFrom(src => src.Team!.Abbreviation))
+      .ForMember(dest => dest.LastGame, opt => opt.MapFrom(src => src.GameStats.Count != 0 ? src.GameStats.Last() : null));
 
     CreateMap<Player, TeamResponsePlayerInfo>();
+
+    CreateMap<PlayerGame, PlayerResponseGameStats>()
+      .ForMember(dest => dest.Opponent, opt => opt.MapFrom(src =>
+        src.Player.TeamId == src.Game.HomeTeamId ?
+          src.Game.AwayTeam.Abbreviation :
+          src.Game.HomeTeam.Abbreviation
+      ))
+      .ForMember(dest => dest.DidWin, opt => opt.MapFrom(src =>
+        (src.Player.TeamId == src.Game.HomeTeamId && (bool)src.Game.DidHomeTeamWin!) ||
+        (src.Player.TeamId == src.Game.AwayTeamId && (bool)!src.Game.DidHomeTeamWin!)
+      ));
 
     CreateMap<PlayerGame, GameResponsePlayerStats>()
       .ForMember(dest => dest.FirstName, opt => opt.MapFrom(src => src.Player.FirstName))
