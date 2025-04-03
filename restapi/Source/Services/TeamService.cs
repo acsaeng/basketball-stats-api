@@ -24,22 +24,6 @@ public class TeamService(DataContext context, IMapper mapper) : ITeamService
     return response;
   }
 
-  public async Task<ICollection<PlayerResponse>?> GetTeamRosterStats(int teamId)
-  {
-    var team = await context.Teams.FindAsync(teamId);
-
-    if (team is null)
-      return null;
-
-    var players = await context.Players
-      .Where(p => p.TeamId == team.TeamId)
-      .Include(p => p.Team)
-      .ToListAsync();
-
-    var response = mapper.Map<ICollection<Player>, ICollection<PlayerResponse>>(players);
-    return response;
-  }
-
   public async Task<ICollection<TeamResponse>> GetTeamStandings()
   {
     var teams = await context.Teams
