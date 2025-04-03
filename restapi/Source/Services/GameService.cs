@@ -18,6 +18,7 @@ public class GameService(DataContext context, IMapper mapper) : IGameService
       .Include(g => g.HomeTeam)
       .Include(g => g.AwayTeam)
       .Include(g => g.PlayerStats)
+        .ThenInclude(ps => ps.Player)
       .SingleOrDefaultAsync();
 
     if (game == null)
@@ -27,15 +28,15 @@ public class GameService(DataContext context, IMapper mapper) : IGameService
     return response;
   }
 
-  public async Task<ICollection<GameResponse>> GetGamesByDate(GetGamesByDateRequest request)
+  public async Task<ICollection<GameResponse>> GetGamesByDateRange(GetGamesByDateRangeRequest request)
   {
-    var gameDate = mapper.Map<GetGamesByDateRequest, Game>(request);
-
     var games = await context.Games
-      .Where(g => g.DateTime.Date == gameDate.DateTime.Date)
+      .Where(g => DateOnly.FromDateTime(g.DateTime.Date) >= request.DateStart &&
+                  DateOnly.FromDateTime(g.DateTime.Date) <= request.DateEnd)
       .Include(g => g.HomeTeam)
       .Include(g => g.AwayTeam)
       .Include(g => g.PlayerStats)
+        .ThenInclude(ps => ps.Player)
       .ToListAsync();
 
     var response = mapper.Map<ICollection<Game>, ICollection<GameResponse>>(games);
@@ -144,7 +145,7 @@ public class GameService(DataContext context, IMapper mapper) : IGameService
       var playerGameStats = mapper.Map<FinalizeGameRequestPlayerStats, PlayerGame>(
         playerStats,
         opt => opt.Items["GameId"] = game.GameId
-        );
+      );
       player.GameStats.Add(playerGameStats);
 
       // Update individual player stats

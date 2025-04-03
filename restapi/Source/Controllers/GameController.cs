@@ -21,23 +21,23 @@ public class GameController(IGameService gameService) : ControllerBase
   }
 
   [HttpGet]
-  public async Task<ActionResult<ICollection<GameResponse>>> GetGamesByDate([FromBody] GetGamesByDateRequest getGamesByDateRequest)
+  public async Task<ActionResult<ICollection<GameResponse>>> GetGamesByDateRange([FromBody] GetGamesByDateRangeRequest request)
   {
-    var gameResponses = await gameService.GetGamesByDate(getGamesByDateRequest);
-    return Ok(gameResponses);
+    var response = await gameService.GetGamesByDateRange(request);
+    return Ok(response);
   }
 
   [HttpPost]
-  public async Task<ActionResult<GameResponse?>> CreateGame([FromBody] CreateGameRequest createGameRequest)
+  public async Task<ActionResult<GameResponse?>> CreateGame([FromBody] CreateGameRequest request)
   {
     try
     {
-      var gameResponse = await gameService.CreateGame(createGameRequest);
+      var response = await gameService.CreateGame(request);
 
-      if (gameResponse is null)
+      if (response is null)
         return NotFound();
 
-      return CreatedAtAction(nameof(GetGameById), new { gameId = gameResponse!.GameId }, gameResponse);
+      return CreatedAtAction(nameof(GetGameById), new { gameId = response!.GameId }, response);
     }
     catch (InvalidOperationException)
     {
@@ -46,16 +46,16 @@ public class GameController(IGameService gameService) : ControllerBase
   }
 
   [HttpPost("update-info/{gameId}")]
-  public async Task<ActionResult<GameResponse?>> UpdateGameInfo(int gameId, [FromBody] UpdateGameInfoRequest updateGameInfoRequest)
+  public async Task<ActionResult<GameResponse?>> UpdateGameInfo(int gameId, [FromBody] UpdateGameInfoRequest request)
   {
     try
     {
-      var gameResponse = await gameService.UpdateGameInfo(gameId, updateGameInfoRequest);
+      var response = await gameService.UpdateGameInfo(gameId, request);
 
-      if (gameResponse is null)
+      if (response is null)
         return NotFound();
 
-      return Ok(gameResponse);
+      return Ok(response);
     }
     catch (Exception e) when (e is ArgumentOutOfRangeException or InvalidOperationException)
     {
@@ -64,16 +64,16 @@ public class GameController(IGameService gameService) : ControllerBase
   }
 
   [HttpPost("update-status/{gameId}")]
-  public async Task<ActionResult<GameResponse?>> UpdateGameStatus(int gameId, [FromBody] UpdateGameStatusRequest updateGameStatusRequest)
+  public async Task<ActionResult<GameResponse?>> UpdateGameStatus(int gameId, [FromBody] UpdateGameStatusRequest request)
   {
     try
     {
-      var gameResponse = await gameService.UpdateGameStatus(gameId, updateGameStatusRequest);
+      var response = await gameService.UpdateGameStatus(gameId, request);
 
-      if (gameResponse is null)
+      if (response is null)
         return NotFound();
 
-      return Ok(gameResponse);
+      return Ok(response);
     }
     catch (InvalidOperationException)
     {
@@ -82,16 +82,16 @@ public class GameController(IGameService gameService) : ControllerBase
   }
 
   [HttpPost("finalize/{gameId}")]
-  public async Task<ActionResult<GameResponse?>> FinalizeGame(int gameId, [FromBody] FinalizeGameRequest finalizeGameRequest)
+  public async Task<ActionResult<GameResponse?>> FinalizeGame(int gameId, [FromBody] FinalizeGameRequest request)
   {
     try
     {
-      var gameResponse = await gameService.FinalizeGame(gameId, finalizeGameRequest);
+      var response = await gameService.FinalizeGame(gameId, request);
 
-      if (gameResponse is null)
+      if (response is null)
         return NotFound();
 
-      return Ok(gameResponse);
+      return Ok(response);
     }
     catch (Exception e) when (e is InvalidOperationException or NullReferenceException)
     {
