@@ -13,10 +13,15 @@ public class DataContext(DbContextOptions<DataContext> options) : DbContext(opti
 
   protected override void OnModelCreating(ModelBuilder modelBuilder)
   {
-    modelBuilder.Entity<Team>()
-      .HasMany(t => t.Games)
-      .WithOne(g => g.AwayTeam)
-      .OnDelete(DeleteBehavior.NoAction)
-      .IsRequired();
+    modelBuilder.Entity<Game>()
+      .HasOne(g => g.HomeTeam)
+      .WithMany(t => t.HomeGames)
+      .HasForeignKey(t => t.HomeTeamId);
+
+    modelBuilder.Entity<Game>()
+      .HasOne(g => g.AwayTeam)
+      .WithMany(t => t.AwayGames)
+      .HasForeignKey(t => t.AwayTeamId)
+      .OnDelete(DeleteBehavior.NoAction);
   }
 }

@@ -17,6 +17,16 @@ public class TeamProfile : Profile
     CreateMap<UpdateTeamRequest, Team>();
 
     CreateMap<Team, TeamResponse>()
-      .ForMember(dest => dest.GamesPlayed, opt => opt.MapFrom(src => src.Wins + src.Losses));
+      .ForMember(dest => dest.GamesPlayed, opt => opt.MapFrom(src => src.Wins + src.Losses))
+      .ForMember(dest => dest.PreviousGame,
+        opt => opt.MapFrom(src =>
+          src.HomeGames
+            .Concat(src.AwayGames)
+            .LastOrDefault(g => g.Status == "Final" && g.DateTime < DateTime.Now)))
+      .ForMember(dest => dest.NextGame,
+        opt => opt.MapFrom(src =>
+          src.HomeGames
+            .Concat(src.AwayGames)
+            .FirstOrDefault(g => g.Status == "Upcoming" && g.DateTime >= DateTime.Now)));
   }
 }

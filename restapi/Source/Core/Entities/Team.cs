@@ -45,5 +45,8 @@ public class Team
   public decimal WinPercentage { get; set; }
 
   // Collection navigation
-  public ICollection<Game> Games { get; } = new List<Game>();
+  public ICollection<Game> HomeGames { get; } = new List<Game>();
+
+  // Collection navigation
+  public ICollection<Game> AwayGames { get; } = new List<Game>();
 }

@@ -1,3 +1,6 @@
+using System.Collections;
+using BasketballStatsApi.Core.Entities;
+
 namespace BasketballStatsApi.Core.Dtos.Responses;
 
 public class TeamResponse
@@ -27,6 +30,10 @@ public class TeamResponse
   public int Losses { get; set; }
 
   public decimal WinPercentage { get; set; }
+
+  public TeamResponsePreviousGame PreviousGame { get; set; }
+
+  public TeamResponseNextGame NextGame { get; set; }
 }
 
 public class TeamResponseRoster
@@ -46,18 +53,50 @@ public class TeamResponseRoster
   public string Position { get; set; }
 
   public int? JerseyNumber { get; set; }
-  
+
   public int GamesPlayed { get; set; }
-  
+
   public decimal Points { get; set; }
 
   public decimal Assists { get; set; }
-  
+
   public decimal Rebounds { get; set; }
-  
+
   public decimal Steals { get; set; }
-  
+
   public decimal Blocks { get; set; }
-  
+
   public decimal Turnovers { get; set; }
+}
+
+public class TeamResponsePreviousGame
+{
+  public int GameId { get; set; }
+
+  public string Status { get; set; }
+
+  public DateTime DateTime { get; set; }
+
+  public string HomeTeam { get; set; }
+
+  public string AwayTeam { get; set; }
+
+  public bool DidHomeTeamWin { get; set; }
+
+  public int HomeTeamPoints { get; set; }
+
+  public int AwayTeamPoints { get; set; }
+}
+
+public class TeamResponseNextGame
+{
+  public int GameId { get; set; }
+
+  public string Status { get; set; }
+
+  public DateTime DateTime { get; set; }
+
+  public string HomeTeam { get; set; }
+
+  public string AwayTeam { get; set; }
 }

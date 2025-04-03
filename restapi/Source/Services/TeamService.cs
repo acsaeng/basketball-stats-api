@@ -15,6 +15,10 @@ public class TeamService(DataContext context, IMapper mapper) : ITeamService
     var team = await context.Teams
       .Where(t => t.TeamId == teamId)
       .Include(t => t.Roster)
+      .Include(t => t.HomeGames)
+        .ThenInclude(g => g.AwayTeam)
+      .Include(t => t.AwayGames)
+        .ThenInclude(g => g.HomeTeam)
       .SingleOrDefaultAsync();
 
     if (team is null)
@@ -28,6 +32,11 @@ public class TeamService(DataContext context, IMapper mapper) : ITeamService
   {
     var teams = await context.Teams
       .OrderByDescending(t => t.WinPercentage)
+      .Include(t => t.Roster)
+      .Include(t => t.HomeGames)
+        .ThenInclude(g => g.AwayTeam)
+      .Include(t => t.AwayGames)
+        .ThenInclude(g => g.HomeTeam)
       .ToListAsync();
     return mapper.Map<ICollection<Team>, ICollection<TeamResponse>>(teams);
   }
@@ -55,6 +64,10 @@ public class TeamService(DataContext context, IMapper mapper) : ITeamService
     var team = await context.Teams
       .Where(t => t.TeamId == teamId)
       .Include(t => t.Roster)
+      .Include(t => t.HomeGames)
+        .ThenInclude(g => g.AwayTeam)
+      .Include(t => t.AwayGames)
+        .ThenInclude(g => g.HomeTeam)
       .SingleOrDefaultAsync();
 
     if (team is null)
@@ -82,6 +95,10 @@ public class TeamService(DataContext context, IMapper mapper) : ITeamService
     var team = await context.Teams
       .Where(t => t.TeamId == teamId)
       .Include(t => t.Roster)
+      .Include(t => t.HomeGames)
+        .ThenInclude(g => g.AwayTeam)
+      .Include(t => t.AwayGames)
+        .ThenInclude(g => g.HomeTeam)
       .SingleOrDefaultAsync();
     var player = await context.Players.FindAsync(updatedPlayer.PlayerId);
 
@@ -106,6 +123,10 @@ public class TeamService(DataContext context, IMapper mapper) : ITeamService
     var team = await context.Teams
       .Where(t => t.TeamId == teamId)
       .Include(t => t.Roster)
+      .Include(t => t.HomeGames)
+        .ThenInclude(g => g.AwayTeam)
+      .Include(t => t.AwayGames)
+        .ThenInclude(g => g.HomeTeam)
       .SingleOrDefaultAsync();
 
     if (team is null)

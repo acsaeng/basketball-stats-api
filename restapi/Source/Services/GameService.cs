@@ -173,12 +173,14 @@ public class GameService(DataContext context, IMapper mapper) : IGameService
     var homeTeam = await context.Teams
       .Where(t => t.TeamId == game.HomeTeamId)
       .Include(t => t.Roster)
-      .Include(t => t.Games)
+      .Include(t => t.HomeGames)
+      .Include(t => t.AwayGames)
       .SingleOrDefaultAsync();
     var awayTeam = await context.Teams
       .Where(t => t.TeamId == game.AwayTeamId)
       .Include(t => t.Roster)
-      .Include(t => t.Games)
+      .Include(t => t.HomeGames)
+      .Include(t => t.AwayGames)
       .SingleOrDefaultAsync();
 
     if (homeTeam is null || awayTeam is null)
