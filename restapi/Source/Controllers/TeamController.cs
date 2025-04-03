@@ -30,8 +30,15 @@ public class TeamController(ITeamService teamService) : ControllerBase
   [HttpPost]
   public async Task<ActionResult<TeamResponse>> CreateTeam([FromBody] CreateTeamRequest request)
   {
-    var response = await teamService.CreateTeam(request);
-    return CreatedAtAction(nameof(GetTeam), new { teamId = response!.TeamId }, response);
+    try
+    {
+      var response = await teamService.CreateTeam(request);
+      return CreatedAtAction(nameof(GetTeam), new { teamId = response!.TeamId }, response);
+    }
+    catch (InvalidOperationException)
+    {
+      return BadRequest();
+    }
   }
 
   [HttpPost("update/{teamId}")]

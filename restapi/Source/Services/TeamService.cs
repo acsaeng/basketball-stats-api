@@ -35,6 +35,14 @@ public class TeamService(DataContext context, IMapper mapper) : ITeamService
   public async Task<TeamResponse> CreateTeam(CreateTeamRequest request)
   {
     var team = mapper.Map<CreateTeamRequest, Team>(request);
+
+    var invalidTeams = await context.Teams
+      .Where(t => t.Abbreviation == team.Abbreviation || t.Name == team.Name)
+      .ToListAsync();
+
+    if (invalidTeams.Count != 0)
+      throw new InvalidOperationException();
+
     context.Teams.Add(team);
     await context.SaveChangesAsync();
 
