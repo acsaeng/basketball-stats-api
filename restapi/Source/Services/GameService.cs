@@ -121,7 +121,7 @@ public class GameService(DataContext context, IMapper mapper) : IGameService
     if (game is null)
       return null;
 
-    if (game.Status is not "In progress")
+    if (game.Status is not "In progress" || DateTime.Now < game.DateTime)
       throw new InvalidOperationException();
 
     var homeTeamPoints = 0;
