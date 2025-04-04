@@ -29,20 +29,43 @@ public class TeamService(DataContext context, IMapper mapper) : ITeamService
   }
 
   public async Task<ICollection<PlayerResponse>?> GetTeamRosterStats(int teamId)
-   {
-     var team = await context.Teams.FindAsync(teamId);
- 
-     if (team is null)
-       return null;
- 
-     var players = await context.Players
-       .Where(p => p.TeamId == team.TeamId)
-       .Include(p => p.Team)
-       .ToListAsync();
- 
-     var response = mapper.Map<ICollection<Player>, ICollection<PlayerResponse>>(players);
-     return response;
-   }
+  {
+    var team = await context.Teams.FindAsync(teamId);
+
+    if (team is null)
+      return null;
+
+    var players = await context.Players
+      .Where(p => p.TeamId == team.TeamId)
+      .Include(p => p.Team)
+      .ToListAsync();
+
+    var response = mapper.Map<ICollection<Player>, ICollection<PlayerResponse>>(players);
+    return response;
+  }
+
+  public async Task<ICollection<GameResponse>?> GetTeamSchedule(int teamId)
+  {
+    var team = await context.Teams.FindAsync(teamId);
+
+    if (team is null)
+      return null;
+
+    var completedGames = await context.Games
+      .Where(g => (team.TeamId == g.HomeTeamId || team.TeamId == g.AwayTeamId) && g.DateTime < DateTime.Now)
+      .OrderByDescending(g => g.DateTime)
+      .Take(5)
+      .ToListAsync();
+    
+    var upcomingGames = await context.Games
+      .Where(g => (team.TeamId == g.HomeTeamId || team.TeamId == g.AwayTeamId) && g.DateTime > DateTime.Now)
+      .OrderBy(g => g.DateTime)
+      .Take(5)
+      .ToListAsync();
+
+    var response = mapper.Map<ICollection<Game>, ICollection<GameResponse>>(completedGames.Concat(upcomingGames).ToList());
+    return response;
+  }
 
   public async Task<ICollection<TeamResponse>> GetTeamStandings()
   {
@@ -54,7 +77,9 @@ public class TeamService(DataContext context, IMapper mapper) : ITeamService
       .Include(t => t.AwayGames)
         .ThenInclude(g => g.HomeTeam)
       .ToListAsync();
-    return mapper.Map<ICollection<Team>, ICollection<TeamResponse>>(teams);
+
+    var response = mapper.Map<ICollection<Team>, ICollection<TeamResponse>>(teams);
+    return response;
   }
 
   public async Task<TeamResponse> CreateTeam(CreateTeamRequest request)

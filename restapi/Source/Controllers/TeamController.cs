@@ -31,6 +31,17 @@ public class TeamController(ITeamService teamService) : ControllerBase
      return Ok(response);
    }
 
+  [HttpGet("schedule/{teamId}")]
+  public async Task<ActionResult<ICollection<GameResponse>?>> GetTeamSchedule(int teamId)
+  {
+    var response = await teamService.GetTeamSchedule(teamId);
+
+    if (response is null)
+      return NotFound();
+    
+    return Ok(response);
+  }
+
   [HttpGet("standings")]
   public async Task<ActionResult<ICollection<TeamResponse>>> GetTeamStandings()
   {

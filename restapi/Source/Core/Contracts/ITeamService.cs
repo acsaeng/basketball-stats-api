@@ -1,6 +1,5 @@
 using BasketballStatsApi.Core.Dtos.Requests;
 using BasketballStatsApi.Core.Dtos.Responses;
-using BasketballStatsApi.Core.Entities;
 
 namespace BasketballStatsApi.Core.Contracts;
 
@@ -9,6 +8,8 @@ public interface ITeamService
   Task<TeamResponse?> GetTeam(int teamId);
 
   Task<ICollection<PlayerResponse>?> GetTeamRosterStats(int teamId);
+
+  Task<ICollection<GameResponse>?> GetTeamSchedule(int teamId);
 
   Task<ICollection<TeamResponse>> GetTeamStandings();
 
