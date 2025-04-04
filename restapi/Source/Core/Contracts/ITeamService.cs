@@ -8,6 +8,8 @@ public interface ITeamService
 {
   Task<TeamResponse?> GetTeam(int teamId);
 
+  Task<ICollection<PlayerResponse>?> GetTeamRosterStats(int teamId);
+
   Task<ICollection<TeamResponse>> GetTeamStandings();
 
   Task<TeamResponse> CreateTeam(CreateTeamRequest request);

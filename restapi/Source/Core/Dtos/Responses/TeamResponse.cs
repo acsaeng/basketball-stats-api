@@ -52,21 +52,9 @@ public class TeamResponseRoster
 
   public string Position { get; set; }
 
+  public string? InjuryStatus { get; set; }
+
   public int? JerseyNumber { get; set; }
-
-  public int GamesPlayed { get; set; }
-
-  public decimal Points { get; set; }
-
-  public decimal Assists { get; set; }
-
-  public decimal Rebounds { get; set; }
-
-  public decimal Steals { get; set; }
-
-  public decimal Blocks { get; set; }
-
-  public decimal Turnovers { get; set; }
 }
 
 public class TeamResponsePreviousGame

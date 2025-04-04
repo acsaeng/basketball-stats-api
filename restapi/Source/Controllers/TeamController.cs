@@ -20,6 +20,17 @@ public class TeamController(ITeamService teamService) : ControllerBase
     return Ok(response);
   }
 
+  [HttpGet("roster/{teamId}")]
+   public async Task<ActionResult<ICollection<PlayerResponse>?>> GetTeamRosterStats(int teamId)
+   {
+     var response = await teamService.GetTeamRosterStats(teamId);
+ 
+     if (response is null)
+       return NotFound();
+ 
+     return Ok(response);
+   }
+
   [HttpGet("standings")]
   public async Task<ActionResult<ICollection<TeamResponse>>> GetTeamStandings()
   {
