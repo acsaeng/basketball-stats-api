@@ -1,0 +1,27 @@
+namespace BasketballStatsApi.Core.Constants;
+
+public static class Error
+{
+  public static class Player
+  {
+    public const string InvalidStatType = "Argument must be one of ['points', 'assists', 'rebounds', 'steals', 'blocks', 'turnovers']";
+  }
+
+  public static class Team
+  {
+    public const string DefunctTeam = "Cannot modify an inactive team";
+    public const string InvalidNameOrAbbr = "Team cannot have the same name or abbreviation as an existing team";
+    public const string MaxRosterExceeded = "Maximum number of players on roster exceeded";
+  }
+
+  public static class Game
+  {
+    public const string InvalidState = "Cannot update game based on current state";
+    public const string InvalidDate = "Cannot update game at this current date and time";
+    public const string InvalidPlayer = "One of the players listed is not on either participating teams";
+    public const string PlayerNotFound = "One of the players could not be found";
+    public const string TeamNotFound = "At least one of the teams could not be found";
+    public const string PointsNotEqual = "Total points between teams and players are not equal";
+    public const string TiesNotAllowed = "Game cannot result in a tie";
+  }
+}

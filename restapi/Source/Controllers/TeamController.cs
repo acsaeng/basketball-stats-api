@@ -57,9 +57,9 @@ public class TeamController(ITeamService teamService) : ControllerBase
       var response = await teamService.CreateTeam(request);
       return CreatedAtAction(nameof(GetTeam), new { teamId = response!.TeamId }, response);
     }
-    catch (InvalidOperationException)
+    catch (ArgumentException error)
     {
-      return BadRequest();
+      return BadRequest(error.Message);
     }
   }
 
@@ -75,9 +75,9 @@ public class TeamController(ITeamService teamService) : ControllerBase
 
       return Ok(response);
     }
-    catch (InvalidOperationException)
+    catch (InvalidOperationException error)
     {
-      return BadRequest();
+      return BadRequest(error.Message);
     }
   }
 
@@ -93,9 +93,9 @@ public class TeamController(ITeamService teamService) : ControllerBase
 
       return Ok(response);
     }
-    catch (InvalidOperationException)
+    catch (InvalidOperationException error)
     {
-      return BadRequest();
+      return BadRequest(error.Message);
     }
   }
 

@@ -1,4 +1,5 @@
 using AutoMapper;
+using BasketballStatsApi.Core.Constants;
 using BasketballStatsApi.Core.Contracts;
 using BasketballStatsApi.Core.Dtos.Requests;
 using BasketballStatsApi.Core.Dtos.Responses;
@@ -33,7 +34,7 @@ public class PlayerService(DataContext context, IMapper mapper) : IPlayerService
   public async Task<ICollection<PlayerResponse>> GetLeagueLeaders(string statType)
   {
     if (!new List<string> { "points", "assists", "rebounds", "steals", "blocks", "turnovers" }.Contains(statType))
-      throw new ArgumentException();
+      throw new ArgumentException(Error.Player.InvalidStatType);
 
     var players = await context.Players
       .OrderByDescending(p => EF.Property<object>(p, char.ToUpper(statType.First()) + statType.Substring(1)))

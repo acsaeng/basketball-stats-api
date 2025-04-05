@@ -39,9 +39,9 @@ public class GameController(IGameService gameService) : ControllerBase
 
       return CreatedAtAction(nameof(GetGameById), new { gameId = response!.GameId }, response);
     }
-    catch (InvalidOperationException)
+    catch (InvalidOperationException error)
     {
-      return BadRequest();
+      return BadRequest(error.Message);
     }
   }
 
@@ -57,9 +57,9 @@ public class GameController(IGameService gameService) : ControllerBase
 
       return Ok(response);
     }
-    catch (Exception e) when (e is ArgumentOutOfRangeException or InvalidOperationException)
+    catch (Exception error) when (error is ArgumentOutOfRangeException or InvalidOperationException)
     {
-      return BadRequest();
+      return BadRequest(error.Message);
     }
   }
 
@@ -75,9 +75,9 @@ public class GameController(IGameService gameService) : ControllerBase
 
       return Ok(response);
     }
-    catch (InvalidOperationException)
+    catch (InvalidOperationException error) 
     {
-      return BadRequest();
+      return BadRequest(error.Message);
     }
   }
 
@@ -93,9 +93,9 @@ public class GameController(IGameService gameService) : ControllerBase
 
       return Ok(response);
     }
-    catch (Exception e) when (e is InvalidOperationException or NullReferenceException)
+    catch (Exception error) when (error is ArgumentNullException or InvalidOperationException or NullReferenceException)
     {
-      return BadRequest();
+      return BadRequest(error.Message);
     }
   }
 }

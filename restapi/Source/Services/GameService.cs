@@ -1,4 +1,5 @@
 using AutoMapper;
+using BasketballStatsApi.Core.Constants;
 using BasketballStatsApi.Core.Contracts;
 using BasketballStatsApi.Core.Dtos.Requests;
 using BasketballStatsApi.Core.Dtos.Responses;
@@ -45,15 +46,17 @@ public class GameService(DataContext context, IMapper mapper) : IGameService
 
   public async Task<GameResponse?> CreateGame(CreateGameRequest request)
   {
+    if (request.DateTime.Date < DateTime.Today)
+      throw new ArgumentOutOfRangeException(Error.Game.InvalidDate);
+
     var homeTeam = await context.Teams.FindAsync(request.HomeTeamId);
     var awayTeam = await context.Teams.FindAsync(request.AwayTeamId);
 
-    // TODO: Make this throw an exception instead
     if (homeTeam is null || awayTeam is null)
-      return null;
+      throw new ArgumentNullException(Error.Game.TeamNotFound);
 
-    if (request.DateTime.Date < DateTime.Today || homeTeam.Status == "Defunct" || awayTeam.Status == "Defunct")
-      throw new InvalidOperationException();
+    if (homeTeam.Status == "Defunct" || awayTeam.Status == "Defunct")
+     throw new InvalidOperationException(Error.Team.DefunctTeam);
 
     var game = mapper.Map<CreateGameRequest, Game>(request);
     context.Games.Add(game);
@@ -65,22 +68,25 @@ public class GameService(DataContext context, IMapper mapper) : IGameService
 
   public async Task<GameResponse?> UpdateGameInfo(int gameId, UpdateGameInfoRequest request)
   {
+    if (request.DateTime.Date < DateTime.Today)
+      throw new ArgumentOutOfRangeException(Error.Game.InvalidDate);
+
     var game = await context.Games.FindAsync(gameId);
-    var homeTeam = await context.Teams.FindAsync(request.HomeTeamId);
-    var awayTeam = await context.Teams.FindAsync(request.AwayTeamId);
 
     if (game is null)
       return null;
 
-    if (request.DateTime.Date < DateTime.Today)
-      throw new ArgumentOutOfRangeException();
+    if (game.Status is not "Upcoming")
+      throw new InvalidOperationException(Error.Game.InvalidState);
 
-    if (game.Status != "Upcoming" ||
-        homeTeam is null ||
-        awayTeam is null ||
-        homeTeam.Status == "Defunct" ||
-        awayTeam.Status == "Defunct")
-      throw new InvalidOperationException();
+    var homeTeam = await context.Teams.FindAsync(request.HomeTeamId);
+    var awayTeam = await context.Teams.FindAsync(request.AwayTeamId);
+
+    if (homeTeam is null || awayTeam is null)
+      throw new InvalidOperationException(Error.Game.TeamNotFound);
+    
+    if (homeTeam.Status == "Defunct" || awayTeam.Status == "Defunct")
+      throw new InvalidOperationException(Error.Team.DefunctTeam);
 
     game.DateTime = request.DateTime;
     game.HomeTeamId = request.HomeTeamId;
@@ -99,7 +105,7 @@ public class GameService(DataContext context, IMapper mapper) : IGameService
       return null;
 
     if (game.Status is "Final" or "Cancelled")
-      throw new InvalidOperationException();
+      throw new InvalidOperationException(Error.Game.InvalidState);
 
     game.Status = request.Status;
     await context.SaveChangesAsync();
@@ -120,8 +126,11 @@ public class GameService(DataContext context, IMapper mapper) : IGameService
     if (game is null)
       return null;
 
-    if (game.Status is not "In progress" || DateTime.Now < game.DateTime)
-      throw new InvalidOperationException();
+    if (DateTime.Now < game.DateTime)
+      throw new ArgumentOutOfRangeException(Error.Game.InvalidDate);
+
+    if (game.Status is not "In progress")
+      throw new InvalidOperationException(Error.Game.InvalidState);
 
     var homeTeamPoints = 0;
     var awayTeamPoints = 0;
@@ -135,10 +144,10 @@ public class GameService(DataContext context, IMapper mapper) : IGameService
         .SingleOrDefaultAsync();
 
       if (player is null)
-        throw new NullReferenceException();
+        throw new ArgumentNullException(Error.Game.PlayerNotFound);
 
       if (player.TeamId != game.HomeTeamId && player.TeamId != game.AwayTeamId)
-        throw new InvalidOperationException();
+        throw new InvalidOperationException(Error.Game.InvalidPlayer);
 
       // Update player games stats
       var playerGameStats = mapper.Map<FinalizeGameRequestPlayerStats, PlayerGame>(
@@ -166,8 +175,11 @@ public class GameService(DataContext context, IMapper mapper) : IGameService
     }
 
     // Update team stats
-    if (request.HomeTeamPoints != homeTeamPoints || request.AwayTeamPoints != awayTeamPoints || homeTeamPoints == awayTeamPoints)
-      throw new InvalidOperationException();
+    if (request.HomeTeamPoints != homeTeamPoints || request.AwayTeamPoints != awayTeamPoints)
+      throw new InvalidOperationException(Error.Game.PointsNotEqual);
+
+    if (homeTeamPoints == awayTeamPoints)
+      throw new InvalidOperationException(Error.Game.TiesNotAllowed);
 
     var homeTeam = await context.Teams
       .Where(t => t.TeamId == game.HomeTeamId)
@@ -183,7 +195,7 @@ public class GameService(DataContext context, IMapper mapper) : IGameService
       .SingleOrDefaultAsync();
 
     if (homeTeam is null || awayTeam is null)
-      throw new NullReferenceException();
+      throw new ArgumentNullException(Error.Game.TeamNotFound);
 
     if (game.HomeTeamPoints > game.AwayTeamPoints)
     {

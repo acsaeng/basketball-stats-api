@@ -29,9 +29,9 @@ public class PlayerController(IPlayerService playerService) : ControllerBase
       var response = await playerService.GetLeagueLeaders(statType);
       return Ok(response);
     }
-    catch (ArgumentException)
+    catch (ArgumentException error)
     {
-      return BadRequest();
+      return BadRequest(error.Message);
     }
   }
 

@@ -1,4 +1,5 @@
 using AutoMapper;
+using BasketballStatsApi.Core.Constants;
 using BasketballStatsApi.Core.Contracts;
 using BasketballStatsApi.Core.Dtos.Requests;
 using BasketballStatsApi.Core.Dtos.Responses;
@@ -85,11 +86,11 @@ public class TeamService(DataContext context, IMapper mapper) : ITeamService
   public async Task<TeamResponse> CreateTeam(CreateTeamRequest request)
   {
     var invalidTeams = await context.Teams
-      .Where(t => t.Abbreviation == request.Abbreviation || t.Name == request.Name)
+      .Where(t => t.Name == request.Name || t.Abbreviation == request.Abbreviation)
       .ToListAsync();
 
     if (invalidTeams.Count > 0)
-      throw new InvalidOperationException();
+      throw new ArgumentException(Error.Team.InvalidNameOrAbbr);
 
     var team = mapper.Map<CreateTeamRequest, Team>(request);
     context.Teams.Add(team);
@@ -113,9 +114,8 @@ public class TeamService(DataContext context, IMapper mapper) : ITeamService
     if (team is null)
       return null;
 
-    // Cannot update inactive team
     if (team.Status == "Defunct")
-      throw new InvalidOperationException();
+      throw new InvalidOperationException(Error.Team.DefunctTeam);
 
     team.Locale = request.Locale;
     team.Name = request.Name;
@@ -144,9 +144,11 @@ public class TeamService(DataContext context, IMapper mapper) : ITeamService
     if (team is null || player is null)
       return null;
 
-    // Cannot add player to inactive team
-    if (team.Status == "Defunct" || team.Roster.Count == 12)
-      throw new InvalidOperationException();
+    if (team.Status == "Defunct")
+      throw new InvalidOperationException(Error.Team.DefunctTeam);
+
+    if (team.Roster.Count >= 12)
+      throw new InvalidOperationException(Error.Team.MaxRosterExceeded);
 
     player.RosterStatus = "Active";
     player.TeamId = team.TeamId;
