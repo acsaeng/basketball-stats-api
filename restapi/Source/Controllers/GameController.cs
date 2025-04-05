@@ -93,7 +93,7 @@ public class GameController(IGameService gameService) : ControllerBase
 
       return Ok(response);
     }
-    catch (Exception error) when (error is ArgumentNullException or InvalidOperationException or NullReferenceException)
+    catch (Exception error) when (error is ArgumentOutOfRangeException or ArgumentNullException or InvalidOperationException)
     {
       return BadRequest(error.Message);
     }

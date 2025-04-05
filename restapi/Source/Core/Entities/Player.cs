@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using BasketballStatsApi.Core.Constants;
 using Microsoft.EntityFrameworkCore;
 
 namespace BasketballStatsApi.Core.Entities;
@@ -24,13 +25,27 @@ public class Player
   [Range(0, int.MaxValue)]
   public int Weight { get; set; }
 
-  [AllowedValues("PG", "SG", "SF", "PF", "C")]
+  [AllowedValues(
+    Validation.Player.Position.PointGuard,
+    Validation.Player.Position.ShootingGuard,
+    Validation.Player.Position.SmallForward,
+    Validation.Player.Position.PowerForward,
+    Validation.Player.Position.Centre
+  )]
   public string Position { get; set; }
 
-  [AllowedValues("Healthy", "Day-to-day", "Out")]
+  [AllowedValues(
+    Validation.Player.InjuryStatus.Healthy,
+    Validation.Player.InjuryStatus.DayToDay,
+    Validation.Player.InjuryStatus.Out
+  )]
   public string? InjuryStatus { get; set; }
 
-  [AllowedValues("Active", "Free agent", "Retired")]
+  [AllowedValues(
+    Validation.Player.RosterStatus.Active,
+    Validation.Player.RosterStatus.FreeAgent,
+    Validation.Player.RosterStatus.Retired
+  )]
   public string RosterStatus { get; set; }
 
   // Foreign key

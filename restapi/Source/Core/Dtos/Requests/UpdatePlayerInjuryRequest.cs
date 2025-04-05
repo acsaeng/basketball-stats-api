@@ -1,10 +1,16 @@
 using System.ComponentModel.DataAnnotations;
+using BasketballStatsApi.Core.Constants;
 
 namespace BasketballStatsApi.Core.Dtos.Requests;
 
 public class UpdatePlayerInjuryRequest
 {
   [Required]
-  [AllowedValues("Healthy", "Day-to-day", "Out", ErrorMessage = "Field must be one of ['Healthy', 'Day-to-day', 'Out']")]
+  [AllowedValues(
+    Validation.Player.InjuryStatus.Healthy,
+    Validation.Player.InjuryStatus.DayToDay,
+    Validation.Player.InjuryStatus.Out,
+    ErrorMessage = Error.Player.InvalidInjuryStatus
+  )]
   public string InjuryStatus { get; set; }
 }

@@ -55,7 +55,7 @@ public class GameService(DataContext context, IMapper mapper) : IGameService
     if (homeTeam is null || awayTeam is null)
       throw new ArgumentNullException(Error.Game.TeamNotFound);
 
-    if (homeTeam.Status == "Defunct" || awayTeam.Status == "Defunct")
+    if (homeTeam.Status == Validation.Team.Status.Defunct || awayTeam.Status == Validation.Team.Status.Defunct)
      throw new InvalidOperationException(Error.Team.DefunctTeam);
 
     var game = mapper.Map<CreateGameRequest, Game>(request);
@@ -76,7 +76,7 @@ public class GameService(DataContext context, IMapper mapper) : IGameService
     if (game is null)
       return null;
 
-    if (game.Status is not "Upcoming")
+    if (game.Status is not Validation.Game.Status.Upcoming)
       throw new InvalidOperationException(Error.Game.InvalidState);
 
     var homeTeam = await context.Teams.FindAsync(request.HomeTeamId);
@@ -85,7 +85,7 @@ public class GameService(DataContext context, IMapper mapper) : IGameService
     if (homeTeam is null || awayTeam is null)
       throw new InvalidOperationException(Error.Game.TeamNotFound);
     
-    if (homeTeam.Status == "Defunct" || awayTeam.Status == "Defunct")
+    if (homeTeam.Status == Validation.Team.Status.Defunct || awayTeam.Status == Validation.Team.Status.Defunct)
       throw new InvalidOperationException(Error.Team.DefunctTeam);
 
     game.DateTime = request.DateTime;
@@ -104,7 +104,7 @@ public class GameService(DataContext context, IMapper mapper) : IGameService
     if (game is null)
       return null;
 
-    if (game.Status is "Final" or "Cancelled")
+    if (game.Status is Validation.Game.Status.Final or Validation.Game.Status.Cancelled)
       throw new InvalidOperationException(Error.Game.InvalidState);
 
     game.Status = request.Status;
@@ -129,7 +129,7 @@ public class GameService(DataContext context, IMapper mapper) : IGameService
     if (DateTime.Now < game.DateTime)
       throw new ArgumentOutOfRangeException(Error.Game.InvalidDate);
 
-    if (game.Status is not "In progress")
+    if (game.Status is not Validation.Game.Status.InProgress)
       throw new InvalidOperationException(Error.Game.InvalidState);
 
     var homeTeamPoints = 0;
@@ -214,7 +214,7 @@ public class GameService(DataContext context, IMapper mapper) : IGameService
     awayTeam.WinPercentage = awayTeam.Wins / (awayTeam.Wins + awayTeam.Losses);
 
     // Update game stats
-    game.Status = "Final";
+    game.Status = Validation.Game.Status.Final;
     game.HomeTeamPoints = request.HomeTeamPoints;
     game.AwayTeamPoints = request.AwayTeamPoints;
     await context.SaveChangesAsync();

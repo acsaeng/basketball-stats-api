@@ -114,7 +114,7 @@ public class TeamService(DataContext context, IMapper mapper) : ITeamService
     if (team is null)
       return null;
 
-    if (team.Status == "Defunct")
+    if (team.Status == Validation.Team.Status.Defunct)
       throw new InvalidOperationException(Error.Team.DefunctTeam);
 
     team.Locale = request.Locale;
@@ -144,13 +144,13 @@ public class TeamService(DataContext context, IMapper mapper) : ITeamService
     if (team is null || player is null)
       return null;
 
-    if (team.Status == "Defunct")
+    if (team.Status == Validation.Team.Status.Defunct)
       throw new InvalidOperationException(Error.Team.DefunctTeam);
 
     if (team.Roster.Count >= 12)
       throw new InvalidOperationException(Error.Team.MaxRosterExceeded);
 
-    player.RosterStatus = "Active";
+    player.RosterStatus = Validation.Player.RosterStatus.Active;
     player.TeamId = team.TeamId;
     player.JerseyNumber = request.JerseyNumber;
     await context.SaveChangesAsync();
@@ -173,18 +173,18 @@ public class TeamService(DataContext context, IMapper mapper) : ITeamService
     if (team is null)
       return null;
 
-    team.Status = "Defunct";
+    team.Status = Validation.Team.Status.Defunct;
     team.HeadCoach = null;
     team.Wins = 0;
     team.Losses = 0;
 
     // Cancel all team games
     var games = await context.Games
-      .Where(g => g.Status == "Upcoming" && (g.HomeTeamId == team.TeamId || g.AwayTeamId == team.TeamId))
+      .Where(g => g.Status == Validation.Game.Status.Upcoming && (g.HomeTeamId == team.TeamId || g.AwayTeamId == team.TeamId))
       .ToListAsync();
 
     foreach (var game in games)
-      game.Status = "Cancelled";
+      game.Status = Validation.Game.Status.Cancelled;
 
     // Remove all players from team
     var players = await context.Players
@@ -193,7 +193,7 @@ public class TeamService(DataContext context, IMapper mapper) : ITeamService
 
     foreach (var player in players)
     {
-      player.RosterStatus = "Free agent";
+      player.RosterStatus = Validation.Player.RosterStatus.FreeAgent;
       player.TeamId = null;
       player.JerseyNumber = null;
     }

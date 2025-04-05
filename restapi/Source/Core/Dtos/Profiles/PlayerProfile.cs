@@ -1,4 +1,5 @@
 using AutoMapper;
+using BasketballStatsApi.Core.Constants;
 using BasketballStatsApi.Core.Dtos.Requests;
 using BasketballStatsApi.Core.Dtos.Responses;
 using BasketballStatsApi.Core.Entities;
@@ -11,8 +12,8 @@ public class PlayerProfile : Profile
   public PlayerProfile()
   {
     CreateMap<CreatePlayerRequest, Player>()
-      .ForMember(dest => dest.InjuryStatus, opt => opt.MapFrom(_ => "Healthy"))
-      .ForMember(dest => dest.RosterStatus, opt => opt.MapFrom(_ => "Free agent"))
+      .ForMember(dest => dest.InjuryStatus, opt => opt.MapFrom(_ => Validation.Player.InjuryStatus.Healthy))
+      .ForMember(dest => dest.RosterStatus, opt => opt.MapFrom(_ => Validation.Player.RosterStatus.FreeAgent))
       .ForMember(dest => dest.GamesPlayed, opt => opt.MapFrom(_ => 0))
       .ForMember(dest => dest.Points, opt => opt.MapFrom(_ => 0.00000m))
       .ForMember(dest => dest.Assists, opt => opt.MapFrom(_ => 0.00000m))

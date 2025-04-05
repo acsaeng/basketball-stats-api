@@ -33,7 +33,14 @@ public class PlayerService(DataContext context, IMapper mapper) : IPlayerService
 
   public async Task<ICollection<PlayerResponse>> GetLeagueLeaders(string statType)
   {
-    if (!new List<string> { "points", "assists", "rebounds", "steals", "blocks", "turnovers" }.Contains(statType))
+    if (statType is not 
+          Validation.Player.StatTypes.Points or
+          Validation.Player.StatTypes.Assists or
+          Validation.Player.StatTypes.Rebounds or
+          Validation.Player.StatTypes.Steals or
+          Validation.Player.StatTypes.Blocks or
+          Validation.Player.StatTypes.Turnovers
+        )
       throw new ArgumentException(Error.Player.InvalidStatType);
 
     var players = await context.Players

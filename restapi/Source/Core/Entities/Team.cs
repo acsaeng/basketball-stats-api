@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using BasketballStatsApi.Core.Constants;
 using Microsoft.EntityFrameworkCore;
 
 namespace BasketballStatsApi.Core.Entities;
@@ -10,7 +11,10 @@ public class Team
   [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
   public int TeamId { get; set; }
 
-  [AllowedValues("Active", "Defunct")]
+  [AllowedValues(
+    Validation.Team.Status.Active,
+    Validation.Team.Status.Defunct
+  )]
   public string Status { get; set; }
 
   [MaxLength(50)]

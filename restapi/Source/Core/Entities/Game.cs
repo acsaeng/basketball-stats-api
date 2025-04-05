@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using BasketballStatsApi.Core.Constants;
 
 namespace BasketballStatsApi.Core.Entities;
 
@@ -9,7 +10,13 @@ public class Game
   [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
   public int GameId { get; set; }
 
-  [AllowedValues("Upcoming", "In progress", "Final", "Postponed", "Cancelled")]
+  [AllowedValues(
+    Validation.Game.Status.Upcoming,
+    Validation.Game.Status.InProgress,
+    Validation.Game.Status.Final,
+    Validation.Game.Status.Postponed,
+    Validation.Game.Status.Cancelled
+  )]
   public String Status { get; set; }
 
   public DateTime DateTime { get; set; }

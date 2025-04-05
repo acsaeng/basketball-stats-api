@@ -1,10 +1,14 @@
 using System.ComponentModel.DataAnnotations;
+using BasketballStatsApi.Core.Constants;
 
 namespace BasketballStatsApi.Core.Dtos.Requests;
 
 public class UpdatePlayerRosterStatusRequest
 {
   [Required]
-  [AllowedValues("Free agent", "Retired", ErrorMessage = "Field must be one of ['Free agent', 'Retired']")]
+  [AllowedValues(
+    Validation.Player.RosterStatus.FreeAgent,
+    Validation.Player.RosterStatus.Retired,
+    ErrorMessage = Error.Player.InvalidRosterStatus)]
   public string RosterStatus { get; set; }
 }

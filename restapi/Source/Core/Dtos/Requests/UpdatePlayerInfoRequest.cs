@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using BasketballStatsApi.Core.Constants;
 
 namespace BasketballStatsApi.Core.Dtos.Requests;
 
@@ -24,6 +25,13 @@ public class UpdatePlayerInfoRequest
   public int Weight { get; set; }
 
   [Required]
-  [AllowedValues("PG", "SG", "SF", "PF", "C", ErrorMessage = "Field must be one of ['PG', 'SG', 'SF', 'PF', 'C']")]
+  [AllowedValues(
+    Validation.Player.Position.PointGuard,
+    Validation.Player.Position.ShootingGuard,
+    Validation.Player.Position.SmallForward,
+    Validation.Player.Position.PowerForward,
+    Validation.Player.Position.Centre,
+    ErrorMessage = Error.Player.InvalidPosition
+  )]
   public string Position { get; set; }
 }

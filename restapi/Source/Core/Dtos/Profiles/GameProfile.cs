@@ -1,4 +1,5 @@
 using AutoMapper;
+using BasketballStatsApi.Core.Constants;
 using BasketballStatsApi.Core.Dtos.Requests;
 using BasketballStatsApi.Core.Dtos.Responses;
 using BasketballStatsApi.Core.Entities;
@@ -10,7 +11,7 @@ public class GameProfile : Profile
   public GameProfile()
   {
     CreateMap<CreateGameRequest, Game>()
-      .ForMember(dest => dest.Status, opt => opt.MapFrom(_ => "Upcoming"));
+      .ForMember(dest => dest.Status, opt => opt.MapFrom(_ => Validation.Game.Status.Upcoming));
 
     CreateMap<UpdateGameInfoRequest, Game>();
 

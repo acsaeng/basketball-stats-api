@@ -4,6 +4,9 @@ public static class Error
 {
   public static class Player
   {
+    public const string InvalidInjuryStatus = "Field must be one of ['Healthy', 'Day-to-day', 'Out']";
+    public const string InvalidRosterStatus = "Field must be one of ['Free agent', 'Retired']";
+    public const string InvalidPosition = "Field must be one of ['PG', 'SG', 'SF', 'PF', 'C']";
     public const string InvalidStatType = "Argument must be one of ['points', 'assists', 'rebounds', 'steals', 'blocks', 'turnovers']";
   }
 
@@ -17,6 +20,7 @@ public static class Error
   public static class Game
   {
     public const string InvalidState = "Cannot update game based on current state";
+    public const string InvalidStatus = "Field must be one of ['Upcoming', 'In progress', 'Final', 'Postponed', 'Cancelled']";
     public const string InvalidDate = "Cannot update game at this current date and time";
     public const string InvalidPlayer = "One of the players listed is not on either participating teams";
     public const string PlayerNotFound = "One of the players could not be found";
