@@ -77,14 +77,12 @@ public class PlayerService(DataContext context, IMapper mapper) : IPlayerService
     if (player is null)
       return null;
 
-    var updatedPlayer = mapper.Map<UpdatePlayerInfoRequest, Player>(request);
-
-    player.FirstName = updatedPlayer.FirstName;
-    player.LastName = updatedPlayer.LastName;
-    player.Dob = updatedPlayer.Dob;
-    player.Height = updatedPlayer.Height;
-    player.Weight = updatedPlayer.Weight;
-    player.Position = updatedPlayer.Position;
+    player.FirstName = request.FirstName;
+    player.LastName = request.LastName;
+    player.Dob = request.Dob;
+    player.Height = request.Height;
+    player.Weight = request.Weight;
+    player.Position = request.Position;
     await context.SaveChangesAsync();
 
     var response = mapper.Map<Player, PlayerResponse>(player);
@@ -107,9 +105,7 @@ public class PlayerService(DataContext context, IMapper mapper) : IPlayerService
     if (player is null)
       return null;
 
-    var updatedPlayer = mapper.Map<UpdatePlayerInjuryRequest, Player>(request);
-
-    player.InjuryStatus = updatedPlayer.InjuryStatus;
+    player.InjuryStatus = request.InjuryStatus;
     await context.SaveChangesAsync();
 
     var response = mapper.Map<Player, PlayerResponse>(player);
@@ -132,9 +128,7 @@ public class PlayerService(DataContext context, IMapper mapper) : IPlayerService
     if (player is null)
       return null;
 
-    var updatedPlayer = mapper.Map<UpdatePlayerRosterStatusRequest, Player>(request);
-
-    player.RosterStatus = updatedPlayer.RosterStatus;
+    player.RosterStatus = request.RosterStatus;
     player.TeamId = null;
     player.JerseyNumber = null;
     await context.SaveChangesAsync();

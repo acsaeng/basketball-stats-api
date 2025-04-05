@@ -84,15 +84,14 @@ public class TeamService(DataContext context, IMapper mapper) : ITeamService
 
   public async Task<TeamResponse> CreateTeam(CreateTeamRequest request)
   {
-    var team = mapper.Map<CreateTeamRequest, Team>(request);
-
     var invalidTeams = await context.Teams
-      .Where(t => t.Abbreviation == team.Abbreviation || t.Name == team.Name)
+      .Where(t => t.Abbreviation == request.Abbreviation || t.Name == request.Name)
       .ToListAsync();
 
-    if (invalidTeams.Count != 0)
+    if (invalidTeams.Count > 0)
       throw new InvalidOperationException();
 
+    var team = mapper.Map<CreateTeamRequest, Team>(request);
     context.Teams.Add(team);
     await context.SaveChangesAsync();
 
@@ -132,7 +131,6 @@ public class TeamService(DataContext context, IMapper mapper) : ITeamService
 
   public async Task<TeamResponse?> AddPlayerToRoster(int teamId, AddPlayerToRosterRequest request)
   {
-    var updatedPlayer = mapper.Map<AddPlayerToRosterRequest, Player>(request);
     var team = await context.Teams
       .Where(t => t.TeamId == teamId)
       .Include(t => t.Roster)
@@ -141,7 +139,7 @@ public class TeamService(DataContext context, IMapper mapper) : ITeamService
       .Include(t => t.AwayGames)
         .ThenInclude(g => g.HomeTeam)
       .SingleOrDefaultAsync();
-    var player = await context.Players.FindAsync(updatedPlayer.PlayerId);
+    var player = await context.Players.FindAsync(request.PlayerId);
 
     if (team is null || player is null)
       return null;
@@ -152,7 +150,7 @@ public class TeamService(DataContext context, IMapper mapper) : ITeamService
 
     player.RosterStatus = "Active";
     player.TeamId = team.TeamId;
-    player.JerseyNumber = updatedPlayer.JerseyNumber;
+    player.JerseyNumber = request.JerseyNumber;
     await context.SaveChangesAsync();
 
     var response = mapper.Map<Team, TeamResponse>(team);
