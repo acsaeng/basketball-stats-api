@@ -12,10 +12,14 @@ public class GameProfile : Profile
   {
     CreateMap<CreateGameRequest, Game>()
       .ForMember(dest => dest.Status, opt => opt.MapFrom(_ => Validation.Game.Status.Upcoming));
+    
+    CreateMap<Game, TeamResponsePreviousGame>()
+      .ForMember(dest => dest.HomeTeam, opt => opt.MapFrom(src => src.HomeTeam.Abbreviation))
+      .ForMember(dest => dest.AwayTeam, opt => opt.MapFrom(src => src.AwayTeam.Abbreviation));
 
-    CreateMap<UpdateGameInfoRequest, Game>();
-
-    CreateMap<UpdateGameStatusRequest, Game>();
+    CreateMap<Game, TeamResponseNextGame>()
+      .ForMember(dest => dest.HomeTeam, opt => opt.MapFrom(src => src.HomeTeam.Abbreviation))
+      .ForMember(dest => dest.AwayTeam, opt => opt.MapFrom(src => src.AwayTeam.Abbreviation));
 
     CreateMap<Game, GameResponse>()
       .ForMember(dest => dest.HomeTeam, opt => opt.MapFrom(src => src.HomeTeam.Abbreviation))
@@ -24,13 +28,5 @@ public class GameProfile : Profile
         opt => opt.MapFrom(src => src.PlayerStats.Where(ps => ps.Player.TeamId == src.HomeTeam.TeamId)))
       .ForMember(dest => dest.AwayTeamPlayerStats,
         opt => opt.MapFrom(src => src.PlayerStats.Where(ps => ps.Player.TeamId == src.AwayTeam.TeamId)));
-
-    CreateMap<Game, TeamResponsePreviousGame>()
-      .ForMember(dest => dest.HomeTeam, opt => opt.MapFrom(src => src.HomeTeam.Abbreviation))
-      .ForMember(dest => dest.AwayTeam, opt => opt.MapFrom(src => src.AwayTeam.Abbreviation));
-
-    CreateMap<Game, TeamResponseNextGame>()
-      .ForMember(dest => dest.HomeTeam, opt => opt.MapFrom(src => src.HomeTeam.Abbreviation))
-      .ForMember(dest => dest.AwayTeam, opt => opt.MapFrom(src => src.AwayTeam.Abbreviation));
   }
 }

@@ -15,8 +15,6 @@ public class TeamProfile : Profile
       .ForMember(dest => dest.Wins, opt => opt.MapFrom(_ => 0))
       .ForMember(dest => dest.Losses, opt => opt.MapFrom(_ => 0));
 
-    CreateMap<UpdateTeamRequest, Team>();
-
     CreateMap<Team, TeamResponse>()
       .ForMember(dest => dest.GamesPlayed, opt => opt.MapFrom(src => src.Wins + src.Losses))
       .ForMember(dest => dest.PreviousGame,
