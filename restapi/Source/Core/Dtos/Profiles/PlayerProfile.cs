@@ -34,6 +34,8 @@ public class PlayerProfile : Profile
       .ForMember(dest => dest.Turnovers, opt => opt.MapFrom(src => Math.Round(src.Turnovers, 1)))
       .ForMember(dest => dest.LastGame, opt => opt.MapFrom(src => src.GameStats.Count != 0 ? src.GameStats.Last() : null));
 
+    CreateMap<Player, TeamResponseRoster>();
+
     CreateMap<PlayerGame, PlayerResponseGameStats>()
       .ForMember(dest => dest.Opponent, opt => opt.MapFrom(src =>
         src.Player.TeamId == src.Game.HomeTeamId ?
