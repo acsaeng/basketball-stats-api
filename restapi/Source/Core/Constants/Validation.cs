@@ -45,6 +45,8 @@ public static class Validation
       public const string Active = "Active";
       public const string Defunct = "Defunct";
     }
+
+    public const int MaxTeamRoster = 12;
   }
 
   public static class Game

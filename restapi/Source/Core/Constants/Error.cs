@@ -12,9 +12,10 @@ public static class Error
 
   public static class Team
   {
-    public const string DefunctTeam = "Cannot modify an inactive team";
+    public const string DefunctTeam = "Cannot perform actions to an inactive team";
     public const string InvalidNameOrAbbr = "Team cannot have the same name or abbreviation as an existing team";
     public const string MaxRosterExceeded = "Maximum number of players on roster exceeded";
+    public const string InvalidJerseyNumber = "The selected jersey number is already taken by another player on the team";
   }
 
   public static class Game
@@ -22,6 +23,7 @@ public static class Error
     public const string InvalidState = "Cannot update game based on current state";
     public const string InvalidStatus = "Field must be one of ['Upcoming', 'In progress', 'Final', 'Postponed', 'Cancelled']";
     public const string InvalidDate = "Cannot update game at this current date and time";
+    public const string InvalidDateRange = "Start date must occur before end date";
     public const string InvalidPlayer = "One of the players listed is not on either participating teams";
     public const string PlayerNotFound = "One of the players could not be found";
     public const string TeamNotFound = "At least one of the teams could not be found";
