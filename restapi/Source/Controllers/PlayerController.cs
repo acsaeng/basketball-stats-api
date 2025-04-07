@@ -54,9 +54,9 @@ public class PlayerController(IPlayerService playerService) : ControllerBase
   }
 
   [HttpPost("injury/{playerId}")]
-  public async Task<ActionResult<PlayerResponse?>> UpdatePlayerInjury(int playerId, [FromBody] UpdatePlayerInjuryRequest request)
+  public async Task<ActionResult<PlayerResponse?>> UpdatePlayerInjuryStatus(int playerId, [FromBody] UpdatePlayerInjuryRequest request)
   {
-    var response = await playerService.UpdatePlayerInjury(playerId, request);
+    var response = await playerService.UpdatePlayerInjuryStatus(playerId, request);
 
     if (response is null)
       return NotFound();

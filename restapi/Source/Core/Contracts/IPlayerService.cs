@@ -14,7 +14,7 @@ public interface IPlayerService
 
   Task<PlayerResponse?> UpdatePlayerInfo(int playerId, UpdatePlayerInfoRequest request);
 
-  Task<PlayerResponse?> UpdatePlayerInjury(int playerId, UpdatePlayerInjuryRequest request);
+  Task<PlayerResponse?> UpdatePlayerInjuryStatus(int playerId, UpdatePlayerInjuryRequest request);
 
   Task<PlayerResponse?> UpdatePlayerRosterStatus(int playerId, UpdatePlayerRosterStatusRequest request);
 }

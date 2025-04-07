@@ -41,7 +41,7 @@ public class PlayerService(DataContext context, IMapper mapper) : IPlayerService
           Validation.Player.StatTypes.Blocks or
           Validation.Player.StatTypes.Turnovers
         )
-      throw new ArgumentException(Error.Player.InvalidStatType);
+      throw new InvalidOperationException(Error.Player.InvalidStatType);
 
     var players = await context.Players
       .OrderByDescending(p => EF.Property<object>(p, char.ToUpper(statType.First()) + statType.Substring(1)))
@@ -97,7 +97,7 @@ public class PlayerService(DataContext context, IMapper mapper) : IPlayerService
     return response;
   }
 
-  public async Task<PlayerResponse?> UpdatePlayerInjury(int playerId, UpdatePlayerInjuryRequest request)
+  public async Task<PlayerResponse?> UpdatePlayerInjuryStatus(int playerId, UpdatePlayerInjuryRequest request)
   {
     var player = await context.Players
       .Where(p => p.PlayerId == playerId)
