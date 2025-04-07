@@ -9,7 +9,7 @@ public interface IGameService
 
   Task<ICollection<GameResponse>> GetGamesByDateRange(GetGamesByDateRangeRequest request);
 
-  Task<GameResponse?> CreateGame(CreateGameRequest request);
+  Task<GameResponse> CreateGame(CreateGameRequest request);
 
   Task<GameResponse?> UpdateGameInfo(int gameId, UpdateGameInfoRequest request);
 

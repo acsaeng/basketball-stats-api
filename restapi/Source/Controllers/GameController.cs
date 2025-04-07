@@ -23,8 +23,15 @@ public class GameController(IGameService gameService) : ControllerBase
   [HttpGet]
   public async Task<ActionResult<ICollection<GameResponse>>> GetGamesByDateRange([FromBody] GetGamesByDateRangeRequest request)
   {
-    var response = await gameService.GetGamesByDateRange(request);
-    return Ok(response);
+    try
+    {
+      var response = await gameService.GetGamesByDateRange(request);
+      return Ok(response);
+    }
+    catch (InvalidOperationException error)
+    {
+      return BadRequest(error.Message);
+    }
   }
 
   [HttpPost]
@@ -33,10 +40,6 @@ public class GameController(IGameService gameService) : ControllerBase
     try
     {
       var response = await gameService.CreateGame(request);
-
-      if (response is null)
-        return NotFound();
-
       return CreatedAtAction(nameof(GetGameById), new { gameId = response!.GameId }, response);
     }
     catch (InvalidOperationException error)
@@ -57,7 +60,7 @@ public class GameController(IGameService gameService) : ControllerBase
 
       return Ok(response);
     }
-    catch (Exception error) when (error is ArgumentOutOfRangeException or InvalidOperationException)
+    catch (InvalidOperationException error)
     {
       return BadRequest(error.Message);
     }
@@ -93,7 +96,7 @@ public class GameController(IGameService gameService) : ControllerBase
 
       return Ok(response);
     }
-    catch (Exception error) when (error is ArgumentOutOfRangeException or ArgumentNullException or InvalidOperationException)
+    catch (InvalidOperationException error)
     {
       return BadRequest(error.Message);
     }

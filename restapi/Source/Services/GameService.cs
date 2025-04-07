@@ -31,6 +31,9 @@ public class GameService(DataContext context, IMapper mapper) : IGameService
 
   public async Task<ICollection<GameResponse>> GetGamesByDateRange(GetGamesByDateRangeRequest request)
   {
+    if (request.DateStart > request.DateEnd)
+      throw new InvalidOperationException(Error.Game.InvalidDateRange);
+
     var games = await context.Games
       .Where(g => DateOnly.FromDateTime(g.DateTime.Date) >= request.DateStart &&
                   DateOnly.FromDateTime(g.DateTime.Date) <= request.DateEnd)
@@ -44,16 +47,16 @@ public class GameService(DataContext context, IMapper mapper) : IGameService
     return response;
   }
 
-  public async Task<GameResponse?> CreateGame(CreateGameRequest request)
+  public async Task<GameResponse> CreateGame(CreateGameRequest request)
   {
     if (request.DateTime.Date < DateTime.Today)
-      throw new ArgumentOutOfRangeException(Error.Game.InvalidDate);
+      throw new InvalidOperationException(Error.Game.InvalidDate);
 
     var homeTeam = await context.Teams.FindAsync(request.HomeTeamId);
     var awayTeam = await context.Teams.FindAsync(request.AwayTeamId);
 
     if (homeTeam is null || awayTeam is null)
-      throw new ArgumentNullException(Error.Game.TeamNotFound);
+      throw new InvalidOperationException(Error.Game.TeamNotFound);
 
     if (homeTeam.Status == Validation.Team.Status.Defunct || awayTeam.Status == Validation.Team.Status.Defunct)
      throw new InvalidOperationException(Error.Team.DefunctTeam);
@@ -68,9 +71,6 @@ public class GameService(DataContext context, IMapper mapper) : IGameService
 
   public async Task<GameResponse?> UpdateGameInfo(int gameId, UpdateGameInfoRequest request)
   {
-    if (request.DateTime.Date < DateTime.Today)
-      throw new ArgumentOutOfRangeException(Error.Game.InvalidDate);
-
     var game = await context.Games.FindAsync(gameId);
 
     if (game is null)
@@ -78,6 +78,9 @@ public class GameService(DataContext context, IMapper mapper) : IGameService
 
     if (game.Status is not Validation.Game.Status.Upcoming)
       throw new InvalidOperationException(Error.Game.InvalidState);
+
+    if (request.DateTime.Date < DateTime.Today)
+      throw new InvalidOperationException(Error.Game.InvalidDate);
 
     var homeTeam = await context.Teams.FindAsync(request.HomeTeamId);
     var awayTeam = await context.Teams.FindAsync(request.AwayTeamId);
@@ -106,6 +109,9 @@ public class GameService(DataContext context, IMapper mapper) : IGameService
 
     if (game.Status is Validation.Game.Status.Final or Validation.Game.Status.Cancelled)
       throw new InvalidOperationException(Error.Game.InvalidState);
+    
+    if (request.Status is Validation.Game.Status.InProgress && DateTime.Now < game.DateTime)
+      throw new InvalidOperationException(Error.Game.InvalidDate);
 
     game.Status = request.Status;
     await context.SaveChangesAsync();
@@ -127,7 +133,7 @@ public class GameService(DataContext context, IMapper mapper) : IGameService
       return null;
 
     if (DateTime.Now < game.DateTime)
-      throw new ArgumentOutOfRangeException(Error.Game.InvalidDate);
+      throw new InvalidOperationException(Error.Game.InvalidDate);
 
     if (game.Status is not Validation.Game.Status.InProgress)
       throw new InvalidOperationException(Error.Game.InvalidState);
@@ -144,7 +150,7 @@ public class GameService(DataContext context, IMapper mapper) : IGameService
         .SingleOrDefaultAsync();
 
       if (player is null)
-        throw new ArgumentNullException(Error.Game.PlayerNotFound);
+        throw new InvalidOperationException(Error.Game.PlayerNotFound);
 
       if (player.TeamId != game.HomeTeamId && player.TeamId != game.AwayTeamId)
         throw new InvalidOperationException(Error.Game.InvalidPlayer);
@@ -195,7 +201,7 @@ public class GameService(DataContext context, IMapper mapper) : IGameService
       .SingleOrDefaultAsync();
 
     if (homeTeam is null || awayTeam is null)
-      throw new ArgumentNullException(Error.Game.TeamNotFound);
+      throw new InvalidOperationException(Error.Game.TeamNotFound);
 
     if (game.HomeTeamPoints > game.AwayTeamPoints)
     {

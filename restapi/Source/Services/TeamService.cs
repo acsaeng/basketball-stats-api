@@ -71,6 +71,7 @@ public class TeamService(DataContext context, IMapper mapper) : ITeamService
   public async Task<ICollection<TeamResponse>> GetTeamStandings()
   {
     var teams = await context.Teams
+      .Where(t => t.Status == Validation.Team.Status.Active)
       .OrderByDescending(t => t.WinPercentage)
       .Include(t => t.Roster)
       .Include(t => t.HomeGames)
@@ -90,7 +91,7 @@ public class TeamService(DataContext context, IMapper mapper) : ITeamService
       .ToListAsync();
 
     if (invalidTeams.Count > 0)
-      throw new ArgumentException(Error.Team.InvalidNameOrAbbr);
+      throw new InvalidOperationException(Error.Team.InvalidNameOrAbbr);
 
     var team = mapper.Map<CreateTeamRequest, Team>(request);
     context.Teams.Add(team);
@@ -139,16 +140,23 @@ public class TeamService(DataContext context, IMapper mapper) : ITeamService
       .Include(t => t.AwayGames)
         .ThenInclude(g => g.HomeTeam)
       .SingleOrDefaultAsync();
-    var player = await context.Players.FindAsync(request.PlayerId);
 
-    if (team is null || player is null)
-      return null;
+    if (team is null)
+      throw new InvalidOperationException(Error.Game.TeamNotFound);
 
     if (team.Status == Validation.Team.Status.Defunct)
       throw new InvalidOperationException(Error.Team.DefunctTeam);
 
-    if (team.Roster.Count >= 12)
+    if (team.Roster.Count >= Validation.Team.MaxTeamRoster)
       throw new InvalidOperationException(Error.Team.MaxRosterExceeded);
+    
+    if (team.Roster.Any(p => p.JerseyNumber == request.JerseyNumber))
+      throw new InvalidOperationException(Error.Team.InvalidJerseyNumber);
+
+    var player = await context.Players.FindAsync(request.PlayerId);
+
+    if (player is null)
+      throw new InvalidOperationException(Error.Game.PlayerNotFound);
 
     player.RosterStatus = Validation.Player.RosterStatus.Active;
     player.TeamId = team.TeamId;
