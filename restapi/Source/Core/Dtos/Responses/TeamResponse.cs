@@ -30,10 +30,6 @@ public class TeamResponse
   public int Losses { get; set; }
 
   public decimal WinPercentage { get; set; }
-
-  public TeamResponsePreviousGame PreviousGame { get; set; }
-
-  public TeamResponseNextGame NextGame { get; set; }
 }
 
 public class TeamResponseRoster
@@ -55,36 +51,4 @@ public class TeamResponseRoster
   public string? InjuryStatus { get; set; }
 
   public int? JerseyNumber { get; set; }
-}
-
-public class TeamResponsePreviousGame
-{
-  public int GameId { get; set; }
-
-  public string Status { get; set; }
-
-  public DateTime DateTime { get; set; }
-
-  public string HomeTeam { get; set; }
-
-  public string AwayTeam { get; set; }
-
-  public bool DidHomeTeamWin { get; set; }
-
-  public int HomeTeamPoints { get; set; }
-
-  public int AwayTeamPoints { get; set; }
-}
-
-public class TeamResponseNextGame
-{
-  public int GameId { get; set; }
-
-  public string Status { get; set; }
-
-  public DateTime DateTime { get; set; }
-
-  public string HomeTeam { get; set; }
-
-  public string AwayTeam { get; set; }
 }

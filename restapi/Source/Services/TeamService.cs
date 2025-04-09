@@ -16,10 +16,6 @@ public class TeamService(DataContext context, IMapper mapper) : ITeamService
     var team = await context.Teams
       .Where(t => t.TeamId == teamId)
       .Include(t => t.Roster)
-      .Include(t => t.HomeGames)
-        .ThenInclude(g => g.AwayTeam)
-      .Include(t => t.AwayGames)
-        .ThenInclude(g => g.HomeTeam)
       .SingleOrDefaultAsync();
 
     if (team is null)
@@ -39,12 +35,6 @@ public class TeamService(DataContext context, IMapper mapper) : ITeamService
     var players = await context.Players
       .Where(p => p.TeamId == team.TeamId)
       .Include(p => p.Team)
-      .Include(p => p.GameStats)
-        .ThenInclude(gs => gs.Game)
-          .ThenInclude(g => g.HomeTeam)
-      .Include(p => p.GameStats)
-        .ThenInclude(gs => gs.Game)
-          .ThenInclude(g => g.AwayTeam)
       .ToListAsync();
 
     var response = mapper.Map<ICollection<Player>, ICollection<PlayerResponse>>(players);
@@ -85,10 +75,6 @@ public class TeamService(DataContext context, IMapper mapper) : ITeamService
       .Where(t => t.Status == Validation.Team.Status.Active)
       .OrderByDescending(t => t.WinPercentage)
       .Include(t => t.Roster)
-      .Include(t => t.HomeGames)
-        .ThenInclude(g => g.AwayTeam)
-      .Include(t => t.AwayGames)
-        .ThenInclude(g => g.HomeTeam)
       .ToListAsync();
 
     var response = mapper.Map<ICollection<Team>, ICollection<TeamResponse>>(teams);
@@ -117,10 +103,6 @@ public class TeamService(DataContext context, IMapper mapper) : ITeamService
     var team = await context.Teams
       .Where(t => t.TeamId == teamId)
       .Include(t => t.Roster)
-      .Include(t => t.HomeGames)
-        .ThenInclude(g => g.AwayTeam)
-      .Include(t => t.AwayGames)
-        .ThenInclude(g => g.HomeTeam)
       .SingleOrDefaultAsync();
 
     if (team is null)
@@ -128,6 +110,13 @@ public class TeamService(DataContext context, IMapper mapper) : ITeamService
 
     if (team.Status == Validation.Team.Status.Defunct)
       throw new InvalidOperationException(Error.Team.InactiveTeam);
+
+    var invalidTeams = await context.Teams
+      .Where(t => t.TeamId != team.TeamId && (t.Name == request.Name || t.Abbreviation == request.Abbreviation))
+      .ToListAsync();
+
+    if (invalidTeams.Count > 0)
+      throw new InvalidOperationException(Error.Team.InvalidNameOrAbbr);
 
     team.Locale = request.Locale;
     team.Name = request.Name;
@@ -146,10 +135,6 @@ public class TeamService(DataContext context, IMapper mapper) : ITeamService
     var team = await context.Teams
       .Where(t => t.TeamId == teamId)
       .Include(t => t.Roster)
-      .Include(t => t.HomeGames)
-        .ThenInclude(g => g.AwayTeam)
-      .Include(t => t.AwayGames)
-        .ThenInclude(g => g.HomeTeam)
       .SingleOrDefaultAsync();
 
     if (team is null)
@@ -183,10 +168,6 @@ public class TeamService(DataContext context, IMapper mapper) : ITeamService
     var team = await context.Teams
       .Where(t => t.TeamId == teamId)
       .Include(t => t.Roster)
-      .Include(t => t.HomeGames)
-        .ThenInclude(g => g.AwayTeam)
-      .Include(t => t.AwayGames)
-        .ThenInclude(g => g.HomeTeam)
       .SingleOrDefaultAsync();
 
     if (team is null)

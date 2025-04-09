@@ -16,16 +16,6 @@ public class TeamProfile : Profile
       .ForMember(dest => dest.Losses, opt => opt.MapFrom(_ => 0));
 
     CreateMap<Team, TeamResponse>()
-      .ForMember(dest => dest.GamesPlayed, opt => opt.MapFrom(src => src.Wins + src.Losses))
-      .ForMember(dest => dest.PreviousGame,
-        opt => opt.MapFrom(src =>
-          src.HomeGames
-            .Concat(src.AwayGames)
-            .LastOrDefault(g => g.Status == Validation.Game.Status.Final && g.DateTime < DateTime.Now)))
-      .ForMember(dest => dest.NextGame,
-        opt => opt.MapFrom(src =>
-          src.HomeGames
-            .Concat(src.AwayGames)
-            .FirstOrDefault(g => g.Status == Validation.Game.Status.Upcoming && g.DateTime >= DateTime.Now)));
+      .ForMember(dest => dest.GamesPlayed, opt => opt.MapFrom(src => src.Wins + src.Losses));
   }
 }
