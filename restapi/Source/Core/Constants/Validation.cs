@@ -14,7 +14,7 @@ public static class Validation
     public static class RosterStatus
     {
       public const string Active = "Active";
-      public const string FreeAgent = "Free Agent";
+      public const string FreeAgent = "Free agent";
       public const string Retired = "Retired";
     }
 

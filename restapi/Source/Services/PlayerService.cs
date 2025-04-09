@@ -53,9 +53,9 @@ public class PlayerService(DataContext context, IMapper mapper) : IPlayerService
       .Include(p => p.GameStats)
         .ThenInclude(gs => gs.Game)
           .ThenInclude(g => g.HomeTeam)
-        .Include(p => p.GameStats)
-          .ThenInclude(gs => gs.Game)
-            .ThenInclude(g => g.AwayTeam)
+      .Include(p => p.GameStats)
+        .ThenInclude(gs => gs.Game)
+          .ThenInclude(g => g.AwayTeam)
       .ToListAsync();
 
     var response = mapper.Map<ICollection<Player>, ICollection<PlayerResponse>>(players);
