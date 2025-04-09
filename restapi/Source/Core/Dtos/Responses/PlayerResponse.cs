@@ -37,25 +37,4 @@ public class PlayerResponse
   public decimal Blocks { get; set; }
 
   public decimal Turnovers { get; set; }
-
-  public PlayerResponseGameStats? LastGame { get; set; }
-}
-
-public class PlayerResponseGameStats
-{
-  public string? Opponent { get; set; }
-
-  public bool DidWin { get; set; }
-
-  public int Points { get; set; }
-
-  public int Assists { get; set; }
-
-  public int Rebounds { get; set; }
-
-  public int Steals { get; set; }
-
-  public int Blocks { get; set; }
-
-  public int Turnovers { get; set; }
 }

@@ -31,21 +31,9 @@ public class PlayerProfile : Profile
       .ForMember(dest => dest.Rebounds, opt => opt.MapFrom(src => Math.Round(src.Rebounds, 1)))
       .ForMember(dest => dest.Steals, opt => opt.MapFrom(src => Math.Round(src.Steals, 1)))
       .ForMember(dest => dest.Blocks, opt => opt.MapFrom(src => Math.Round(src.Blocks, 1)))
-      .ForMember(dest => dest.Turnovers, opt => opt.MapFrom(src => Math.Round(src.Turnovers, 1)))
-      .ForMember(dest => dest.LastGame, opt => opt.MapFrom(src => src.GameStats.Count != 0 ? src.GameStats.Last() : null));
+      .ForMember(dest => dest.Turnovers, opt => opt.MapFrom(src => Math.Round(src.Turnovers, 1)));
 
     CreateMap<Player, TeamResponseRoster>();
-
-    CreateMap<PlayerGame, PlayerResponseGameStats>()
-      .ForMember(dest => dest.Opponent, opt => opt.MapFrom(src =>
-        src.Player.TeamId == src.Game.HomeTeamId ?
-          src.Game.AwayTeam.Abbreviation :
-          src.Game.HomeTeam.Abbreviation
-      ))
-      .ForMember(dest => dest.DidWin, opt => opt.MapFrom(src =>
-        (src.Player.TeamId == src.Game.HomeTeamId && (bool) src.Game.DidHomeTeamWin!) ||
-        (src.Player.TeamId == src.Game.AwayTeamId && (bool) !src.Game.DidHomeTeamWin!)
-      ));
 
     CreateMap<PlayerGame, GameResponsePlayerStats>()
       .ForMember(dest => dest.FirstName, opt => opt.MapFrom(src => src.Player.FirstName))

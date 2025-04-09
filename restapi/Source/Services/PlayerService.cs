@@ -16,12 +16,6 @@ public class PlayerService(DataContext context, IMapper mapper) : IPlayerService
     var player = await context.Players
       .Where(p => p.PlayerId == playerId)
       .Include(p => p.Team)
-      .Include(p => p.GameStats)
-        .ThenInclude(gs => gs.Game)
-          .ThenInclude(g => g.HomeTeam)
-      .Include(p => p.GameStats)
-        .ThenInclude(gs => gs.Game)
-          .ThenInclude(g => g.AwayTeam)
       .SingleOrDefaultAsync();
 
     if (player == null)
@@ -50,12 +44,6 @@ public class PlayerService(DataContext context, IMapper mapper) : IPlayerService
       .OrderByDescending(p => EF.Property<object>(p, char.ToUpper(statType.First()) + statType.Substring(1)))
       .Take(5)
       .Include(p => p.Team)
-      .Include(p => p.GameStats)
-        .ThenInclude(gs => gs.Game)
-          .ThenInclude(g => g.HomeTeam)
-      .Include(p => p.GameStats)
-        .ThenInclude(gs => gs.Game)
-          .ThenInclude(g => g.AwayTeam)
       .ToListAsync();
 
     var response = mapper.Map<ICollection<Player>, ICollection<PlayerResponse>>(players);
@@ -77,12 +65,6 @@ public class PlayerService(DataContext context, IMapper mapper) : IPlayerService
     var player = await context.Players
       .Where(p => p.PlayerId == playerId)
       .Include(p => p.Team)
-      .Include(p => p.GameStats)
-        .ThenInclude(gs => gs.Game)
-          .ThenInclude(g => g.HomeTeam)
-      .Include(p => p.GameStats)
-        .ThenInclude(gs => gs.Game)
-          .ThenInclude(g => g.AwayTeam)
       .SingleOrDefaultAsync();
 
     if (player is null)
@@ -105,12 +87,6 @@ public class PlayerService(DataContext context, IMapper mapper) : IPlayerService
     var player = await context.Players
       .Where(p => p.PlayerId == playerId)
       .Include(p => p.Team)
-      .Include(p => p.GameStats)
-        .ThenInclude(gs => gs.Game)
-          .ThenInclude(g => g.HomeTeam)
-      .Include(p => p.GameStats)
-        .ThenInclude(gs => gs.Game)
-          .ThenInclude(g => g.AwayTeam)
       .SingleOrDefaultAsync();
 
     if (player is null)
@@ -131,12 +107,6 @@ public class PlayerService(DataContext context, IMapper mapper) : IPlayerService
     var player = await context.Players
       .Where(p => p.PlayerId == playerId)
       .Include(p => p.Team)
-      .Include(p => p.GameStats)
-        .ThenInclude(gs => gs.Game)
-          .ThenInclude(g => g.HomeTeam)
-      .Include(p => p.GameStats)
-        .ThenInclude(gs => gs.Game)
-          .ThenInclude(g => g.AwayTeam)
       .SingleOrDefaultAsync();
 
     if (player is null)
