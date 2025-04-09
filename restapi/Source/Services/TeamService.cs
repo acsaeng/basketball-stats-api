@@ -186,10 +186,8 @@ public class TeamService(DataContext context, IMapper mapper) : ITeamService
 
     team.Status = Validation.Team.Status.Defunct;
     team.HeadCoach = null;
-    team.Wins = 0;
-    team.Losses = 0;
 
-    // Cancel all team games
+    // Cancel all future games
     var games = await context.Games
       .Where(g => g.Status == Validation.Game.Status.Upcoming && (g.HomeTeamId == team.TeamId || g.AwayTeamId == team.TeamId))
       .ToListAsync();
