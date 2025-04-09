@@ -108,7 +108,7 @@ public class TeamService(DataContext context, IMapper mapper) : ITeamService
     if (team is null)
       return null;
 
-    if (team.Status == Validation.Team.Status.Defunct)
+    if (team.Status is Validation.Team.Status.Defunct)
       throw new InvalidOperationException(Error.Team.InactiveTeam);
 
     var invalidTeams = await context.Teams
@@ -140,7 +140,7 @@ public class TeamService(DataContext context, IMapper mapper) : ITeamService
     if (team is null)
       throw new InvalidOperationException(Error.Game.TeamNotFound);
 
-    if (team.Status == Validation.Team.Status.Defunct)
+    if (team.Status is Validation.Team.Status.Defunct)
       throw new InvalidOperationException(Error.Team.InactiveTeam);
 
     if (team.Roster.Count >= Validation.Team.MaxTeamRoster)

@@ -18,7 +18,7 @@ public class PlayerService(DataContext context, IMapper mapper) : IPlayerService
       .Include(p => p.Team)
       .SingleOrDefaultAsync();
 
-    if (player == null)
+    if (player is null)
       return null;
 
     var response = mapper.Map<Player, PlayerResponse>(player);
@@ -92,7 +92,7 @@ public class PlayerService(DataContext context, IMapper mapper) : IPlayerService
     if (player is null)
       return null;
     
-    if (player.RosterStatus == Validation.Player.RosterStatus.Retired)
+    if (player.RosterStatus is Validation.Player.RosterStatus.Retired)
       throw new InvalidOperationException(Error.Player.InactivePlayer);
 
     player.InjuryStatus = request.InjuryStatus;

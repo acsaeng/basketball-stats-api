@@ -21,7 +21,7 @@ public class GameService(DataContext context, IMapper mapper) : IGameService
       .Include(g => g.PlayerStats)
       .SingleOrDefaultAsync();
 
-    if (game == null)
+    if (game is null)
       return null;
 
     var response = mapper.Map<Game, GameResponse>(game);
@@ -56,7 +56,7 @@ public class GameService(DataContext context, IMapper mapper) : IGameService
     if (homeTeam is null || awayTeam is null)
       throw new InvalidOperationException(Error.Game.TeamNotFound);
 
-    if (homeTeam.Status == Validation.Team.Status.Defunct || awayTeam.Status == Validation.Team.Status.Defunct)
+    if (homeTeam.Status is Validation.Team.Status.Defunct || awayTeam.Status is Validation.Team.Status.Defunct)
      throw new InvalidOperationException(Error.Team.InactiveTeam);
 
     var game = mapper.Map<CreateGameRequest, Game>(request);
@@ -86,7 +86,7 @@ public class GameService(DataContext context, IMapper mapper) : IGameService
     if (homeTeam is null || awayTeam is null)
       throw new InvalidOperationException(Error.Game.TeamNotFound);
     
-    if (homeTeam.Status == Validation.Team.Status.Defunct || awayTeam.Status == Validation.Team.Status.Defunct)
+    if (homeTeam.Status is Validation.Team.Status.Defunct || awayTeam.Status is Validation.Team.Status.Defunct)
       throw new InvalidOperationException(Error.Team.InactiveTeam);
 
     game.DateTime = request.DateTime;
@@ -189,18 +189,8 @@ public class GameService(DataContext context, IMapper mapper) : IGameService
     if (homeTeamPoints == awayTeamPoints)
       throw new InvalidOperationException(Error.Game.TiesNotAllowed);
 
-    var homeTeam = await context.Teams
-      .Where(t => t.TeamId == game.HomeTeamId)
-      .Include(t => t.Roster)
-      .Include(t => t.HomeGames)
-      .Include(t => t.AwayGames)
-      .SingleOrDefaultAsync();
-    var awayTeam = await context.Teams
-      .Where(t => t.TeamId == game.AwayTeamId)
-      .Include(t => t.Roster)
-      .Include(t => t.HomeGames)
-      .Include(t => t.AwayGames)
-      .SingleOrDefaultAsync();
+    var homeTeam = await context.Teams.FindAsync(game.HomeTeamId);
+    var awayTeam = await context.Teams.FindAsync(game.AwayTeamId);
 
     if (homeTeam is null || awayTeam is null)
       throw new InvalidOperationException(Error.Game.TeamNotFound);
