@@ -1,5 +1,4 @@
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 
 namespace BasketballStatsApi.Core.Entities;
@@ -13,6 +12,8 @@ public class PlayerGame
 
   // Reference navigation
   public Player Player { get; set; }
+
+  public int TeamId { get; set; }
 
   // Foreign key
   [Key]

@@ -54,6 +54,7 @@ public class PlayerProfile : Profile
       .ForMember(dest => dest.JerseyNumber, opt => opt.MapFrom(src => src.Player.JerseyNumber));
     
     CreateMap<FinalizeGameRequestPlayerStats, PlayerGame>()
+      .ForMember(dest => dest.TeamId, opt => opt.MapFrom((_, _, _, context) => context.Items["TeamId"]))
       .ForMember(dest => dest.GameId, opt => opt.MapFrom((_, _, _, context) => context.Items["GameId"]));
   }
 }

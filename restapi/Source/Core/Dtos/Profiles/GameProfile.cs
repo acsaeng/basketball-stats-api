@@ -25,8 +25,8 @@ public class GameProfile : Profile
       .ForMember(dest => dest.HomeTeam, opt => opt.MapFrom(src => src.HomeTeam.Abbreviation))
       .ForMember(dest => dest.AwayTeam, opt => opt.MapFrom(src => src.AwayTeam.Abbreviation))
       .ForMember(dest => dest.HomeTeamPlayerStats,
-        opt => opt.MapFrom(src => src.PlayerStats.Where(ps => ps.Player.TeamId == src.HomeTeam.TeamId)))
+        opt => opt.MapFrom(src => src.PlayerStats.Where(ps => ps.TeamId == src.HomeTeam.TeamId)))
       .ForMember(dest => dest.AwayTeamPlayerStats,
-        opt => opt.MapFrom(src => src.PlayerStats.Where(ps => ps.Player.TeamId == src.AwayTeam.TeamId)));
+        opt => opt.MapFrom(src => src.PlayerStats.Where(ps => ps.TeamId == src.AwayTeam.TeamId)));
   }
 }
