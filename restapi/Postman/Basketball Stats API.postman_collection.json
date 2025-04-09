@@ -1,0 +1,588 @@
+{
+	"info": {
+		"_postman_id": "74c9fe75-daa6-4c5b-afc4-9ae82db4e278",
+		"name": "Basketball Stats API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "18326307"
+	},
+	"item": [
+		{
+			"name": "Player",
+			"item": [
+				{
+					"name": "Get Player",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5067/api/player/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5067",
+							"path": [
+								"api",
+								"player",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get League Leaders",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5067/api/player/leaders/points",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5067",
+							"path": [
+								"api",
+								"player",
+								"leaders",
+								"points"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Player",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"firstName\": \"LeBron\",\n    \"lastName\": \"James\",\n    \"dob\": \"1984-12-30\",\n    \"height\": 206,\n    \"weight\": 113,\n    \"position\": \"SF\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5067/api/player",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5067",
+							"path": [
+								"api",
+								"player"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Player Info",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"firstName\": \"LeBron\",\n    \"lastName\": \"James\",\n    \"dob\": \"1984-12-30\",\n    \"height\": 206,\n    \"weight\": 113,\n    \"position\": \"PF\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5067/api/player/info/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5067",
+							"path": [
+								"api",
+								"player",
+								"info",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Player Injury Status",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"injuryStatus\": \"Out\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5067/api/player/injury/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5067",
+							"path": [
+								"api",
+								"player",
+								"injury",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Player Roster Status",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"rosterStatus\": \"Retired\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5067/api/player/roster/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5067",
+							"path": [
+								"api",
+								"player",
+								"roster",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Team",
+			"item": [
+				{
+					"name": "Get Team",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5067/api/team/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5067",
+							"path": [
+								"api",
+								"team",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Team Roster Stats",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5067/api/team/roster/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5067",
+							"path": [
+								"api",
+								"team",
+								"roster",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Team Schedule",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5067/api/team/schedule/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5067",
+							"path": [
+								"api",
+								"team",
+								"schedule",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Team Standings",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5067/api/team/standings",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5067",
+							"path": [
+								"api",
+								"team",
+								"standings"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Team",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"locale\": \"Los Angeles\",\n    \"name\": \"Lakers\",\n    \"abbreviation\": \"LAL\",\n    \"location\": \"Los Angeles, California\",\n    \"stadium\": \"Crypto.com Arena\",\n    \"headCoach\": \"Darvin Ham\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5067/api/team",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5067",
+							"path": [
+								"api",
+								"team"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Team",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"locale\": \"Los Angeles\",\n    \"name\": \"Lakers\",\n    \"abbreviation\": \"LAL\",\n    \"location\": \"Los Angeles, California\",\n    \"stadium\": \"Crypto.com Arena\",\n    \"headCoach\": \"JJ Redick\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5067/api/team/update/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5067",
+							"path": [
+								"api",
+								"team",
+								"update",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add Player to Roster",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"playerId\": 1,\n    \"jerseyNumber\": 23\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5067/api/team/add-player/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5067",
+							"path": [
+								"api",
+								"team",
+								"add-player",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Deactivate Team",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5067/api/team/deactivate/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5067",
+							"path": [
+								"api",
+								"team",
+								"deactivate",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Game",
+			"item": [
+				{
+					"name": "Get Game by ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5067/api/game/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5067",
+							"path": [
+								"api",
+								"game",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Games by Date Range",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"dateStart\": \"2025-01-01\",\n    \"dateEnd\": \"2025-01-07\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5067/api/game",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5067",
+							"path": [
+								"api",
+								"game"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Game",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"dateTime\": \"2025-01-04T19:00:00\",\n    \"homeTeamId\": 1,\n    \"awayTeamId\": 2\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5067/api/game",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5067",
+							"path": [
+								"api",
+								"game"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Game Info",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"dateTime\": \"2025-01-04T20:00:00\",\n    \"homeTeamId\": 1,\n    \"awayTeamId\": 2\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5067/api/game/update-info/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5067",
+							"path": [
+								"api",
+								"game",
+								"update-info",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Game Status",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"status\": \"In progress\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5067/api/game/update-status/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5067",
+							"path": [
+								"api",
+								"game",
+								"update-status",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Finalize Game",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"homeTeamPoints\": 30,\n    \"awayTeamPoints\": 24,\n    \"homeTeamPlayerStats\": [\n        {\n            \"playerId\": 1,\n            \"points\": 30,\n            \"assists\": 7,\n            \"rebounds\": 4,\n            \"steals\": 2,\n            \"blocks\": 1,\n            \"turnovers\": 2\n        }\n    ],\n    \"awayTeamPlayerStats\": [\n        {\n            \"playerId\": 2,\n            \"points\": 24,\n            \"assists\": 5,\n            \"rebounds\": 6,\n            \"steals\": 0,\n            \"blocks\": 2,\n            \"turnovers\": 3\n        }\n    ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5067/api/game/finalize/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5067",
+							"path": [
+								"api",
+								"game",
+								"finalize",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
