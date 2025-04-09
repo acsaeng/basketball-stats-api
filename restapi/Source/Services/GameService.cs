@@ -19,7 +19,6 @@ public class GameService(DataContext context, IMapper mapper) : IGameService
       .Include(g => g.HomeTeam)
       .Include(g => g.AwayTeam)
       .Include(g => g.PlayerStats)
-        .ThenInclude(ps => ps.Player)
       .SingleOrDefaultAsync();
 
     if (game == null)
@@ -40,7 +39,6 @@ public class GameService(DataContext context, IMapper mapper) : IGameService
       .Include(g => g.HomeTeam)
       .Include(g => g.AwayTeam)
       .Include(g => g.PlayerStats)
-        .ThenInclude(ps => ps.Player)
       .ToListAsync();
 
     var response = mapper.Map<ICollection<Game>, ICollection<GameResponse>>(games);
@@ -59,7 +57,7 @@ public class GameService(DataContext context, IMapper mapper) : IGameService
       throw new InvalidOperationException(Error.Game.TeamNotFound);
 
     if (homeTeam.Status == Validation.Team.Status.Defunct || awayTeam.Status == Validation.Team.Status.Defunct)
-     throw new InvalidOperationException(Error.Team.DefunctTeam);
+     throw new InvalidOperationException(Error.Team.InactiveTeam);
 
     var game = mapper.Map<CreateGameRequest, Game>(request);
     context.Games.Add(game);
@@ -89,7 +87,7 @@ public class GameService(DataContext context, IMapper mapper) : IGameService
       throw new InvalidOperationException(Error.Game.TeamNotFound);
     
     if (homeTeam.Status == Validation.Team.Status.Defunct || awayTeam.Status == Validation.Team.Status.Defunct)
-      throw new InvalidOperationException(Error.Team.DefunctTeam);
+      throw new InvalidOperationException(Error.Team.InactiveTeam);
 
     game.DateTime = request.DateTime;
     game.HomeTeamId = request.HomeTeamId;
@@ -158,7 +156,11 @@ public class GameService(DataContext context, IMapper mapper) : IGameService
       // Update player games stats
       var playerGameStats = mapper.Map<FinalizeGameRequestPlayerStats, PlayerGame>(
         playerStats,
-        opt => opt.Items["GameId"] = game.GameId
+        opt => 
+        {
+          opt.Items["TeamId"] = player.TeamId;
+          opt.Items["GameId"] = game.GameId;
+        }
       );
       player.GameStats.Add(playerGameStats);
 

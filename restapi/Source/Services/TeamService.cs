@@ -39,6 +39,12 @@ public class TeamService(DataContext context, IMapper mapper) : ITeamService
     var players = await context.Players
       .Where(p => p.TeamId == team.TeamId)
       .Include(p => p.Team)
+      .Include(p => p.GameStats)
+        .ThenInclude(gs => gs.Game)
+          .ThenInclude(g => g.HomeTeam)
+      .Include(p => p.GameStats)
+        .ThenInclude(gs => gs.Game)
+          .ThenInclude(g => g.AwayTeam)
       .ToListAsync();
 
     var response = mapper.Map<ICollection<Player>, ICollection<PlayerResponse>>(players);
@@ -57,6 +63,7 @@ public class TeamService(DataContext context, IMapper mapper) : ITeamService
       .OrderByDescending(g => g.DateTime)
       .Take(5)
       .OrderBy(g => g.DateTime)
+      .Include(g => g.HomeTeam)
       .Include(g => g.AwayTeam)
       .ToListAsync();
     
@@ -64,6 +71,7 @@ public class TeamService(DataContext context, IMapper mapper) : ITeamService
       .Where(g => (team.TeamId == g.HomeTeamId || team.TeamId == g.AwayTeamId) && g.DateTime > DateTime.Now)
       .OrderBy(g => g.DateTime)
       .Take(5)
+      .Include(g => g.HomeTeam)
       .Include(g => g.AwayTeam)
       .ToListAsync();
 
@@ -119,7 +127,7 @@ public class TeamService(DataContext context, IMapper mapper) : ITeamService
       return null;
 
     if (team.Status == Validation.Team.Status.Defunct)
-      throw new InvalidOperationException(Error.Team.DefunctTeam);
+      throw new InvalidOperationException(Error.Team.InactiveTeam);
 
     team.Locale = request.Locale;
     team.Name = request.Name;
@@ -148,7 +156,7 @@ public class TeamService(DataContext context, IMapper mapper) : ITeamService
       throw new InvalidOperationException(Error.Game.TeamNotFound);
 
     if (team.Status == Validation.Team.Status.Defunct)
-      throw new InvalidOperationException(Error.Team.DefunctTeam);
+      throw new InvalidOperationException(Error.Team.InactiveTeam);
 
     if (team.Roster.Count >= Validation.Team.MaxTeamRoster)
       throw new InvalidOperationException(Error.Team.MaxRosterExceeded);

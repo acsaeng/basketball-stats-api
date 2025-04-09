@@ -46,7 +46,7 @@ public class PlayerService(DataContext context, IMapper mapper) : IPlayerService
       throw new InvalidOperationException(Error.Player.InvalidStatType);
 
     var players = await context.Players
-      .Where(p => p.RosterStatus == Validation.Player.RosterStatus.Active)
+      .Where(p => p.RosterStatus != Validation.Player.RosterStatus.Retired)
       .OrderByDescending(p => EF.Property<object>(p, char.ToUpper(statType.First()) + statType.Substring(1)))
       .Take(5)
       .Include(p => p.Team)
@@ -115,6 +115,9 @@ public class PlayerService(DataContext context, IMapper mapper) : IPlayerService
 
     if (player is null)
       return null;
+    
+    if (player.RosterStatus == Validation.Player.RosterStatus.Retired)
+      throw new InvalidOperationException(Error.Player.InactivePlayer);
 
     player.InjuryStatus = request.InjuryStatus;
     await context.SaveChangesAsync();
