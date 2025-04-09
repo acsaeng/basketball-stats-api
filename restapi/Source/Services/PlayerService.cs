@@ -34,16 +34,19 @@ public class PlayerService(DataContext context, IMapper mapper) : IPlayerService
   public async Task<ICollection<PlayerResponse>> GetLeagueLeaders(string statType)
   {
     if (statType is not 
-          Validation.Player.StatTypes.Points or
-          Validation.Player.StatTypes.Assists or
-          Validation.Player.StatTypes.Rebounds or
-          Validation.Player.StatTypes.Steals or
-          Validation.Player.StatTypes.Blocks or
-          Validation.Player.StatTypes.Turnovers
+          (
+            Validation.Player.StatTypes.Points or
+            Validation.Player.StatTypes.Assists or
+            Validation.Player.StatTypes.Rebounds or
+            Validation.Player.StatTypes.Steals or
+            Validation.Player.StatTypes.Blocks or
+            Validation.Player.StatTypes.Turnovers
+          )
         )
       throw new InvalidOperationException(Error.Player.InvalidStatType);
 
     var players = await context.Players
+      .Where(p => p.RosterStatus == Validation.Player.RosterStatus.Active)
       .OrderByDescending(p => EF.Property<object>(p, char.ToUpper(statType.First()) + statType.Substring(1)))
       .Take(5)
       .Include(p => p.Team)
