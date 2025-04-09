@@ -53,18 +53,21 @@ public class TeamService(DataContext context, IMapper mapper) : ITeamService
       return null;
 
     var completedGames = await context.Games
+      .Include(g => g.AwayTeam)
       .Where(g => (team.TeamId == g.HomeTeamId || team.TeamId == g.AwayTeamId) && g.DateTime < DateTime.Now)
       .OrderByDescending(g => g.DateTime)
       .Take(5)
+      .OrderBy(g => g.DateTime)
       .ToListAsync();
     
     var upcomingGames = await context.Games
+      .Include(g => g.AwayTeam)
       .Where(g => (team.TeamId == g.HomeTeamId || team.TeamId == g.AwayTeamId) && g.DateTime > DateTime.Now)
       .OrderBy(g => g.DateTime)
       .Take(5)
       .ToListAsync();
 
-    var response = mapper.Map<ICollection<Game>, ICollection<GameResponse>>(completedGames.Concat(upcomingGames).ToList());
+    var response = mapper.Map<ICollection<Game>, ICollection<GameResponse>>([.. completedGames, .. upcomingGames]);
     return response;
   }
 
