@@ -57,7 +57,7 @@ public class TeamController(ITeamService teamService) : ControllerBase
       var response = await teamService.CreateTeam(request);
       return CreatedAtAction(nameof(GetTeam), new { teamId = response!.TeamId }, response);
     }
-    catch (ArgumentException error)
+    catch (InvalidOperationException error)
     {
       return BadRequest(error.Message);
     }

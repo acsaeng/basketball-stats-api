@@ -29,7 +29,7 @@ public class PlayerController(IPlayerService playerService) : ControllerBase
       var response = await playerService.GetLeagueLeaders(statType);
       return Ok(response);
     }
-    catch (ArgumentException error)
+    catch (InvalidOperationException error)
     {
       return BadRequest(error.Message);
     }
