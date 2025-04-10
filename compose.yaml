@@ -37,6 +37,7 @@ services:
     environment:
       - ASPNETCORE_HTTP_PORT=https://+:7165
       - ASPNETCORE_URLS=http://+:5067
+      - ASPNETCORE_ENVIRONMENT=Development
       - MSSQL_CONNECTION_STRING=Server=mssqldb,1433;Database=master;User=sa;Password=${MSSQL_PASSWORD};TrustServerCertificate=true;
     ports:
       - 5067:5067
