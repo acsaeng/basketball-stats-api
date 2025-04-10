@@ -15,13 +15,20 @@ builder.Services.AddScoped<IGameService, GameService>();
 
 builder.Services.AddDbContext<DataContext>(options =>
 {
-  options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"), builder =>
+  var connectionString = Environment.GetEnvironmentVariable("MSSQL_CONNECTION_STRING");
+  options.UseSqlServer(connectionString, builder =>
   {
     builder.EnableRetryOnFailure(5, TimeSpan.FromSeconds(10), null);
   });
 });
 
 var app = builder.Build();
+
+using (var scope = app.Services.CreateScope())
+{
+  var db = scope.ServiceProvider.GetRequiredService<DataContext>();
+  db.Database.Migrate();
+}
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

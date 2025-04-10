@@ -1,7 +1,6 @@
 # https://hub.docker.com/_/microsoft-dotnet
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /source
-
 COPY . .
 RUN dotnet restore "Source/BasketballStatsApi.csproj"
 RUN dotnet publish "Source/BasketballStatsApi.csproj" -c release -o /app --no-restore
