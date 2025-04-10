@@ -4,7 +4,7 @@
 
 ## Summary
 
-A REST API developed in ASP.NET Core that is designed to manage all aspects of a basketball league. It offers a series of endpoints that allow users to query and update a SQL Server database through the use of Entity Framework Core. The API tracks a wide range of data, including detailed information on players, teams, and games, as well as their overall statistics. It also manages the relationships between them, enabling features such as viewing team schedules, team standings, and league leaders.
+A REST API developed in ASP.NET Core that is designed to manage all aspects of a basketball league. It provides a series of endpoints that allow users to query and update a SQL Server database through the use of Entity Framework Core. The API tracks a wide range of data, including detailed information on players, teams, and games, as well as their overall statistics. It also manages the relationships between them, enabling features such as viewing team schedules, team standings, and league leaders.
 
 To run the application:
 
