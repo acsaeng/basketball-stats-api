@@ -8,8 +8,8 @@ A REST API developed in ASP.NET Core that is designed to manage all aspects of a
 
 To run the application:
 
-- Ensure you have [Docker Desktop](https://www.docker.com/products/docker-desktop/) installed on your device
 - Enter a valid SQL Server SA password in the `.env` file
+- Ensure you have [Docker Desktop](https://www.docker.com/products/docker-desktop/) installed on your device
 - Build and run the containers by executing the `docker-compose up` command
 - Call the endpoints using:
   - Postman - Import the collection found in `restapi/Source/Postman`
