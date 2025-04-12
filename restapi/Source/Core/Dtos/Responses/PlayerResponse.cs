@@ -1,4 +1,4 @@
-namespace BasketballStatsApi.Core.Dtos.Responses;
+namespace BasketballLeagueApi.Core.Dtos.Responses;
 
 public class PlayerResponse
 {

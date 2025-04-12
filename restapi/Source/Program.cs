@@ -1,6 +1,6 @@
-using BasketballStatsApi.Core.Contracts;
-using BasketballStatsApi.Infrastructure.Data;
-using BasketballStatsApi.Services;
+using BasketballLeagueApi.Core.Contracts;
+using BasketballLeagueApi.Infrastructure.Data;
+using BasketballLeagueApi.Services;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);

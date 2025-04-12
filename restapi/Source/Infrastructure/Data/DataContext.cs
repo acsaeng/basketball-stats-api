@@ -1,7 +1,7 @@
-using BasketballStatsApi.Core.Entities;
+using BasketballLeagueApi.Core.Entities;
 using Microsoft.EntityFrameworkCore;
 
-namespace BasketballStatsApi.Infrastructure.Data;
+namespace BasketballLeagueApi.Infrastructure.Data;
 
 public class DataContext(DbContextOptions<DataContext> options) : DbContext(options)
 {

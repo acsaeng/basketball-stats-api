@@ -1,13 +1,13 @@
 using AutoMapper;
-using BasketballStatsApi.Core.Constants;
-using BasketballStatsApi.Core.Contracts;
-using BasketballStatsApi.Core.Dtos.Requests;
-using BasketballStatsApi.Core.Dtos.Responses;
-using BasketballStatsApi.Core.Entities;
-using BasketballStatsApi.Infrastructure.Data;
+using BasketballLeagueApi.Core.Constants;
+using BasketballLeagueApi.Core.Contracts;
+using BasketballLeagueApi.Core.Dtos.Requests;
+using BasketballLeagueApi.Core.Dtos.Responses;
+using BasketballLeagueApi.Core.Entities;
+using BasketballLeagueApi.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 
-namespace BasketballStatsApi.Services;
+namespace BasketballLeagueApi.Services;
 
 public class TeamService(DataContext context, IMapper mapper) : ITeamService
 {

@@ -1,6 +1,6 @@
-using BasketballStatsApi.Core.Entities;
+using BasketballLeagueApi.Core.Entities;
 
-namespace BasketballStatsApi.Core.Models;
+namespace BasketballLeagueApi.Core.Models;
 
 public class PlayerModel
 {

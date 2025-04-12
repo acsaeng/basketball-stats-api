@@ -1,7 +1,7 @@
 using System.ComponentModel.DataAnnotations;
-using BasketballStatsApi.Core.Constants;
+using BasketballLeagueApi.Core.Constants;
 
-namespace BasketballStatsApi.Core.Dtos.Requests;
+namespace BasketballLeagueApi.Core.Dtos.Requests;
 
 public class UpdatePlayerInjuryRequest
 {

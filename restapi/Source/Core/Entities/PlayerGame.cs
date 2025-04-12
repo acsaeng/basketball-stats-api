@@ -1,7 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using Microsoft.EntityFrameworkCore;
 
-namespace BasketballStatsApi.Core.Entities;
+namespace BasketballLeagueApi.Core.Entities;
 
 [PrimaryKey("PlayerId", "GameId")]
 public class PlayerGame

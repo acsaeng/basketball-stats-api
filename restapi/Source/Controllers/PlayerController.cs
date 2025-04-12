@@ -1,10 +1,10 @@
 using AutoMapper;
-using BasketballStatsApi.Core.Contracts;
-using BasketballStatsApi.Core.Dtos.Requests;
-using BasketballStatsApi.Core.Dtos.Responses;
+using BasketballLeagueApi.Core.Contracts;
+using BasketballLeagueApi.Core.Dtos.Requests;
+using BasketballLeagueApi.Core.Dtos.Responses;
 using Microsoft.AspNetCore.Mvc;
 
-namespace BasketballStatsApi.Controllers;
+namespace BasketballLeagueApi.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]

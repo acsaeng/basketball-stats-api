@@ -1,7 +1,7 @@
 using System.Collections;
-using BasketballStatsApi.Core.Entities;
+using BasketballLeagueApi.Core.Entities;
 
-namespace BasketballStatsApi.Core.Dtos.Responses;
+namespace BasketballLeagueApi.Core.Dtos.Responses;
 
 public class TeamResponse
 {

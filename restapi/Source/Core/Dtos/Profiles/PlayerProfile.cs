@@ -1,11 +1,11 @@
 using AutoMapper;
-using BasketballStatsApi.Core.Constants;
-using BasketballStatsApi.Core.Dtos.Requests;
-using BasketballStatsApi.Core.Dtos.Responses;
-using BasketballStatsApi.Core.Entities;
-using BasketballStatsApi.Core.Models;
+using BasketballLeagueApi.Core.Constants;
+using BasketballLeagueApi.Core.Dtos.Requests;
+using BasketballLeagueApi.Core.Dtos.Responses;
+using BasketballLeagueApi.Core.Entities;
+using BasketballLeagueApi.Core.Models;
 
-namespace BasketballStatsApi.Core.Dtos.Profiles;
+namespace BasketballLeagueApi.Core.Dtos.Profiles;
 
 public class PlayerProfile : Profile
 {

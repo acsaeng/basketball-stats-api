@@ -1,8 +1,8 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using BasketballStatsApi.Core.Constants;
+using BasketballLeagueApi.Core.Constants;
 
-namespace BasketballStatsApi.Core.Entities;
+namespace BasketballLeagueApi.Core.Entities;
 
 public class Game
 {

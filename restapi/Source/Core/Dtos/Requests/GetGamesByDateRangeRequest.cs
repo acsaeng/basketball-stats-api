@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace BasketballStatsApi.Core.Dtos.Requests;
+namespace BasketballLeagueApi.Core.Dtos.Requests;
 
 public class GetGamesByDateRangeRequest
 {

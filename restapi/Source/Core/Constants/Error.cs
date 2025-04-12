@@ -1,4 +1,4 @@
-namespace BasketballStatsApi.Core.Constants;
+namespace BasketballLeagueApi.Core.Constants;
 
 public static class Error
 {

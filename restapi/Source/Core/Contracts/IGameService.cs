@@ -1,7 +1,7 @@
-using BasketballStatsApi.Core.Dtos.Requests;
-using BasketballStatsApi.Core.Dtos.Responses;
+using BasketballLeagueApi.Core.Dtos.Requests;
+using BasketballLeagueApi.Core.Dtos.Responses;
 
-namespace BasketballStatsApi.Core.Contracts;
+namespace BasketballLeagueApi.Core.Contracts;
 
 public interface IGameService
 {

@@ -1,6 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BasketballStatsApi", "Source/BasketballStatsApi.csproj", "{88A9BC0A-42AA-4A00-B876-9537C0F7B9D8}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BasketballLeagueApi", "Source/BasketballLeagueApi.csproj", "{88A9BC0A-42AA-4A00-B876-9537C0F7B9D8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
