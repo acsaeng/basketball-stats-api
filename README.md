@@ -1,4 +1,4 @@
-# Basketball Stats API
+# Basketball League API
 
 **Author:** Aron Saengchan
 
