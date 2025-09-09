@@ -426,7 +426,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"dateStart\": \"2025-01-01\",\n    \"dateEnd\": \"2025-01-07\"\n}",
+							"raw": "{\n    \"dateStart\": \"2026-01-01\",\n    \"dateEnd\": \"2026-01-07\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -458,7 +458,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"dateTime\": \"2025-01-04T19:00:00\",\n    \"homeTeamId\": 1,\n    \"awayTeamId\": 2\n}",
+							"raw": "{\n    \"dateTime\": \"2026-01-01T18:00:00\",\n    \"homeTeamId\": 1,\n    \"awayTeamId\": 2\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -490,7 +490,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"dateTime\": \"2025-01-04T20:00:00\",\n    \"homeTeamId\": 1,\n    \"awayTeamId\": 2\n}",
+							"raw": "{\n    \"dateTime\": \"2026-01-01T19:00:00\",\n    \"homeTeamId\": 1,\n    \"awayTeamId\": 2\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -498,7 +498,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:5067/api/game/update-info/1",
+							"raw": "http://localhost:5067/api/game/info/1",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -507,7 +507,7 @@
 							"path": [
 								"api",
 								"game",
-								"update-info",
+								"info",
 								"1"
 							]
 						}
@@ -532,7 +532,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:5067/api/game/update-status/1",
+							"raw": "http://localhost:5067/api/game/status/1",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -541,7 +541,7 @@
 							"path": [
 								"api",
 								"game",
-								"update-status",
+								"status",
 								"1"
 							]
 						}

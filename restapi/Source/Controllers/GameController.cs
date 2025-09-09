@@ -48,7 +48,7 @@ public class GameController(IGameService gameService) : ControllerBase
     }
   }
 
-  [HttpPost("update-info/{gameId}")]
+  [HttpPost("info/{gameId}")]
   public async Task<ActionResult<GameResponse?>> UpdateGameInfo(int gameId, [FromBody] UpdateGameInfoRequest request)
   {
     try
@@ -66,7 +66,7 @@ public class GameController(IGameService gameService) : ControllerBase
     }
   }
 
-  [HttpPost("update-status/{gameId}")]
+  [HttpPost("status/{gameId}")]
   public async Task<ActionResult<GameResponse?>> UpdateGameStatus(int gameId, [FromBody] UpdateGameStatusRequest request)
   {
     try
