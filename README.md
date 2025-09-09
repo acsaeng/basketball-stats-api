@@ -46,13 +46,6 @@ A REST API developed in ASP.NET Core that is designed to manage all aspects of a
       <td><code>POST</code></td>
       <td><code>/api/player/roster/{id}</code></td>
     </tr>
-  </tbody>
-</table>
-
-<br />
-
-<table align="center">
-  <tbody>
     <tr>
       <th colspan="3">Team</th>
     </tr>
@@ -101,13 +94,6 @@ A REST API developed in ASP.NET Core that is designed to manage all aspects of a
       <td><code>POST</code></td>
       <td><code>/api/team/deactivate/{id}</code></td>
     </tr>
-  </tbody>
-</table>
-
-<br />
-
-<table align="center" width="50%">
-  <tbody>
     <tr>
       <th colspan="3">Game</th>
     </tr>
